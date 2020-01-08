@@ -1,9 +1,9 @@
 import React, { useState, useEffect, setState } from 'react';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-import { Card, makeStyles, Grid, Input, Typography, Box, Button, Badge, Hidden, IconButton, ListItemSecondaryAction} from '@material-ui/core';
-import { borders } from '@material-ui/system';
+import { Card, makeStyles, Grid, Typography, Box, Button, IconButton } from '@material-ui/core';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   // root: {
@@ -42,14 +42,7 @@ const ImageUpload = () => {
   const [imgCounter, setImgCounter] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
   const [counter, setCounter] = useState(0);
-  // let counter;
-
-  // for (let [key, value] of Object.entries(pictures)) {
-  //   // console.log(`${key}: ${value}`);
-  //   console.log(`${value.preview}`);
-  // }
-
-
+  const [PPMissing, setPPMissing] = useState('');
 
   useEffect(() => {
     console.log(pictures);
@@ -63,12 +56,35 @@ const ImageUpload = () => {
     }
   }, [imgCounter]);
 
+  const submitPictures = async () => {
+    if (!profilePicture.id) {
+      setPPMissing("Profile Picture is missing !");
+      return false;
+    }
+    const toUpload = []
+    for (let [key, value] of Object.entries(pictures)) {
+      if (value) {
+        toUpload.push(`${value.raw}`);
+      }
+    }
+    console.log(toUpload);
+  //   const result = await fetch(`localhost:8080/api/accounts/pictures`, {
+  //     method: 'post',
+  //     body: JSON.stringify({ profilePicture: profilePicture.raw, img1: toUpload[0], img2: toUpload[1], img3: toUpload[2], img4: toUpload[3] }),
+  //     headers: { 'Content-Type': 'application/json' }
+  // });
+
+  //   const body = await result.json();
+  //   if (result.ok) {
+  //     history.push('');
+  //   }
+  }
 
   const handleChange = (e) => {
-    // var files = e.target.Files || (e.dataTransfer && e.dataTransfer.files);
-    // console.log(e.target.files[0]);
-    // console.log(e.target.id);
     if (e && e.target.id === 'profileButton') {
+      if (PPMissing) {
+        setPPMissing('');
+      }
       setProfilePicture({
         id: e.target.files[0].name,
         preview: URL.createObjectURL(e.target.files[0]),
@@ -135,19 +151,20 @@ const ImageUpload = () => {
                   <AddCircleRoundedIcon fontSize='large'/>
                 </IconButton>
               </label>
+              <Typography  color="secondary">{PPMissing}</Typography>
             </Grid>
             <PictureBoxes />
-            <Grid item xs={12}>
-            <input accept="image/*" className={classes.input} type="file" id="uploadButton"
-          style={{ display: 'none' }} onChange={(e) => handleChange(e)} disabled={isDisabled}/>
-        <label htmlFor="uploadButton">
-          <Button component="span" disabled={isDisabled} >
-            Add picture
-          </Button>
-        </label>
+            <Grid item className={classes.flexItem} xs={12}>
+              <input accept="image/*" className={classes.input} type="file" id="uploadButton"
+                style={{ display: 'none' }} onChange={(e) => handleChange(e)} disabled={isDisabled}/>
+              <label htmlFor="uploadButton" style={{ alignSelf: "flex-end" }} >
+                <Button component="span" disabled={isDisabled} variant="contained" color="secondary" >
+                  Add pictures {imgCounter} / 4
+                </Button>
+              </label>
             </Grid>
             <Grid item xs={12} className={classes.flexItem}>
-              <IconButton name="submit" >
+              <IconButton name="submit" onClick={() => submitPictures()}>
                 <ChevronRightSharpIcon color="secondary" />
               </IconButton>
             </Grid>
