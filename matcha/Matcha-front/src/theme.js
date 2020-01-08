@@ -7,6 +7,7 @@ const matchaTheme = createMuiTheme({
     palette: {
         primary: {
             main: grey[900],
+            light: grey[700],
         },
         secondary: {
           main: red[700],

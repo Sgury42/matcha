@@ -33,6 +33,8 @@ const defaultProps = {
 
 const ImageUpload = () => {
   const classes = useStyles();
+  const history = useHistory();
+
 
   const [profilePicture, setProfilePicture] = useState({
     preview: "https://i0.wp.com/www.industrialontologies.org/wp-content/uploads/2018/10/cropped-blank-profile-picture-973460_640.png?ssl=1",
@@ -157,7 +159,7 @@ const ImageUpload = () => {
             <Grid item className={classes.flexItem} xs={12}>
               <input accept="image/*" className={classes.input} type="file" id="uploadButton"
                 style={{ display: 'none' }} onChange={(e) => handleChange(e)} disabled={isDisabled}/>
-              <label htmlFor="uploadButton" style={{ alignSelf: "flex-end" }} >
+              <label htmlFor="uploadButton" style={{ justifySelf: "flex-end" }} >
                 <Button component="span" disabled={isDisabled} variant="contained" color="secondary" >
                   Add pictures {imgCounter} / 4
                 </Button>
