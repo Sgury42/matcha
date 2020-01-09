@@ -11,7 +11,8 @@ import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import NavBarOut from './NavBar';
 // import BioUpload from './components/BioUpload';
-import HashtagsUpload from './components/HashtagsUpload';
+// import HashtagsUpload from './components/HashtagsUpload';
+import OrientationUpload from './components/OrientationUpload';
 // import NavBar2 from './NavBar2'
 
 class App extends Component {
@@ -22,7 +23,7 @@ class App extends Component {
         <CssBaseline />
           <div className="App">
             <NavBarOut />
-            <HashtagsUpload />
+            <OrientationUpload />
             {/* <NavBar2 /> */}
             <Container maxWidth="md" id="page-body">
               <Switch>

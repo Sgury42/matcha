@@ -28,18 +28,61 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const redShades = [red[200], red[300], red[400], red[500], red[600], red[700], red[800], red[900] ];
+
+const UsrHashtagDisplay = ({ setUsrHashtags, usrHashtags }) => {
 
 
+  const handleDelete = async (hashtag) => {
+      // console.log(e);
+      //   const result = await fetch(`localhost:8080/api/accounts/removeHashtag`, {
+      //     method: 'post',
+      //     body: JSON.stringify({ hashtag }),
+      //     headers: { 'Content-Type': 'application/json' }
+      // });
+    
+      //   const body = await result.json();
+      //   if (result.ok) {
+          // history.push('');
+
+          ///////// WHY ELEMENT RELOAD ONLY WHEN INPUT??????
+          var index;
+          let tmpArray = [...usrHashtags];
+          if ((index = tmpArray.indexOf(hashtag)) > -1) {
+            tmpArray.splice(index, 1);
+            console.log(tmpArray)
+            setUsrHashtags(tmpArray);
+            // console.log(usrHashtags);
+          }
+          
+
+
+      //   }
+  }
+  
+  return (
+    usrHashtags.map((hashtag, key) =>
+      <Grid item key={key}>
+        <Chip id={hashtag} style={{ backgroundColor: `${redShades[Math.floor(Math.random()*redShades.length)]}`, color: 'white'}}
+        onDelete={() => handleDelete(hashtag)}
+        //  {...(props.optDelete ? {onDelete: () => handleDelete(hashtag)} : {})}
+        label={
+          <p>#{hashtag}</p>
+        }>
+        </Chip>
+      </Grid>
+    )
+  );
+}
 
 
 const HashtagsUpload = () => {
 
-//////////////////////    TEST
-const [usrHashtags, setUsrHashtags] = useState(["lover", "geek", "42", "outdoors", "no-gym", "dogperson"]);
-const [listHashtags, setListHashtags] = useState(["catperson", "coffee", "travel", "vegan", "netflixandchill", "lol", "book", "gymrat", "dance"]);
-/////////////////////
+  //////////////////////    TEST
+  const [usrHashtags, setUsrHashtags] = useState(["lover", "geek", "42", "outdoors", "no-gym", "dogperson"]);
+  const [listHashtags, setListHashtags] = useState(["catperson", "coffee", "travel", "vegan", "netflixandchill", "lol", "book", "gymrat", "dance"]);
 
-const [hashtagInput, setHashtagInput] = useState('');
+  const [hashtagInput, setHashtagInput] = useState('');
 
   const classes = useStyles();
   const history = useHistory();
@@ -51,52 +94,6 @@ const [hashtagInput, setHashtagInput] = useState('');
       setHashtagInput(e.target.value);
     }
   }
-
-  const UsrHashtagDisplay = () => {
-
-    const redShades = [red[200], red[300], red[400], red[500], red[600], red[700], red[800], red[900] ];
-  
-    const handleDelete = async (hashtag) => {
-        // console.log(e);
-        //   const result = await fetch(`localhost:8080/api/accounts/removeHashtag`, {
-        //     method: 'post',
-        //     body: JSON.stringify({ hashtag }),
-        //     headers: { 'Content-Type': 'application/json' }
-        // });
-      
-        //   const body = await result.json();
-        //   if (result.ok) {
-            // history.push('');
-  
-            ///////// WHY ELEMENT RELOAD ONLY WHEN INPUT??????
-            var index;
-            let tmpArray = usrHashtags;
-            if ((index = tmpArray.indexOf(hashtag)) > -1) {
-              tmpArray.splice(index, 1);
-              setUsrHashtags(tmpArray);
-              // console.log(usrHashtags);
-            }
-            
-  
-  
-        //   }
-    }
-    
-    return (
-      usrHashtags.map((hashtag, key) =>
-        <Grid item key={key}>
-          <Chip id={hashtag} style={{ backgroundColor: `${redShades[Math.floor(Math.random()*redShades.length)]}`, color: 'white'}}
-          onDelete={() => handleDelete(hashtag)}
-          //  {...(props.optDelete ? {onDelete: () => handleDelete(hashtag)} : {})}
-          label={
-            <p>#{hashtag}</p>
-          }>
-          </Chip>
-        </Grid>
-      )
-    );
-  }
-
 
   const ListHashtagsDisplay = () => {
 
@@ -112,7 +109,7 @@ const [hashtagInput, setHashtagInput] = useState('');
             // history.push('');
 
               var index;
-              let tmpArray = listHashtags;
+              let tmpArray = [...listHashtags];
               if ((index = tmpArray.indexOf(hashtag)) > -1) {
                 tmpArray.splice(index, 1);
                 setListHashtags(tmpArray);
@@ -147,7 +144,7 @@ const [hashtagInput, setHashtagInput] = useState('');
           <Grid item xs={8} >
             <Card variant="outlined" className={classes.hashtagsCards} >
               <Grid container spacing={1}>
-                <UsrHashtagDisplay hashtags={usrHashtags} optDelete={true} setArray={setUsrHashtags} />
+                <UsrHashtagDisplay usrHashtags={usrHashtags} optDelete={true} setUsrHashtags={setUsrHashtags} />
               </Grid>
             </Card>
           </Grid>
