@@ -31,21 +31,6 @@ const BioUpload = () => {
 
   const [charCount, setCharCount] = useState(0);
   const [bio, setBio] = useState('');
-  // const [isFull, setIsFull] = useState(false);
-
-// useEffect(() => {
-  // setCharCount(bio.length)
-// }, [bio])
-
-  // const charCounter = (e) => {
-  //   // console.log(e.target.value);
-  //   if (e.target.value) {
-  //     setCharCount(e.target.value.length);
-  //   } else {
-  //     setCharCount(0);
-  //   }
-  //   console.log(charCount);
-  // }
 
   useEffect(() => {
     console.log(charCount)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, useTheme, Chip, Button} from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import red from '@material-ui/core/colors/red';
@@ -27,29 +27,16 @@ const useStyles = makeStyles(theme => ({
     maxLength: '500px',
   }
 }));
-const redShades = [red[200], red[300], red[400], red[500], red[600], red[700], red[800], red[900] ];
 
 
-const UsrHashtagDisplay = ({ hashtags }) => {
 
-  return (
-    hashtags.map((hashtag, key) =>
-      <Grid item key={key}>
-        <Chip style={{ backgroundColor: `${redShades[Math.floor(Math.random()*redShades.length)]}`, color: 'white'}}
-        label={
-          <p>#{hashtag}</p>
-        }>
-        </Chip>
-      </Grid>
-    )
-  );
-}
+
 
 const HashtagsUpload = () => {
 
 //////////////////////    TEST
-  const [usrHashtags, setUsrHashtags] = useState(["lover", "geek", "42", "outdoors", "no-gym", "dogperson"]);
-  const [listHashtags, setListHashtags] = useState(["catperson", "coffee", "travel", "vegan", "netflixandchill", "lol", "book", "gymrat", "dance"]);
+const [usrHashtags, setUsrHashtags] = useState(["lover", "geek", "42", "outdoors", "no-gym", "dogperson"]);
+const [listHashtags, setListHashtags] = useState(["catperson", "coffee", "travel", "vegan", "netflixandchill", "lol", "book", "gymrat", "dance"]);
 /////////////////////
 
 const [hashtagInput, setHashtagInput] = useState('');
@@ -65,13 +52,81 @@ const [hashtagInput, setHashtagInput] = useState('');
     }
   }
 
+  const UsrHashtagDisplay = () => {
+
+    const redShades = [red[200], red[300], red[400], red[500], red[600], red[700], red[800], red[900] ];
+  
+    const handleDelete = async (hashtag) => {
+        // console.log(e);
+        //   const result = await fetch(`localhost:8080/api/accounts/removeHashtag`, {
+        //     method: 'post',
+        //     body: JSON.stringify({ hashtag }),
+        //     headers: { 'Content-Type': 'application/json' }
+        // });
+      
+        //   const body = await result.json();
+        //   if (result.ok) {
+            // history.push('');
+  
+            ///////// WHY ELEMENT RELOAD ONLY WHEN INPUT??????
+            var index;
+            let tmpArray = usrHashtags;
+            if ((index = tmpArray.indexOf(hashtag)) > -1) {
+              tmpArray.splice(index, 1);
+              setUsrHashtags(tmpArray);
+              // console.log(usrHashtags);
+            }
+            
+  
+  
+        //   }
+    }
+    
+    return (
+      usrHashtags.map((hashtag, key) =>
+        <Grid item key={key}>
+          <Chip id={hashtag} style={{ backgroundColor: `${redShades[Math.floor(Math.random()*redShades.length)]}`, color: 'white'}}
+          onDelete={() => handleDelete(hashtag)}
+          //  {...(props.optDelete ? {onDelete: () => handleDelete(hashtag)} : {})}
+          label={
+            <p>#{hashtag}</p>
+          }>
+          </Chip>
+        </Grid>
+      )
+    );
+  }
 
 
   const ListHashtagsDisplay = () => {
+
+    const handleAdd = (hashtag) => {
+        //   const result = await fetch(`localhost:8080/api/accounts/addHashtag`, {
+        //     method: 'post',
+        //     body: JSON.stringify({ props.hashtags }),
+        //     headers: { 'Content-Type': 'application/json' }
+        // });
+      
+        //   const body = await result.json();
+        //   if (result.ok) {
+            // history.push('');
+
+              var index;
+              let tmpArray = listHashtags;
+              if ((index = tmpArray.indexOf(hashtag)) > -1) {
+                tmpArray.splice(index, 1);
+                setListHashtags(tmpArray);
+              }
+              tmpArray = usrHashtags;
+              tmpArray.push(hashtag);
+              setUsrHashtags(tmpArray);
+    // }
+  }
+
     return (
       listHashtags.map((hashtag, key) =>
         <Grid item key={key}>
-          <Chip
+          <Chip clickable={true} onClick={() => handleAdd(hashtag)}
           label={
             <p>#{hashtag}</p>
           }>
@@ -92,15 +147,14 @@ const [hashtagInput, setHashtagInput] = useState('');
           <Grid item xs={8} >
             <Card variant="outlined" className={classes.hashtagsCards} >
               <Grid container spacing={1}>
-                <UsrHashtagDisplay hashtags={usrHashtags} />
+                <UsrHashtagDisplay hashtags={usrHashtags} optDelete={true} setArray={setUsrHashtags} />
               </Grid>
             </Card>
           </Grid>
           <Grid item xs={4}>
             <Card variant="outlined" className={classes.hashtagsCards} >
             <TextField variant="outlined" type="text" fullWidth={true} margin="dense" value={hashtagInput}
-              InputProps={{startAdornment: <p>#</p>}} onChange={(e) => handleInputChange(e)}
-            />
+              InputProps={{startAdornment: <p>#</p>}} onChange={handleInputChange} />
             <Button name='submitHashtag' align="right">ADD</Button>
               <Grid container spacing={1}>
                 <ListHashtagsDisplay />
