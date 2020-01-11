@@ -9,11 +9,12 @@ import LogInPage from './pages/LogInPage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
-import NavBarOut from './NavBar';
+// import NavBarOut from './NavBar';
 // import BioUpload from './components/BioUpload';
 // import HashtagsUpload from './components/HashtagsUpload';
-import OrientationUpload from './components/OrientationUpload';
-// import NavBar2 from './NavBar2'
+// import SlidersOptions from './components/SlidersOptions';
+// import OrientationUpload from './components/OrientationUpload';
+import NavBar2 from './NavBar2'
 
 class App extends Component {
   render() {
@@ -22,10 +23,9 @@ class App extends Component {
        <MuiThemeProvider theme={theme}>
         <CssBaseline />
           <div className="App">
-            <NavBarOut />
-            <OrientationUpload />
-            {/* <NavBar2 /> */}
-            <Container maxWidth="md" id="page-body">
+            {/* <NavBarOut /> */}
+            <NavBar2 />
+            {/* <Container maxWidth="lg" id="page-body"> */}
               <Switch>
                 <Route path="/" component={HomePage} exact />
                 <Route path="/logIn" component={LogInPage} />
@@ -34,7 +34,7 @@ class App extends Component {
                 <Route path="/settings" component={SettingsPage} />
                 <Route component={NotFoundPage} />
               </Switch>
-            </Container>
+            {/* </Container> */}
           </div>
          </MuiThemeProvider>
       </Router>

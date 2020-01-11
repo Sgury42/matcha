@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, useTheme } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 
 
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 const BioUpload = () => {
   const classes = useStyles();
-  const history = useHistory();
+  // const history = useHistory();
   const theme = useTheme();
 
   const [charCount, setCharCount] = useState(0);
@@ -60,14 +60,14 @@ const BioUpload = () => {
 
   return (
     <Grid container spacing={1} justify="center">
-    <Grid item xs={12} sm={10} md={8} lg={6}>
+    <Grid item xs={12} >
       <Card id="ImageUploadCard">
         <Typography className={classes.formTitle} variant="h2" align="center" >
             Describe yourself :
         </Typography>
         <Grid container>
           <TextField type="text" variant="outlined" fullWidth={true} multiline={true} rows='5' 
-            onChange={(e) => handleChange(e)} value={bio} maxLenght='5'
+            onChange={(e) => handleChange(e)} value={bio}
           />
           <Grid item xs={12}>
             <Typography align="right" style={{ color: theme.palette.primary.light }}>{charCount}/150</Typography>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Card, Grid, TextField, Typography, IconButton, Checkbox, Box, FormControlLabel} from '@material-ui/core';
+import { makeStyles, Card, Grid, TextField, Typography, IconButton, Checkbox, FormControlLabel} from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-import { useHistory } from "react-router-dom";
-import Joi from '@hapi/joi';
+// import { useHistory } from "react-router-dom";
+// import Joi from '@hapi/joi';
 // import ErrorDisplay from '../components/ErrorDisplay';
-import { array } from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   
 
 const SignUpForm = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const classes = useStyles();
 
   // const [login, setLogin] = useState('');
@@ -120,17 +119,17 @@ const SignUpForm = () => {
 
   const addUsr = async () => {
     // e.preventDefault();
-      console.log("It's all good !");
-    const result = await fetch(`localhost:8080/api/accounts/register`, {
-      method: 'post',
-      body: JSON.stringify({ firstname, name, mail, passwd, repeatPasswd, dateBirth, gender }),
-      headers: { 'Content-Type': 'application/json' }
-  });
+  //     console.log("It's all good !");
+  //   const result = await fetch(`localhost:8080/api/accounts/register`, {
+  //     method: 'post',
+  //     body: JSON.stringify({ firstname, name, mail, passwd, repeatPasswd, dateBirth, gender }),
+  //     headers: { 'Content-Type': 'application/json' }
+  // });
 
-    const body = await result.json();
-    if (result.ok) {
-      history.push('/uploadPicture');
-    }
+  //   const body = await result.json();
+  //   if (result.ok) {
+  //     history.push('/uploadPicture');
+  //   }
   }
 
   return (

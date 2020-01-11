@@ -1,9 +1,9 @@
-import React, { useState, useEffect, setState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { Card, makeStyles, Grid, Typography, Box, Button, IconButton } from '@material-ui/core';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   // root: {
@@ -33,7 +33,7 @@ const defaultProps = {
 
 const ImageUpload = () => {
   const classes = useStyles();
-  const history = useHistory();
+  // const history = useHistory();
 
 
   const [profilePicture, setProfilePicture] = useState({
@@ -136,7 +136,7 @@ const ImageUpload = () => {
 
   return (
     <Grid container spacing={1} justify="center">
-      <Grid item xs={12} sm={10} md={8} lg={6}>
+       <Grid item xs={12} >
         <Card id="ImageUploadCard">
           {/* <Typography className={classes.formTitle} variant="h2" align="center" > */}
               {/* My pictures : */}
@@ -144,7 +144,7 @@ const ImageUpload = () => {
           <Grid container justify="center" alignContent="center" alignItems="center">
             <Grid item xs={12} className={classes.flexItem} >
               <Box {...defaultProps} borderRadius="50%">
-                <img src={profilePicture.preview} width="100%" height="" />
+                <img src={profilePicture.preview} alt="profile" width="100%" height="" />
               </Box>
               <input accept="image/*" className={classes.input} id="profileButton" type="file" 
                 style={{ display: 'none' }} onChange={handleChange} />

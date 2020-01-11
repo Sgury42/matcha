@@ -1,0 +1,44 @@
+{
+  "allUsrs" : [
+    {
+      "_id": "mongoose.Schema.Types.ObjectId",
+      "name": "gury",
+      "firstname": "sandra",
+      "mail": "sandra.gury@gmail.com",
+      "passwd": "Sandra1234",
+      "dateBirth": "05-14-1993",
+      "age": "26",
+      "gender": "woman",
+      "description": "This is me !",
+      "pictures": {
+          "profilePicture": null,
+          "others": []
+      },
+      "researchParameters": {
+          "hastags": {"type": ["42", "vegan", "coffee"], "default" : []},
+          "localisation": {
+              "myLatitude": null,
+              "myLongitude": null,
+              "perimeter": {"type": "Number", "default": 20}
+          },
+          "age": {
+              "min": "18",
+              "max": "99"
+          },
+          "gender": "man"
+      },
+      "meta": {
+          "online": true,
+          "blocked": {
+              "status": {"type": false, "default": false},
+              "Reason": null
+          },
+          "dateCreated": "01-01-2020",
+          "dateUpdate": "01-01-2020"
+      },
+      "token": {"type": "String", "default": null}
+    }
+  ],
+  "errors": []
+
+}
