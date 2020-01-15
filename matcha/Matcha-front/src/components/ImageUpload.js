@@ -15,9 +15,9 @@ const useStyles = makeStyles(theme => ({
   formTitle: {
     marginBottom: theme.spacing(4),
   },
-  profilePicture: {
-    borderRadius: '100%',
-  },
+  // profilePicture: {
+    // borderRadius: '100%',
+  // },
   flexItem: {
     display: 'flex',
     alignItems: 'center',

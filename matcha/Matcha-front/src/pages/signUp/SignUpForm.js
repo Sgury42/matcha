@@ -1,7 +1,8 @@
+import 'whatwg-fetch';
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Card, Grid, TextField, Typography, IconButton, Checkbox, FormControlLabel} from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 // import Joi from '@hapi/joi';
 // import ErrorDisplay from '../components/ErrorDisplay';
 
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   
 
 const SignUpForm = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const classes = useStyles();
 
   // const [login, setLogin] = useState('');
@@ -117,19 +118,22 @@ const SignUpForm = () => {
     setErrors({...newErrors});
   }
 
-  const addUsr = async () => {
+  const addUsr = async (e) => {
     // e.preventDefault();
-  //     console.log("It's all good !");
-  //   const result = await fetch(`localhost:8080/api/accounts/register`, {
-  //     method: 'post',
-  //     body: JSON.stringify({ firstname, name, mail, passwd, repeatPasswd, dateBirth, gender }),
-  //     headers: { 'Content-Type': 'application/json' }
-  // });
+    const result = await fetch(`http://localhost:8080/api/accounts/register`, {
+      method: 'post',
+      body: JSON.stringify({ firstname, name, mail, passwd, repeatPasswd, dateBirth, gender }),
+      headers: { 'Content-Type': 'application/json' }
+  });
 
-  //   const body = await result.json();
-  //   if (result.ok) {
-  //     history.push('/uploadPicture');
-  //   }
+    const body = await result.json();
+    console.log("body = " + body);
+    if (result.ok) {
+      history.push('/uploadPicture');
+      console.log("It's all good !");
+    } else {
+      console.log('error');
+    }
   }
 
   return (

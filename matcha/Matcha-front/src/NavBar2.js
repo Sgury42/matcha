@@ -42,7 +42,7 @@ const NavBar2 = () => {
                     </Typography>
                   </Link>
                   <div className={classes.grow} />
-                    <Link to="/profile">
+                    <Link to="/my-profile">
                       <IconButton aria-label="profile">
                         <AccountCircleOutlinedIcon color='primary' fontSize='large' />
                       </IconButton>

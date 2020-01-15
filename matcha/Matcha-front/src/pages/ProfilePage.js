@@ -6,21 +6,16 @@ import OrientationUpload from '../components/OrientationUpload';
 import SlidersOption from '../components/SlidersOptions';
 import { Grid } from '@material-ui/core';
 
-const ProfilePage = () => {
+const UserPage = () => {
   return (
     <Grid container justify='space-evenly'>
-      <Grid item xs={11} md={10} lg={9}>
+      <Grid item xs={12}>
           <Grid container justify="space-evenly" wrap="wrap">
-
-          <Grid container xs={12} md={8} spacing={5}>
-            <Grid item xs={12}>
+          <Grid container xs={12} spacing={5}>
+            <Grid item xs={12} md={8}>
               <Imageupload />
             </Grid>
-            <Grid item xs={12}>
-              <BioUpload />
-            </Grid>
-          </Grid>
-          <Grid container xs={12} md={4} align="flex-start">
+            <Grid container xs={12} md={4} align="flex-start">
             <Grid item xs={12}>
                 <OrientationUpload />
             </Grid>
@@ -28,6 +23,10 @@ const ProfilePage = () => {
               <SlidersOption />
             </Grid>
           </Grid>
+          </Grid>
+          <Grid item xs={12}>
+              <BioUpload />
+            </Grid>
           <Grid item xs={12} >
             <HashtagsUpload />
           </Grid>
@@ -37,4 +36,4 @@ const ProfilePage = () => {
   );
 }
 
-export default ProfilePage;
+export default UserPage;

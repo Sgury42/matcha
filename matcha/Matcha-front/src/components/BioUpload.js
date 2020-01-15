@@ -39,7 +39,7 @@ const BioUpload = () => {
   const handleChange = (e) => {
     const { length } = e.target.value;
 
-    if (length <= 150) {
+    if (length <= 450) {
       setBio(e.target.value);
       setCharCount(e.target.value.length);
     }
@@ -66,11 +66,11 @@ const BioUpload = () => {
             Describe yourself :
         </Typography>
         <Grid container>
-          <TextField type="text" variant="outlined" fullWidth={true} multiline={true} rows='5' 
+          <TextField type="text" variant="outlined" fullWidth={true} multiline={true} rows='5' rowsMax="10"
             onChange={(e) => handleChange(e)} value={bio}
           />
           <Grid item xs={12}>
-            <Typography align="right" style={{ color: theme.palette.primary.light }}>{charCount}/150</Typography>
+            <Typography align="right" style={{ color: theme.palette.primary.light }}>{charCount}/450</Typography>
           </Grid>
           <Grid item xs={12} className={classes.flexItem}>
             <IconButton name="submit" className={classes.submitButton} onClick={ () => submitBio() }>

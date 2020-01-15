@@ -118,7 +118,6 @@ const HashtagsUpload = () => {
             let tmpArray = [...usrHashtags];
             if ((index = tmpArray.indexOf(hashtag)) > -1) {
               tmpArray.splice(index, 1);
-              console.log(tmpArray)
               setUsrHashtags(tmpArray);
               // console.log(usrHashtags);
             }
