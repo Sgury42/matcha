@@ -2,10 +2,14 @@ import React from 'react';
 import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions } from '@material-ui/core';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
+import ReportIcon from '@material-ui/icons/Report';
 // import { mergeClasses } from '@material-ui/styles';
 
 
 const useStyles = makeStyles(theme => ({
+  grow: {
+    flexGrow: 1
+  },
   iconButton: {
     transform: "scale(1.8)",
     margin: "25px"
@@ -21,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   hashtagBox: {
     maxHeight: "150px",
-    overflow: "scroll"
+    overflowY: "scroll"
   }
 }));
 
@@ -67,8 +71,14 @@ const SwipeBox = () => {
                     <Avatar alt={userInfos.firstname} src={"./photos/" + userInfos.pictures.profilePicture} className={classes.avatar}/>
                   </Grid>
                   <Grid item>
-                    <Typography variant="h4">{userInfos.firstname}</Typography>
-                    <Typography variant="caption">{userInfos.description}</Typography>
+                    <Typography variant="h4">{userInfos.firstname} - {userInfos.age}</Typography>
+                    <Typography variant="body1">{userInfos.description}</Typography>
+                  </Grid>
+                  <div className={classes.grow} />
+                  <Grid item>
+                    <IconButton>
+                      <ReportIcon />
+                    </IconButton>
                   </Grid>
                 </Grid>
                 <Grid container spacing={1} className={classes.hashtagBox}>
@@ -85,6 +95,7 @@ const SwipeBox = () => {
                 <IconButton aria-label="dislike" edge="start" className={classes.iconButton}>
                   <NotInterestedIcon />
                 </IconButton>
+                <div className={classes.grow}/>
                 <IconButton aria-label="like" color="secondary" className={classes.likeButton}>
                   <FavoriteTwoToneIcon />
                 </IconButton>

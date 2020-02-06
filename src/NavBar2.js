@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, makeStyles, IconButton } from '@material-u
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import PowerSettingsNewOutlinedIcon from '@material-ui/icons/PowerSettingsNewOutlined';
+import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,6 +43,11 @@ const NavBar2 = () => {
                     </Typography>
                   </Link>
                   <div className={classes.grow} />
+                    <Link to="/match">
+                      <IconButton aria-label="match">
+                        <FavoriteTwoToneIcon color="secondary" fontSize="large" />
+                      </IconButton>
+                    </Link>
                     <Link to="/profile">
                       <IconButton aria-label="profile">
                         <AccountCircleOutlinedIcon color='primary' fontSize='large' />
