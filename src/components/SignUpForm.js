@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Card, Grid, TextField, Typography, IconButton, Checkbox, FormControlLabel} from '@material-ui/core';
+import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel} from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
+import { register } from '../redux/requests'
 // import { useHistory } from "react-router-dom";
 // import Joi from '@hapi/joi';
 // import ErrorDisplay from '../components/ErrorDisplay';
@@ -25,17 +27,19 @@ const useStyles = makeStyles(theme => ({
 const SignUpForm = () => {
   // const history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   // const [login, setLogin] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [name, setName] = useState('');
-  const [mail, setMail] = useState('');
-  const [passwd, setPasswd] = useState('');
-  const [repeatPasswd, setRepeatPasswd] = useState('');
-  const [dateBirth, setDateBirth] = useState('2002-01-01');
-  const [isWoman, setIsWoman] = useState(false);
-  const [isMan, setIsMan] = useState(false);
-  const [gender, setGender] = useState('');
+  const [form, setForm] = useState({
+    firstname: '',
+    name: '',
+    mail: '',
+    passwd: '',
+    repeatPasswd: '',
+    dateBirth: '2002-01-01',
+    gender: ''
+  })
+  const { firstname, name, mail, passwd, repeatPasswd, dateBirth, gender } = form
   const [errors, setErrors] = useState({
     genderError: null,
     nameError: null,
@@ -44,31 +48,6 @@ const SignUpForm = () => {
     passwdError: null,
     repeatPasswdError: null
   });
-
-  const handleGenderChange = (genderChoice) => {
-    setGender(genderChoice);
-    if (genderChoice === 'woman') {
-      if (isMan === true) {
-        setIsMan(false);
-      }
-      if (isWoman === false) {
-        setIsWoman(true);
-      } else {
-        setIsWoman(false);
-        setGender('')
-      }
-    } else if (genderChoice === 'man') {
-      if (isWoman === true) {
-        setIsWoman(false);
-      }
-      if (isMan === false) {
-        setIsMan(true);
-      } else {
-        setGender('')
-        setIsMan(false);
-      }
-    }
-  }
 
   // const handleError = (key, message) => {
   //   // setErrors({...errors, [key]: message }); return new Error();
@@ -115,6 +94,10 @@ const SignUpForm = () => {
       newErrors.repeatPasswdError = "passwords don't match";
     }
     setErrors({...newErrors});
+    if (Object.keys(newErrors).length) {
+      return false;
+    }
+    return true;
   }
 
   const addUsr = async () => {
@@ -132,11 +115,22 @@ const SignUpForm = () => {
   //   }
   }
 
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (formIsValid()) {
+      dispatch(register(form))
+    }
+  }
+
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
   return (
     <Grid container spacing={1} justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
         <Card className={classes.card}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Typography className={classes.formTitle} variant="h2" align="center" >
               Sign Up !
             </Typography>
@@ -144,34 +138,32 @@ const SignUpForm = () => {
               <Grid container id="infosInput" justify="center" alignItems="center" direction="column" >
                 <Grid item id="genderChoice">
                   <Typography variant="h5">I am...</Typography>
-                  <FormControlLabel control={
-                  <Checkbox id="isWoman" color="secondary" onChange={(e) => handleGenderChange(e.target.value) } value="woman" checked={isWoman} />
-                  } label="a Woman" />
-                  <FormControlLabel control={
-                  <Checkbox id="isMan" color="secondary" onChange={ (e) => handleGenderChange(e.target.value) } value="man" checked={isMan} />
-                } label="a Man" />
+                  <RadioGroup aria-label="gender" name="gender" value={form.gender} onChange={handleChange}>
+                    <FormControlLabel value="woman" control={<Radio />} label="a woman" />
+                    <FormControlLabel value="man" control={<Radio />} label="a man" />
+                </RadioGroup>
                 </Grid>
                 <Typography variant="caption" color="error">{ errors.genderError }</Typography>
                 {/* <TextField id="login" value={login} label="Login" type="text" variant="outlined" margin="normal" required={true} */}
                   {/* onChange={(event) => setLogin(event.target.value)} /> */}
-                <TextField id="firstname" value={firstname} label="First name" type="text" variant="outlined" margin="normal" 
+                <TextField name="firstname" value={firstname} label="First name" type="text" variant="outlined" margin="normal" 
                   error={Boolean(errors.firstnameError)} helperText={errors.firstnameError} required={true}
-                  onChange={(event) => setFirstname(event.target.value)} />
-                <TextField id="name" value={name} label="Last name" type="text" variant="outlined" margin="normal" 
+                  onChange={handleChange} />
+                <TextField name="name" value={name} label="Last name" type="text" variant="outlined" margin="normal" 
                   error={Boolean(errors.nameError)} helperText={errors.nameError}
-                  onChange={(event) => setName(event.target.value)} />
-                <TextField id="mail" value={mail} label="Email" variant="outlined" margin="normal"
-                error={Boolean(errors.mailError)} helperText={errors.mailError} required={true}
-                  onChange={(event) => setMail(event.target.value)} />
-                <TextField id="passwd" value={passwd} label="Password" type="password" variant="outlined" margin="normal"
-                error={Boolean(errors.passwdError)} helperText={errors.passwdError} required={true}
-                  onChange={(event) => setPasswd(event.target.value)} />
-                <TextField id="repeatPasswd" value={repeatPasswd} label="Password confimation" type="password" variant="outlined" margin="normal"
+                  onChange={handleChange} />
+                <TextField name="mail" value={mail} label="Email" variant="outlined" margin="normal"
+                  error={Boolean(errors.mailError)} helperText={errors.mailError} required={true}
+                  onChange={handleChange} />
+                <TextField name="passwd" value={passwd} label="Password" type="password" variant="outlined" margin="normal"
+                  error={Boolean(errors.passwdError)} helperText={errors.passwdError} required={true}
+                  onChange={handleChange} />
+                <TextField name="repeatPasswd" value={repeatPasswd} label="Password confimation" type="password" variant="outlined" margin="normal"
                 error={Boolean(errors.repeatPasswdError)} helperText={errors.repeatPasswdError} required={true}
-                  onChange={(event) => setRepeatPasswd(event.target.value)} />
-                <TextField id="dateBirth" value={dateBirth} label="Birthdate" type="date" margin="normal" InputLabelProps={{shrink: true,}} required={true}
-                  onChange={(event) => setDateBirth(event.target.value)} />
-                <IconButton name="submit" onClick={() => formIsValid() }>
+                  onChange={handleChange} />
+                <TextField name="dateBirth" value={dateBirth} label="Birthdate" type="date" margin="normal" InputLabelProps={{shrink: true,}} required={true}
+                  onChange={handleChange} />
+                <IconButton name="submit" type="submit">
                   <ChevronRightSharpIcon color="secondary" />
                 </IconButton>
               </Grid>
