@@ -3,7 +3,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import { CssBaseline, Container } from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
 import MatchPage from './pages/MatchPage';
 import SignUpPage from './pages/SignUpPage';
 import LogInPage from './pages/LogInPage';

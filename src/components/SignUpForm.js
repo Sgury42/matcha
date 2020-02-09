@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { register } from '../redux/requests'
 // import { useHistory } from "react-router-dom";
-// import Joi from '@hapi/joi';
 // import ErrorDisplay from '../components/ErrorDisplay';
 
 const useStyles = makeStyles(theme => ({
@@ -49,30 +48,6 @@ const SignUpForm = () => {
     repeatPasswdError: null
   });
 
-  // const handleError = (key, message) => {
-  //   // setErrors({...errors, [key]: message }); return new Error();
-  //   console.log(newErrors)
-  //   newErrors[key] = message;
-  //   return new Error();
-  // }
-
-  // let newErrors = {};
-
-  // const Schema = Joi.object().keys({
-  //   'gender': Joi.string().required().error(() => handleError('genderError', 'gender required')),
-  //   'name': Joi.string().min(2).max(15).required().error(() => handleError('nameError', 'max 15 characters')),
-  //   'firstname': Joi.string().min(2).max(15).required().error(() => handleError('firstnameError', 'between 2 to 15 characters')),
-  //   'mail': Joi.string().email({minDomainSegments: 2, tlds: { allow: ['com', 'net'] }}).required().error(() => handleError('mailError', 'email not valid')),
-  //   'passwd': Joi.string().pattern(new RegExp('^(?=.*[A-Z])')).required().error(() => handleError('passwdError', 'min 5 character, 1 Uppercase, 1 number')), // Min 5 caracteres, min 1 alpha, min 1 num
-  //   'repeatPasswd': Joi.any().valid(Joi.ref('passwd')).required().error(() => handleError('repeatPasswdError', "passwords don't match")),
-  //   'dateBirth': Joi.required()
-  // })
-  useEffect(() => {
-    if (!Object.keys(errors).length) {
-      addUsr();
-    }
-  }, [errors])
-
   const formIsValid = () => {
     const newErrors = {};
     if (gender !== 'woman' && gender !== 'man') {
@@ -100,25 +75,10 @@ const SignUpForm = () => {
     return true;
   }
 
-  const addUsr = async () => {
-    // e.preventDefault();
-  //     console.log("It's all good !");
-  //   const result = await fetch(`localhost:8080/api/accounts/register`, {
-  //     method: 'post',
-  //     body: JSON.stringify({ firstname, name, mail, passwd, repeatPasswd, dateBirth, gender }),
-  //     headers: { 'Content-Type': 'application/json' }
-  // });
-
-  //   const body = await result.json();
-  //   if (result.ok) {
-  //     history.push('/uploadPicture');
-  //   }
-  }
-
   const handleSubmit = e => {
-    e.preventDefault()
+    e.preventDefault();
     if (formIsValid()) {
-      dispatch(register(form))
+      dispatch(register(form));
     }
   }
 
@@ -130,6 +90,7 @@ const SignUpForm = () => {
     <Grid container spacing={1} justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
         <Card className={classes.card}>
+        {/* <Typography>{state.ErrorMsg}</Typography> */}
           <form onSubmit={handleSubmit}>
             <Typography className={classes.formTitle} variant="h2" align="center" >
               Sign Up !
