@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { rejects } from 'assert';
+import { setObject } from '../objects/actions';
 
 
 export const register = (form) => {
@@ -15,8 +15,7 @@ export const register = (form) => {
     })
     .catch(function (error) {
       console.log(error.response.data);
-      dispatch(alert(error.response.data, "error"));
-      rejects(null);
+      dispatch(setObject('error', error.response.data));
     })
   }
 }

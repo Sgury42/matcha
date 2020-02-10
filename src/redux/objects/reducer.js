@@ -2,8 +2,9 @@ import _ from 'lodash'
 
 const initialState = {
   auth: undefined,
-  currentUser: {}
-}
+  currentUser: {},
+  error: null,
+};
 
 const objectsReducer = (state = initialState, action) => {
   const { objectName, object, type } = action
@@ -39,6 +40,13 @@ const objectsReducer = (state = initialState, action) => {
         [objectName]: null
       }
     }
+
+    // case 'ALERT': {
+    //   newState = {
+    //     error: action.error,
+    //   };
+    //   return Object.assign({}, state, newState);
+    // }
 
     default:
       return state

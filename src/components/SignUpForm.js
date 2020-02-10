@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel} from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel, Snackbar, SnackbarContent } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-import { register } from '../redux/requests'
+import { register } from '../redux/requests';
+// import { start } from 'repl';
 // import { useHistory } from "react-router-dom";
 // import ErrorDisplay from '../components/ErrorDisplay';
 
@@ -27,6 +28,7 @@ const SignUpForm = () => {
   // const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
+  const alert = useSelector(state => state.objects.error);
 
   // const [login, setLogin] = useState('');
   const [form, setForm] = useState({
@@ -90,12 +92,11 @@ const SignUpForm = () => {
     <Grid container spacing={1} justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
         <Card className={classes.card}>
-        {/* <Typography>{state.ErrorMsg}</Typography> */}
+          <SnackbarContent message={alert}/>
           <form onSubmit={handleSubmit}>
             <Typography className={classes.formTitle} variant="h2" align="center" >
               Sign Up !
             </Typography>
-            {/* <ErrorDisplay errors={ errors }/> */}
               <Grid container id="infosInput" justify="center" alignItems="center" direction="column" >
                 <Grid item id="genderChoice">
                   <Typography variant="h5">I am...</Typography>
