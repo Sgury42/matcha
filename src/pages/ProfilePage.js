@@ -1,19 +1,30 @@
 import React from 'react';
-import Imageupload from '../components/ImageUpload';
+import { useSelector } from 'react-redux';
+import PictureUpload from '../components/PictureUpload';
 import BioUpload from '../components/BioUpload';
 import HashtagsUpload from '../components/HashtagsUpload';
 import OrientationUpload from '../components/OrientationUpload';
 import SlidersOption from '../components/SlidersOptions';
 import { Grid } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+
 
 const ProfilePage = () => {
+  const history = useHistory();
+  const isLoggedIn = useSelector(state => state.objects.auth);
+
+  if (!isLoggedIn) {
+    history.push('/');
+  }
+
+
   return (
     <Grid container justify='space-evenly'>
       <Grid item xs={11} md={10} lg={9}>
           <Grid container justify="space-evenly" wrap="wrap">
           <Grid container xs={12} md={8} spacing={5}>
             <Grid item xs={12}>
-              <Imageupload />
+              <PictureUpload />
             </Grid>
             <Grid item xs={12}>
               <BioUpload />

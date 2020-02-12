@@ -31,7 +31,7 @@ const defaultProps = {
   overflow: 'hidden',
 };
 
-const ImageUpload = () => {
+const PictureUpload = () => {
   const classes = useStyles();
   // const history = useHistory();
 
@@ -39,8 +39,8 @@ const ImageUpload = () => {
   const [profilePicture, setProfilePicture] = useState({
     preview: "https://i0.wp.com/www.industrialontologies.org/wp-content/uploads/2018/10/cropped-blank-profile-picture-973460_640.png?ssl=1",
   })
-
   const [pictures, setPictures] = useState({});
+  const [picturesId, setPicturesId] = useState({});
   const [imgCounter, setImgCounter] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -70,16 +70,6 @@ const ImageUpload = () => {
       }
     }
     console.log(toUpload);
-  //   const result = await fetch(`localhost:8080/api/accounts/pictures`, {
-  //     method: 'post',
-  //     body: JSON.stringify({ profilePicture: profilePicture.raw, img1: toUpload[0], img2: toUpload[1], img3: toUpload[2], img4: toUpload[3] }),
-  //     headers: { 'Content-Type': 'application/json' }
-  // });
-
-  //   const body = await result.json();
-  //   if (result.ok) {
-  //     history.push('');
-  //   }
   }
 
   const handleChange = (e) => {
@@ -177,4 +167,4 @@ const ImageUpload = () => {
   );
 }
 
-export default ImageUpload;
+export default PictureUpload;

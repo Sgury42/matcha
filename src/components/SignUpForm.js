@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel, Snackbar, SnackbarContent } from '@material-ui/core';
+import React, { useState, useEffect} from 'react';
+import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel, Snackbar } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { register } from '../redux/requests';
+import { deleteObject } from '../redux/objects/actions';
+
 // import { start } from 'repl';
 // import { useHistory } from "react-router-dom";
 // import ErrorDisplay from '../components/ErrorDisplay';
@@ -29,6 +31,7 @@ const SignUpForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const alert = useSelector(state => state.objects.error);
+  const [open, setOpen] = useState(false);
 
   // const [login, setLogin] = useState('');
   const [form, setForm] = useState({
@@ -40,7 +43,7 @@ const SignUpForm = () => {
     dateBirth: '2002-01-01',
     gender: ''
   })
-  const { firstname, name, mail, passwd, repeatPasswd, dateBirth, gender } = form
+  const { firstname, name, mail, passwd, repeatPasswd, dateBirth, gender } = form;
   const [errors, setErrors] = useState({
     genderError: null,
     nameError: null,
@@ -84,15 +87,29 @@ const SignUpForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (alert) {
+      setOpen(true);
+    }
+  }, [alert]);
+
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
+
+  const handleClose = () => {
+    // if (reason === 'clickaway') {
+    //   return;
+    // }
+    setOpen(false);
+    dispatch(deleteObject('error'));
+  };
 
   return (
     <Grid container spacing={1} justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
         <Card className={classes.card}>
-          <SnackbarContent message={alert}/>
+          <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
           <form onSubmit={handleSubmit}>
             <Typography className={classes.formTitle} variant="h2" align="center" >
               Sign Up !

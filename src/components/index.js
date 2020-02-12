@@ -1,0 +1,13 @@
+export { default as SignUpForm } from './SignUpForm'
+export { default as PictureUpload } from './PictureUpload';
+export { default as BioUpload } from './BioUpload';
+export { default as HashtagsUpload } from './HashtagsUpload';
+export { default as OrientationUpload } from './OrientationUpload';
+export { default as SlidersOptions } from './SlidersOptions';
+export { default as DeleteAccount } from './DeleteAccount';
+export { default as EmailUpdate } from './EmailUpdate';
+export { default as LoginUpdate } from './LoginUpdate';
+export { default as MachListBox } from './MatchListBox';
+export { default as PasswdUpdate } from './PasswdUpdate';
+export { default as ProfileBox } from './ProfileBox';
+export { default as NavBar } from './NavBar';

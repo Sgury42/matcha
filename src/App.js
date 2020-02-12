@@ -10,12 +10,11 @@ import LogInPage from './pages/LogInPage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
-// import NavBar1 from './NavBar';
 // import BioUpload from './components/BioUpload';
 // import HashtagsUpload from './components/HashtagsUpload';
 // import SlidersOptions from './components/SlidersOptions';
 // import OrientationUpload from './components/OrientationUpload';
-import NavBar2 from './NavBar2';
+import NavBar from './components/NavBar';
 // import ProfileBox from './components/ProfileBox';
 
 class App extends Component {
@@ -25,8 +24,7 @@ class App extends Component {
        <MuiThemeProvider theme={theme}>
         <CssBaseline />
           <div className="App">
-            {/* <NavBar1 /> */}
-            <NavBar2 />
+            <NavBar />
             {/* <ProfileBox /> */}
             {/* <Container maxWidth="lg" id="page-body"> */}
               <Switch>

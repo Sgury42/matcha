@@ -1,9 +1,10 @@
 import _ from 'lodash'
 
 const initialState = {
-  auth: undefined,
+  auth: false,
   currentUser: {},
   error: null,
+  signUpStep: "picture",
 };
 
 const objectsReducer = (state = initialState, action) => {
@@ -12,7 +13,7 @@ const objectsReducer = (state = initialState, action) => {
 
     case 'SET_OBJECT': {
       if (!_.isEqual(state[objectName], object)) {
-        console.log('set_object', objectName)
+        console.log('set_object', objectName);
         return {
           ...state,
           [objectName]: object
@@ -35,6 +36,7 @@ const objectsReducer = (state = initialState, action) => {
     }
       
     case 'REMOVE_OBJECT': {
+      console.log('remove_object: ', objectName);
       return {
         ...state,
         [objectName]: null
