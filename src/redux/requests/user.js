@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { setObject } from '../objects/actions';
+import { setObject, updateObject } from '../objects/actions';
+import Cookies from 'js-cookie';
+
 
 
 export const register = (form) => {
@@ -29,12 +31,49 @@ export const logIn = (form) => {
       }
     })
     .then(function (response) {
-      console.log(response.data);
+      console.log(response.data.token);
       dispatch(setObject('auth', true));
-      dispatch(setObject('currentUser', response.data))
+      Cookies.set('token', response.data.token);
+      dispatch(fetchCurrentUser());
     })
     .catch(function (error) {
       console.log(error.response);
+    })
+  }
+}
+
+export const fetchCurrentUser = () => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.get('http://localhost:8080/accounts/params/', {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      dispatch(setObject('currentUser', response.data[0]));
+      dispatch(setObject('auth', true));
+      axios.get('http://localhost:8080/accounts/pictures/', {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          "token": Cookies.get('token')
+        }
+      })
+      .then(function (response) {
+        dispatch(updateObject('currentUser', { pictures: response.data }));
+      })
+      .catch(function (error) {
+        console.log(error.response);
+      })
+    })
+    .catch(function (error) {
+      // console.log(error.response);
+      dispatch(setObject('auth', false));
     })
   }
 }

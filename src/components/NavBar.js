@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton } from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
@@ -42,6 +43,7 @@ const NavBar = () => {
   const logOut = () => {
     dispatch(setObject('auth', false));
     dispatch(setObject('curentUser', {}));
+    Cookies.remove('token');
   }
 
     return (

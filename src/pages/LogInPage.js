@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Card, makeStyles, Grid, TextField, Button, Typography } from '@material-ui/core';
 import { logIn } from '../redux/requests';
 import { useDispatch } from 'react-redux';
+// import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
+// import { fetchCurrentUser } from '../redux/requests';
+
 
 const useStyles = makeStyles(theme => ({
   submitButton: {
@@ -16,16 +19,13 @@ const LogInPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.objects.auth);
+  // const currentUser = useSelector(state => state.objects.currentUser);
 
   const [form, setForm] = useState({
     mail: '',
     passwd: '',
   })
   const { mail, passwd } = form;
-
-  if (isLoggedIn) {
-    history.push('/');
-  }
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,6 +35,12 @@ const LogInPage = () => {
     e.preventDefault();
     dispatch(logIn(form));
   }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      history.push('/');
+    }
+  }, [isLoggedIn])
 
   return (
       <Grid container spacing={1} justify="center">
