@@ -4,19 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { register } from '../redux/requests';
 import { deleteObject } from '../redux/objects/actions';
-
-// import { start } from 'repl';
-// import { useHistory } from "react-router-dom";
-// import ErrorDisplay from '../components/ErrorDisplay';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   box: {
     margin: 'auto',
     padding: theme.spacing(2),
   },
-  // root: {
-    // flexGrow: 1,
-  // },
   grow: {
     flexGrow: 1,
   },
@@ -27,10 +21,11 @@ const useStyles = makeStyles(theme => ({
   
 
 const SignUpForm = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const alert = useSelector(state => state.objects.error);
+  const isLoggedIn = useSelector(state => state.objects.auth);
   const [open, setOpen] = useState(false);
 
   // const [login, setLogin] = useState('');
@@ -52,6 +47,12 @@ const SignUpForm = () => {
     passwdError: null,
     repeatPasswdError: null
   });
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      history.push('/');
+    }
+  }, [isLoggedIn]);
 
   const formIsValid = () => {
     const newErrors = {};
@@ -107,7 +108,7 @@ const SignUpForm = () => {
 
   return (
     <Grid container spacing={1} justify="center">
-      <Grid item xs={12} sm={10} md={8} lg={6}>
+      <Grid item xs={12} sm={10} md={8} lg={5}>
         <Card className={classes.card}>
           <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
           <form onSubmit={handleSubmit}>

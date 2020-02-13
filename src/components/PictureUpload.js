@@ -3,7 +3,11 @@ import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { Card, makeStyles, Grid, Typography, Box, Button, IconButton } from '@material-ui/core';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
-// import { useHistory } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { addPicture } from '../redux/requests';
+import { setObject } from '../redux/objects/actions';
+
+// import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   // root: {
@@ -31,10 +35,10 @@ const defaultProps = {
   overflow: 'hidden',
 };
 
-const PictureUpload = () => {
+const PictureUpload = (props) => {
   const classes = useStyles();
-  // const history = useHistory();
-
+  const dispatch = useDispatch();
+  const picturesPath = props.pictures;
 
   const [profilePicture, setProfilePicture] = useState({
     preview: "https://i0.wp.com/www.industrialontologies.org/wp-content/uploads/2018/10/cropped-blank-profile-picture-973460_640.png?ssl=1",
@@ -47,10 +51,6 @@ const PictureUpload = () => {
   const [PPMissing, setPPMissing] = useState('');
 
   useEffect(() => {
-    console.log(pictures);
-  }, [pictures]);
-  useEffect(() => {
-    console.log("img counter = " + imgCounter);
     if (imgCounter === 4) {
       setIsDisabled(true);
     } else {
@@ -58,22 +58,22 @@ const PictureUpload = () => {
     }
   }, [imgCounter]);
 
-  const submitPictures = async () => {
+  const handleSubmit = () => {
+    const toUpload = []; //array with pictures path
     if (!profilePicture.id) {
       setPPMissing("Profile Picture is missing !");
       return false;
     }
-    const toUpload = []
-    for (let [key, value] of Object.entries(pictures)) {
-      if (value) {
-        toUpload.push(`${value.raw}`);
-      }
-    }
-    console.log(toUpload);
+    // for (let [key, value] of Object.entries(pictures)) {
+    //   if (value) {
+    //     toUpload.push(`${value.id}`);
+    //   }
+    // }
+    dispatch(setObject('profileStep', 'description'));
   }
 
   const handleChange = (e) => {
-    if (e && e.target.id === 'profileButton') {
+    if (e && e.target.id === 'profileButton' && e.target.files[0]) {
       if (PPMissing) {
         setPPMissing('');
       }
@@ -82,10 +82,10 @@ const PictureUpload = () => {
         preview: URL.createObjectURL(e.target.files[0]),
         raw: e.target.files[0]
       });
-    } else if (e) {
+    } else if (e && e.target.files[0]) {
       setImgCounter(imgCounter + 1); 
       setCounter(counter + 1);
-      let imgId = "img" + counter +imgCounter ;
+      let imgId = "img" + counter + imgCounter ;
       setPictures({...pictures,
         [imgId]: {
           id: e.target.files[0].name,
@@ -93,6 +93,7 @@ const PictureUpload = () => {
           raw: e.target.files[0]
         }
       });
+      dispatch(addPicture(e.target.files[0].name));
     }
   }
 
@@ -128,9 +129,6 @@ const PictureUpload = () => {
     <Grid container spacing={1} justify="center">
        <Grid item xs={12} >
         <Card id="ImageUploadCard">
-          {/* <Typography className={classes.formTitle} variant="h2" align="center" > */}
-              {/* My pictures : */}
-          {/* </Typography> */}
           <Grid container justify="center" alignContent="center" alignItems="center">
             <Grid item xs={12} className={classes.flexItem} >
               <Box {...defaultProps} borderRadius="50%">
@@ -156,7 +154,7 @@ const PictureUpload = () => {
               </label>
             </Grid>
             <Grid item xs={12} className={classes.flexItem}>
-              <IconButton name="submit" onClick={() => submitPictures()}>
+              <IconButton name="submit" onClick={() => handleSubmit()}>
                 <ChevronRightSharpIcon color="secondary" />
               </IconButton>
             </Grid>

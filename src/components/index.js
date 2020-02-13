@@ -1,4 +1,5 @@
-export { default as SignUpForm } from './SignUpForm'
+export { default as SignUpForm } from './SignUpForm';
+export { default as LogInForm } from './LogInForm';
 export { default as PictureUpload } from './PictureUpload';
 export { default as BioUpload } from './BioUpload';
 export { default as HashtagsUpload } from './HashtagsUpload';
