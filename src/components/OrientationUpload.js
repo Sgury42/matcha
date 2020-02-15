@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import { Card, makeStyles, Grid, Typography, IconButton, FormControlLabel, Checkbox} from '@material-ui/core';
-import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-// import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateProfile } from '../redux/requests';
+import { Card, makeStyles, Grid, Typography, FormControlLabel, RadioGroup, Radio} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  // root: {
-    // flexGrow: 1,
-  // },
   grow: {
     flexGrow: 1,
   },
@@ -20,98 +17,62 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const OrientationUpload = () => {
+const OrientationUpload = (props) => {
 
   const classes = useStyles();
-  // const history = useHistory();
+  const dispatch = useDispatch();
 
-  const [isHetero, setIsHetero] = useState(false);
-  const [isGay, setIsGay] = useState(false);
-  const [isBi, setIsBi] = useState(false);
+  const [form, setForm] = useState({
+    research_gender: props.research_gender ? props.research_gender : '',
+    orientation: "bi"
+  });
+
+  useEffect(() => {
+    if (!form.research_gender) {
+      setForm({ ...form, ['orientation']: "bi" });
+    } else {
+      setForm({ ...form, ['orientation']: form.research_gender === props.gender ? "gay" : "hetero"});
+    }
+  }, [form.research_gender])
+
+  useEffect(() => {
+    dispatch(updateProfile('/accounts/research/gender/', { 'research_gender': form.research_gender }));
+  }, [form.research_gender]);
 
   const handleChange = (e) => {
-    if (e.target.value === 'hetero') {
-      setIsHetero(true);
-      setIsGay(false);
-      setIsBi(false);
-    } else if (e.target.value === 'gay') {
-      setIsHetero(false);
-      setIsGay(true);
-      setIsBi(false);
-    } 
-    else {
-      setIsHetero(false);
-      setIsGay(false);
-      setIsBi(true);
+    if (e.target.value === "hetero") {
+      setForm({ ...form, ['research_gender']: props.gender === "F" ? "H" : "F" });
+    } else if (e.target.value === "gay") {
+      setForm({ ...form, ['research_gender']: props.gender });
+    } else if (e.target.value === "bi") {
+      setForm({ ...form, ['research_gender']: ''});
     }
   }
-
-  const handleOrientationUpload = () => {
-    // let orientation = 'bi';
-    // if (isHetero) {
-    //   orientation = 'hetero';
-    // } else if (isGay) {
-    //   orientation = 'gay';
-    // }
-
-//   const result = await fetch(`localhost:8080/api/accounts/OrientationUpload`, {
-//     method: 'post',
-//     body: JSON.stringify({ orientation }),
-//     headers: { 'Content-Type': 'application/json' }
-// });
-    
-//   const body = await result.json();
-//   if (result.ok) {
-    // history.push('');
-    // }
-  }
-
 
   return (
     <Grid container spacing={1} justify="center">
       <Grid item xs={12} >
-        <Card id="OrientationCard">
-          <Typography className={classes.formTitle} variant="h4" >
+        <Card id="Orientetion">
+          <Typography className={ classes.formTitle } variant="h4">
             I am...
           </Typography>
           <Grid container align="center">
-          <Grid item xs={12} md={4}>
-            <FormControlLabel control={
-                <Checkbox value="hetero" color="secondary"
-                checked={isHetero}
-                onChange={handleChange} />
-              }
-              label="Hetero"
-              />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <FormControlLabel control={
-                <Checkbox value="gay" color="secondary"
-                checked={isGay}
-                onChange={handleChange} />
-              }
-              label="Gay / Lesbian"
-              />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <FormControlLabel control={
-                <Checkbox value="bi" color="secondary"
-                checked={isBi}
-                onChange={handleChange} />
-              }
-              label="Bi"
-              />
-          </Grid>
-          <Grid item xs={12} className={classes.flexItem}>
-          <IconButton name="submit" className={classes.submitButton} onClick={handleOrientationUpload}>
-            <ChevronRightSharpIcon color="secondary" />
-          </IconButton>
-          </Grid>
+              <RadioGroup aria-label="orientation" name="orientation" value={ form.orientation } onChange={handleChange}>
+                <Grid item xs={12} md={4}>
+                  <FormControlLabel value="hetero" control={<Radio />} label="hetero" />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControlLabel value="gay" control={<Radio />} label="gay" />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControlLabel value="bi" control={<Radio />} label="bi" />
+                </Grid>
+              </RadioGroup>
           </Grid>
         </Card>
       </Grid>
     </Grid>
-  );
+  )
 }
 
 export default OrientationUpload;

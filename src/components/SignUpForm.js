@@ -56,7 +56,7 @@ const SignUpForm = () => {
 
   const formIsValid = () => {
     const newErrors = {};
-    if (gender !== 'woman' && gender !== 'man') {
+    if (gender !== 'F' && gender !== 'H') {
       newErrors.genderError = 'gender required';
     }
     if (!firstname || firstname.length < 2 || firstname.length > 15) {
@@ -118,9 +118,9 @@ const SignUpForm = () => {
               <Grid container id="infosInput" justify="center" alignItems="center" direction="column" >
                 <Grid item id="genderChoice">
                   <Typography variant="h5">I am...</Typography>
-                  <RadioGroup aria-label="gender" name="gender" value={form.gender} onChange={handleChange}>
-                    <FormControlLabel value="woman" control={<Radio />} label="a woman" />
-                    <FormControlLabel value="man" control={<Radio />} label="a man" />
+                  <RadioGroup aria-label="gender" name="gender" value={gender} onChange={handleChange}>
+                    <FormControlLabel value="F" control={<Radio />} label="a woman" />
+                    <FormControlLabel value="H" control={<Radio />} label="a man" />
                 </RadioGroup>
                 </Grid>
                 <Typography variant="caption" color="error">{ errors.genderError }</Typography>

@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setObject } from '../redux/objects/actions';
+import { hashtags, updateProfile } from '../redux/requests';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, Chip, Button} from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import red from '@material-ui/core/colors/red';
-// import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
-  // root: {
-    // flexGrow: 1,
-  // },
   grow: {
     flexGrow: 1,
   },
   formTitle: {
     marginBottom: theme.spacing(4),
-  },
-  flexItem: {
-    // display: 'flex',
-    // alignItems: 'center',
-    // flexDirection: 'column'
   },
   submitButton: {
     margin: theme.spacing(1),
@@ -31,65 +25,53 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const HashtagsUpload = (props) => {
 
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
-
-
-const HashtagsUpload = () => {
-
-  //////////////////////    TEST
-  const [usrHashtags, setUsrHashtags] = useState(["lover", "geek", "42", "outdoors", "no-gym", "dogperson"]);
-  const [listHashtags, setListHashtags] = useState(["catperson", "coffee", "travel", "vegan", "netflixandchill", "lol", "book", "gymrat", "dance"]);
+  const [usrHashtags, setUsrHashtags] = useState({
+    hashtags: props.usrHashtags ? props.usrHashtags : [],
+  });
+  const [listHashtags, setListHashtags] = useState(["catperson", "coffee", "travel", "vegan", "netflixandchill", "lol", "book", "gymrat", "dance", "lover", "geek", "42", "outdoors", "no-gym", "dogperson"]);
 
   const redShades = [red[200], red[300], red[400], red[500], red[600], red[700], red[800], red[900] ];
   const [hashtagInput, setHashtagInput] = useState('');
 
-  const classes = useStyles();
-  // const history = useHistory();
-  // const UsrHashtagDisplay = UsrHashtagDisplay();
+  useEffect(() => {
+    var index;
+    let tmpArray = [...listHashtags];
+    tmpArray.map(hashtag => {
+      if ((index = usrHashtags.hashtags.indexOf(hashtag)) > -1) {
+        index = tmpArray.indexOf(hashtag);
+        tmpArray.splice(index, 1);
+      }
+    })
+    setListHashtags(tmpArray);
+  }, [usrHashtags.hashtags])
 
   const handleAddNew = () => {
-    // console.log(usrHashtags.indexOf(hashtagInput, 1) === -1);
-    if (usrHashtags.indexOf(hashtagInput, 1) === parseInt(-1) && hashtagInput) {
-      if (listHashtags.indexOf(hashtagInput, 1) === parseInt(-1)) {
+    if (usrHashtags.hashtags.indexOf(hashtagInput, 1) === parseInt(-1) && hashtagInput) {
+      // if (listHashtags.indexOf(hashtagInput, 1) === parseInt(-1)) {
         ////////////ADD NEW HASHTAG TO LIST OF ALL HASHTAGS IN DB
-    //   const result = await fetch(`localhost:8080/api/accounts/addHashtag`, {
-  //     method: 'post',
-  //     body: JSON.stringify({ props.hashtags }),
-  //     headers: { 'Content-Type': 'application/json' }
-    // });
-   
-    //   const body = await result.json();
-    //   if (result.ok) {
-          // handleAdd(hashtagInput);
       // }
-      }
-          handleAdd(hashtagInput);
+      handleAdd(hashtagInput);
     }
     setHashtagInput('');
   }
 
   const handleAdd = (hashtag) => {
-    //   const result = await fetch(`localhost:8080/api/accounts/addHashtag`, {
-    //     method: 'post',
-    //     body: JSON.stringify({ props.hashtags }),
-    //     headers: { 'Content-Type': 'application/json' }
-    // });
-  
-    //   const body = await result.json();
-    //   if (result.ok) {
-        // history.push('');
-
-          var index;
-          let tmpArray = [...listHashtags];
-          if ((index = tmpArray.indexOf(hashtag)) > -1) {
-            tmpArray.splice(index, 1);
-            setListHashtags(tmpArray);
-          }
-          tmpArray = usrHashtags;
-          tmpArray.push(hashtag);
-          setUsrHashtags(tmpArray);
-// }
+    var index;
+    let tmpArray = [...listHashtags];
+    if ((index = tmpArray.indexOf(hashtag)) > -1) {
+      tmpArray.splice(index, 1);
+      setListHashtags(tmpArray);
+    }
+    tmpArray = usrHashtags.hashtags;
+    tmpArray.push(hashtag);
+    setUsrHashtags({ ...usrHashtags, [hashtags]: tmpArray });
+    //ADD NEW LIST OF USER HASHTAGS INTO DB
+    dispatch(hashtags(usrHashtags));
 }
 
   const handleInputChange = (e) => {
@@ -101,39 +83,22 @@ const HashtagsUpload = () => {
 
   const UsrHashtagDisplay = () => {
 
-    const handleDelete = async (hashtag) => {
-        // console.log(e);
-        //   const result = await fetch(`localhost:8080/api/accounts/removeHashtag`, {
-        //     method: 'post',
-        //     body: JSON.stringify({ hashtag }),
-        //     headers: { 'Content-Type': 'application/json' }
-        // });
-      
-        //   const body = await result.json();
-        //   if (result.ok) {
-            // history.push('');
-  
-            ///////// WHY ELEMENT RELOAD ONLY WHEN INPUT??????
-            var index;
-            let tmpArray = [...usrHashtags];
-            if ((index = tmpArray.indexOf(hashtag)) > -1) {
-              tmpArray.splice(index, 1);
-              console.log(tmpArray)
-              setUsrHashtags(tmpArray);
-              // console.log(usrHashtags);
-            }
-            
-  
-  
-        //   }
+    const handleDelete = (hashtag) => {
+      var index;
+      let tmpArray = usrHashtags.hashtags;
+      if ((index = tmpArray.indexOf(hashtag)) > -1) {
+        tmpArray.splice(index, 1);
+        setUsrHashtags({ ...usrHashtags, [hashtags]: tmpArray });
+      //DELETE FROM DB
+        dispatch(hashtags(usrHashtags));
+      }
     }
-    
     return (
-      usrHashtags.map((hashtag, key) =>
+      usrHashtags.hashtags.map((hashtag, key) =>
         <Grid item key={key}>
           <Chip id={hashtag} style={{ backgroundColor: `${redShades[Math.floor(Math.random()*redShades.length)]}`, color: 'white'}}
+          // {/* <Chip id={hashtag} style={{ backgrountColor: 'secondary', color: 'white'}} */}
           onDelete={() => handleDelete(hashtag)}
-          //  {...(props.optDelete ? {onDelete: () => handleDelete(hashtag)} : {})}
           label={
             <p>#{hashtag}</p>
           }>
@@ -156,6 +121,12 @@ const HashtagsUpload = () => {
         </Grid>      
       )
     );
+  }
+
+  const handleSubmit = () => {
+    if (props.createProfile) {
+      dispatch(setObject('profileStep', 'orientationAndpreferences'));
+    }
   }
 
   return (
@@ -185,11 +156,15 @@ const HashtagsUpload = () => {
             </Grid>
             </Card>
           </Grid>
+          { props.createProfile ? 
           <Grid item xs={12} className={classes.flexItem}>
-            <IconButton name="submit" className={classes.submitButton} >
+            <IconButton name="submit" className={classes.submitButton} onClick={handleSubmit} >
               <ChevronRightSharpIcon color="secondary" />
             </IconButton>
           </Grid>
+          :
+          <></>
+          }
         </Grid>
       </Card>
     </Grid>

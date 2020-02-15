@@ -15,7 +15,7 @@ import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import NavBar from './components/NavBar';
 import { useDispatch } from 'react-redux';
-import { fetchCurrentUser } from './redux/requests';
+import { fetchCurrentUser, fetchLocation } from './redux/requests';
 import { SignUpForm } from './components/index';
 import Cookies from 'js-cookie';
 import { setObject } from './redux/objects/actions';
@@ -31,8 +31,11 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
+    if (currentUser && [!currentUser.latitude || !currentUser.longitude]) {
+      console.log('test');
+      dispatch(fetchLocation());
+    }
   }, []);
-
 
   useEffect(() => {
     // if (currentUser.pictures && !currentUser.pictures.length) {

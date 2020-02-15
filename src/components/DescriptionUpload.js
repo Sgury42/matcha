@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, useTheme } from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { useDispatch } from 'react-redux';
-import { description } from '../redux/requests';
+import { description, updateProfile } from '../redux/requests';
+import { setObject } from '../redux/objects/actions';
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,15 +23,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BioUpload = (props) => {
+const DescriptionUpload = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [charCount, setCharCount] = useState(0);
   const [form, setForm] = useState({
-    description: props.description,
+    description: props.description ? props.description : '',
   });
+  const [charCount, setCharCount] = useState(form.description ? form.description.length : 0);
 
   const handleChange = (e) => {
     const { length } = e.target.value;
@@ -43,7 +44,8 @@ const BioUpload = (props) => {
 
 
   const handleSubmit = () => {
-    dispatch(description(form, props.createProfile));
+    dispatch(updateProfile('/accounts/description/', form));
+    dispatch(setObject('profileStep', 'hashtags'));
   }
 
   return (
@@ -72,4 +74,4 @@ const BioUpload = (props) => {
   );
 }
 
-export default BioUpload;
+export default DescriptionUpload;

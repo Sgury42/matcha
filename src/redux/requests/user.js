@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { setObject, updateObject } from '../objects/actions';
 import Cookies from 'js-cookie';
-
-
+import { newData } from './profile';
 
 export const register = (form) => {
   return (dispatch) => {
@@ -15,10 +14,12 @@ export const register = (form) => {
     })
     .then(function (response) {
       console.log(response);
-      dispatch(setObject('profileStep', "picture"));
     })
     .catch(function (error) {
-      dispatch(setObject('error', error.response.data));
+      console.log(error.response);
+      if (error.response.data) {
+        dispatch(setObject('error', error.response.data));
+      }
     })
   }
 }
@@ -83,53 +84,14 @@ export const fetchCurrentUser = () => {
   }
 }
 
-export const addPicture = (picturePath) => {
-  const picture = {
-    url_picture: picturePath
-  }
-
+export const fetchLocation = () => {
   return (dispatch) => {
-    if (!Cookies.get('token')) {
-      return dispatch(setObject('auth', false));
-    }
-    axios.post('http://localhost:8080/accounts/pictures/', picture, {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        "token": Cookies.get('token')
-      }
-    })
+    axios('http://ip-api.com/json')
     .then(function (response) {
-      console.log(response);
+      dispatch(newData('/accounts/locations', {'latitude': response.data.lat, 'longitude': response.data.lon}));
     })
     .catch(function (error) {
-      console.log(error);
-    })
-  }
-}
-
-export const description = (form, createProfile) => {
-  return (dispatch) => {
-    if (!Cookies.get('token')) {
-      return dispatch(setObject('auth', false));
-    }
-    axios.put('http://localhost:8080/accounts/description/', form, {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        "token": Cookies.get('token')
-      }
-    })
-    .then(function (response) {
-      if (createProfile) {
-        dispatch(setObject('profileStep', 'hashtags'));
-      }
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
+      console.log(error.response);
     })
   }
 }

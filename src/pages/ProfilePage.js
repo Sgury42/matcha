@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import PictureUpload from '../components/PictureUpload';
-import BioUpload from '../components/BioUpload';
+// import { DescriptionUpload } from '../components/index';
+import DescriptionUpload from '../components/DescriptionUpload';
 import HashtagsUpload from '../components/HashtagsUpload';
 import OrientationUpload from '../components/OrientationUpload';
 import SlidersOption from '../components/SlidersOptions';
@@ -12,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 const ProfilePage = () => {
   const history = useHistory();
   const isLoggedIn = useSelector(state => state.objects.auth);
+  const currentUser = useSelector(state => state.objects.currentUser);
 
   if (!isLoggedIn) {
     history.push('/');
@@ -27,7 +29,7 @@ const ProfilePage = () => {
               <PictureUpload />
             </Grid>
             <Grid item xs={12}>
-              <BioUpload />
+              <DescriptionUpload description={ currentUser.description } />
             </Grid>
           </Grid>
           <Grid container xs={12} md={4} align="flex-start">
@@ -39,7 +41,7 @@ const ProfilePage = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} >
-            <HashtagsUpload />
+            <HashtagsUpload usrHashtags={ currentUser.hashtags } />
           </Grid>
         </Grid>
       </Grid>

@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Grid } from '@material-ui/core';
-import { PictureUpload, BioUpload, HashtagsUpload, OrientationUpload, SlidersOptions } from '../components/index';
+import { Grid, Card, IconButton } from '@material-ui/core';
+import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
+import { PictureUpload, DescriptionUpload, HashtagsUpload, OrientationUpload, SlidersOptions, Location } from '../components/index';
+import { setObject } from '../redux/objects/actions';
 
 const CreateProfilePage = () => {
 
   // const steps = ["register", "pictures", "description", "hashtags", "orientationAndpreferences"];
   const history = useHistory();
+  const dispatch = useDispatch();
   const step = useSelector(state => state.objects.profileStep);
   const isLoggedIn = useSelector(state => state.objects.auth);
   const currentUser = useSelector(state => state.objects.currentUser);
@@ -17,6 +20,11 @@ const CreateProfilePage = () => {
       history.push('/');
     }
   })
+
+  const handleClick = () => {
+    dispatch(setObject('profileStep', ''));
+    history.push('/');
+  }
 
   switch(step) {
 
@@ -34,7 +42,7 @@ const CreateProfilePage = () => {
       return (
         <Grid container spacing={1} justify="center">
           <Grid item xs={12} sm={10} md={8} lg={6}>
-            <BioUpload createProfile='true' description={ currentUser.description } />
+            <DescriptionUpload createProfile='true' description={ currentUser.description } />
           </Grid>
         </Grid>
       );
@@ -42,16 +50,31 @@ const CreateProfilePage = () => {
 
     case 'hashtags': {
       return (
-        <HashtagsUpload />
+        <Grid container spacing={1} justify="center">
+          <Grid item xs={12} sm={10} md={8} lg={6}>
+            <HashtagsUpload createProfile='true' usrHashtags={ currentUser.hashtags } />
+          </Grid>
+        </Grid>
       );
     }
 
     case 'orientationAndpreferences': {
       return (
-        <>
-        <OrientationUpload />
-        <SlidersOptions />
-        </>
+        <Grid container spacing={1} justify="center">
+          <Grid item xs={12} sm={10} md={8} lg={6}>
+            <Card>
+              <OrientationUpload gender={ currentUser.gender } research_gender={ currentUser.research_gender } />
+              <Location />
+              <SlidersOptions research_perimeter={ currentUser.research_perimeter } research_ageMin={ currentUser.research_age_min }
+                research_ageMax={ currentUser.research_age_max } />
+              <Grid item align='center'>
+                <IconButton name="next" onClick={ handleClick }>
+                  <ChevronRightSharpIcon color="secondary" />
+                </IconButton>
+              </Grid>
+            </Card>
+          </Grid>
+        </Grid>
       );
     }
 
