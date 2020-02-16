@@ -15,7 +15,7 @@ const LoginUpdate = () => {
   }
 
   return (
-    <Card>
+    <Grid item component={Card} xs={12}>
       <Grid container spacing={6} direction="column">
         <Grid item>
           <Typography variant="h4">Update my login</Typography>
@@ -31,7 +31,7 @@ const LoginUpdate = () => {
           </IconButton>
         </Grid>
       </Grid>
-    </Card>
+    </Grid>
   );
 }
 

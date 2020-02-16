@@ -16,7 +16,7 @@ const EmailUpdate = () => {
 }
 
   return (
-    <Card>
+    <Grid item component={Card} xs={12}>
       <Grid container spacing={6} direction="column">
         <Grid item>
           <Typography variant="h4">Update my email</Typography>
@@ -32,7 +32,7 @@ const EmailUpdate = () => {
           </IconButton>
         </Grid>
       </Grid>
-    </Card>
+    </Grid>
   );
 }
 

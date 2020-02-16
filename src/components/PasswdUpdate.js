@@ -23,7 +23,7 @@ const PasswdUpdate = () => {
   }
 
   return (
-    <Card>
+    <Grid item component={Card} xs={12}>
       <Grid container spacing={1} direction="column">
         <Typography variant="h4">Update my password</Typography>
         <Grid item >
@@ -42,7 +42,7 @@ const PasswdUpdate = () => {
           </IconButton>
         </Grid>
       </Grid>
-    </Card>
+    </Grid>
   );
 }
 

@@ -95,3 +95,25 @@ export const newData = (route, form) => {
     })
   }
 }
+
+export const profilePictureUpload = (formData) => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.post('http://localhost:8080/upload/profilePicture', formData, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error.response);
+    })
+  }
+}

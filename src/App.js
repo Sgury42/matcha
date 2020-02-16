@@ -32,15 +32,14 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchCurrentUser());
     if (currentUser && [!currentUser.latitude || !currentUser.longitude]) {
-      console.log('test');
       dispatch(fetchLocation());
     }
   }, []);
 
   useEffect(() => {
-    // if (currentUser.pictures && !currentUser.pictures.length) {
+    if (currentUser.pictures && !currentUser.pictures.length) {
       history.push('/create-profile');
-    // }
+    }
   }, [currentUser]);
 
   useEffect(() => {

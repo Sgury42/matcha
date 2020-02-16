@@ -17,14 +17,14 @@ const SettingsPage = () => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={1} justify="center">
-      <Grid item lg={3} md={5} xs={11}>
+    <Grid container spacing={5} justify="center" alignItems="stretch">
+      <Grid item md={3} xs={11}>
         <PasswdUpdate />
       </Grid>
-      <Grid item lg={3} md={5} xs={11}>
+      <Grid item md={3} xs={11}>
         <EmailUpdate />
       </Grid>
-      <Grid item lg={3} md={5} xs={11}>
+      <Grid item md={3} xs={11}>
         <LoginUpdate />
       </Grid>
       <div className={classes.grow} />

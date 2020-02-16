@@ -4,7 +4,7 @@ import { Card, makeStyles, Grid, Typography, Box, Button, IconButton } from '@ma
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import { useDispatch } from 'react-redux';
-import { addPicture } from '../redux/requests';
+import { addPicture, profilePictureUpload } from '../redux/requests';
 import { setObject } from '../redux/objects/actions';
 
 // import { useSelector } from 'react-redux';
@@ -82,6 +82,10 @@ const PictureUpload = (props) => {
         preview: URL.createObjectURL(e.target.files[0]),
         raw: e.target.files[0]
       });
+      const formData = new FormData();
+      formData.append("file", e.target.files[0], e.target.files[0].name);
+      // console.log(e.target.files[0]);
+      dispatch(profilePictureUpload(formData));
     } else if (e && e.target.files[0]) {
       setImgCounter(imgCounter + 1); 
       setCounter(counter + 1);
@@ -93,7 +97,7 @@ const PictureUpload = (props) => {
           raw: e.target.files[0]
         }
       });
-      dispatch(addPicture(e.target.files[0].name));
+      // dispatch(addPicture(e.target.files[0].name));
     }
   }
 

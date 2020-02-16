@@ -32,7 +32,6 @@ const Location = (props) => {
 
 
   const handleChange = address => {
-    // this.setState({ address });
     setAddress(address);
   };
  
@@ -52,7 +51,7 @@ const Location = (props) => {
             I live in...
           </Typography>
           <Grid container align="center">
-          <PlacesAutocomplete value='' onChange={handleChange} onSelect={handleSelect}>
+          <PlacesAutocomplete value={address} onChange={handleChange} onSelect={handleSelect}>
           {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
             <input

@@ -4,7 +4,7 @@ const initialState = {
   auth: false,
   currentUser: {},
   error: null,
-  profileStep: 'orientationAndpreferences',
+  profileStep: 'picture',
 };
 
 const objectsReducer = (state = initialState, action) => {
