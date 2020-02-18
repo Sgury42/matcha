@@ -1,5 +1,8 @@
-// import React from 'react';
+import React from 'react';
+import Chat from '../components/Chat.js'
 
-const HomePage = () => null;
+const HomePage = () => {
+    return <Chat />
+};
 
 export default HomePage;
