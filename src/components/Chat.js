@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -49,21 +51,57 @@ const styles = {
     }
 }
 
-// const getMessage = () => {
-//     const currentUser = useSelector(state => state.objects.currentUser);
+// const getMessage = (currentUser) => {
 
-//     return <div>
-//         {props}
-//         <h1>OK</h1>
-//     </div>
+//     // const formData = {
+//     //     from_id: currentUser.id,
+//     //     to_id: 496
+//     // }
+//     axios.get('http://localhost:8080/chats', {
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Access-Control-Allow-Origin": "*",
+//         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+//         "token": Cookies.get('token'),
+//         "to_id": 496
+//       }
+//     })
+//     .then(function (response) {
+//         console.log(response)
+//         response.map(el => {
+//             return <h1></h1>
+//         })
+//         // response.map( msg => )
+//     })
+//     .catch(function (error) {
+//       console.log(error.response);
+//     })
 // }
 
 const Chat = () => {
     const classes = useStyles();
     const currentUser = useSelector(state => state.objects.currentUser);
 
+    state = {msg: []}
+
+    axios.get('http://localhost:8080/chats', {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token'),
+        "to_id": 496
+      }
+    })
+    .then(function (response) {
+        this.setState({data: response})
+    })
+    .catch(function (error) {
+      console.log(error.response);
+    })
+    console.log(this.state.data)
     return <div style={styles.container}>
-        <div style={styles.channelList}>{currentUser.name}</div>
+        <div style={styles.channelList}>{}</div>
         <form className={classes.root} noValidate autoComplete="off" >
             <TextField id="multiline" variant="filled" style={styles.input} />
             <Button variant="contained" style={styles.btn}>Envoyer</Button>
