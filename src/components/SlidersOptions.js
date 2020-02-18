@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Grid, Card, Typography, makeStyles, Slider, Input, IconButton } from '@material-ui/core';
-// import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-import { setTimeout, clearTimeout } from 'timers';
-import { putRequest, updateProfile } from '../redux/requests';
+import { Grid, Card, Typography, makeStyles, Slider, Input } from '@material-ui/core';
+import { updateProfile } from '../redux/requests';
 
 
 const useStyles = makeStyles(theme => ({

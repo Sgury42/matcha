@@ -5,6 +5,7 @@ const initialState = {
   currentUser: {},
   error: null,
   profileStep: 'picture',
+  location: {}
 };
 
 const objectsReducer = (state = initialState, action) => {
@@ -24,6 +25,7 @@ const objectsReducer = (state = initialState, action) => {
       
     case 'UPDATE_OBJECT': {
       if (state[objectName] && !_.isEqual(state[objectName], object)) {
+        console.log('update_object', objectName);
         return {
           ...state,
           [objectName]: {
@@ -42,13 +44,6 @@ const objectsReducer = (state = initialState, action) => {
         [objectName]: null
       }
     }
-
-    // case 'ALERT': {
-    //   newState = {
-    //     error: action.error,
-    //   };
-    //   return Object.assign({}, state, newState);
-    // }
 
     default:
       return state

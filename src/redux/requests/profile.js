@@ -101,7 +101,7 @@ export const profilePictureUpload = (formData) => {
     if (!Cookies.get('token')) {
       return dispatch(setObject('auth', false));
     }
-    axios.post('http://localhost:8080/upload/profilePicture', formData, {
+    axios.post('http://localhost:8080/accounts/profilePicture', formData, {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",

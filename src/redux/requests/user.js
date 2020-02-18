@@ -17,7 +17,7 @@ export const register = (form) => {
     })
     .catch(function (error) {
       console.log(error.response);
-      if (error.response.data) {
+      if (error.response) {
         dispatch(setObject('error', error.response.data));
       }
     })
@@ -35,7 +35,6 @@ export const logIn = (form) => {
       }
     })
     .then(function (response) {
-      console.log(response.data.token);
       dispatch(setObject('auth', true));
       Cookies.set('token', response.data.token);
       dispatch(fetchCurrentUser());
@@ -88,7 +87,7 @@ export const fetchLocation = () => {
   return (dispatch) => {
     axios('http://ip-api.com/json')
     .then(function (response) {
-      dispatch(newData('/accounts/locations', {'latitude': response.data.lat, 'longitude': response.data.lon}));
+      dispatch(setObject('location', { 'latitude': response.data.lat, 'longitude': response.data.lon }));
     })
     .catch(function (error) {
       console.log(error.response);

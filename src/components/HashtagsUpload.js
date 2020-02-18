@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setObject } from '../redux/objects/actions';
-import { hashtags, updateProfile } from '../redux/requests';
+import { hashtags } from '../redux/requests';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, Chip, Button} from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import red from '@material-ui/core/colors/red';

@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel, Snackbar } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-import { register } from '../redux/requests';
+import { register, fetchLocation } from '../redux/requests';
 import { deleteObject } from '../redux/objects/actions';
 import { useHistory } from "react-router-dom";
 
@@ -26,20 +26,24 @@ const SignUpForm = () => {
   const dispatch = useDispatch();
   const alert = useSelector(state => state.objects.error);
   const isLoggedIn = useSelector(state => state.objects.auth);
+  const location = useSelector(state => state.objects.location);
   const [open, setOpen] = useState(false);
 
-  // const [login, setLogin] = useState('');
   const [form, setForm] = useState({
+    login: '',
     firstname: '',
     name: '',
     mail: '',
     passwd: '',
     repeatPasswd: '',
     dateBirth: '2002-01-01',
-    gender: ''
+    gender: '',
+    latitude: '',
+    longitude: ''
   })
-  const { firstname, name, mail, passwd, repeatPasswd, dateBirth, gender } = form;
+  const { login, firstname, name, mail, passwd, repeatPasswd, dateBirth, gender } = form;
   const [errors, setErrors] = useState({
+    loginError: null,
     genderError: null,
     nameError: null,
     firstnameError: null,
@@ -54,8 +58,20 @@ const SignUpForm = () => {
     }
   }, [isLoggedIn]);
 
+  useEffect (() => {
+    dispatch(fetchLocation());
+  }, []);
+
+  useEffect(() => {
+    setForm({ ...form, ['latitude']: location.latitude ? location.latitude : ''});
+    setForm({ ...form, ['longitude']: location.longitude ? location.longitude : '' });
+  }, [location]);
+
   const formIsValid = () => {
     const newErrors = {};
+    if (login.length < 2 || login.length > 50) {
+      newErrors.loginError = '2 to 50 characters';
+    }
     if (gender !== 'F' && gender !== 'H') {
       newErrors.genderError = 'gender required';
     }
@@ -83,6 +99,8 @@ const SignUpForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    console.log(form);
     if (formIsValid()) {
       dispatch(register(form));
     }
@@ -124,9 +142,10 @@ const SignUpForm = () => {
                 </RadioGroup>
                 </Grid>
                 <Typography variant="caption" color="error">{ errors.genderError }</Typography>
-                {/* <TextField id="login" value={login} label="Login" type="text" variant="outlined" margin="normal" required={true} */}
-                  {/* onChange={(event) => setLogin(event.target.value)} /> */}
-                <TextField name="firstname" value={firstname} label="First name" type="text" variant="outlined" margin="normal" 
+                <TextField name="login" value={login} label="Login" type="text" variant="outlined" margin="normal"
+                  error={Boolean(errors.loginError)} helperText={errors.loginError} required={true}
+                  onChange={handleChange} /> 
+                <TextField name="firstname" value={firstname} label="Firstname" type="text" variant="outlined" margin="normal" 
                   error={Boolean(errors.firstnameError)} helperText={errors.firstnameError} required={true}
                   onChange={handleChange} />
                 <TextField name="name" value={name} label="Last name" type="text" variant="outlined" margin="normal" 

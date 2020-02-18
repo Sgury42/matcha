@@ -31,7 +31,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
-    if (currentUser && [!currentUser.latitude || !currentUser.longitude]) {
+    if (currentUser.length && [!currentUser.latitude || !currentUser.longitude]) {
       dispatch(fetchLocation());
     }
   }, []);
