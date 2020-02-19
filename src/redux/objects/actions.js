@@ -18,3 +18,20 @@ export const deleteObject = (objectName) => {
     objectName
   }
 }
+
+export const addItem = (objectName, item, data) => {
+  return {
+    type: 'ADD_ITEM',
+    item,
+    objectName, 
+    data
+  }
+}
+
+export const removeItem = (objectName, item, data) => {
+  return {
+    type: 'REMOVE_ITEM',
+    item, objectName,
+    data
+  }
+}

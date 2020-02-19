@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, useTheme } from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { useDispatch } from 'react-redux';
-import { description, updateProfile } from '../redux/requests';
+import { updateProfile } from '../redux/requests';
 import { setObject } from '../redux/objects/actions';
 
 

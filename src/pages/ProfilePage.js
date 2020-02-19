@@ -26,7 +26,7 @@ const ProfilePage = () => {
           <Grid container justify="space-evenly" wrap="wrap">
           <Grid container xs={12} md={8} spacing={5}>
             <Grid item xs={12}>
-              <PictureUpload />
+              <PictureUpload pictures={ currentUser.pictures } profilePicture={ currentUser.profilePicture } />
             </Grid>
             <Grid item xs={12}>
               <DescriptionUpload description={ currentUser.description } />

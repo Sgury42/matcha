@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { setObject, updateObject } from '../objects/actions';
 import Cookies from 'js-cookie';
-import { newData } from './profile';
 
 export const register = (form) => {
   return (dispatch) => {
@@ -16,7 +15,6 @@ export const register = (form) => {
       console.log(response);
     })
     .catch(function (error) {
-      console.log(error.response);
       if (error.response) {
         dispatch(setObject('error', error.response.data));
       }
@@ -40,7 +38,11 @@ export const logIn = (form) => {
       dispatch(fetchCurrentUser());
     })
     .catch(function (error) {
-      console.log(error.response);
+      if (error.response.data === 'Not Found') {
+        dispatch(setObject('error', 'Are you sure you already have an account?'));
+      } else {
+        dispatch(setObject('error', 'Oups try again !'));
+      }
     })
   }
 }
@@ -61,7 +63,7 @@ export const fetchCurrentUser = () => {
     .then(function (response) {
       dispatch(setObject('currentUser', response.data[0]));
       dispatch(setObject('auth', true));
-      axios.get('http://localhost:8080/accounts/pictures/', {
+      axios.get('http://localhost:8080/accounts/getProfilePicture/', {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -70,14 +72,31 @@ export const fetchCurrentUser = () => {
         }
       })
       .then(function (response) {
-        dispatch(updateObject('currentUser', { pictures: response.data }));
+        if (response.data[0]) {
+          dispatch(updateObject('currentUser', { profilePicture: response.data[0].url_picture }));
+        }
+        axios.get('http://localhost:8080/accounts/pictures', {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "token": Cookies.get('token')
+          }
+        })
+        .then(function (response) {
+          console.log(response.data);
+          dispatch(updateObject('currentUser', { pictures: response.data} ));
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
       })
       .catch(function (error) {
-        console.log(error.response);
+        console.log(error);
       })
     })
     .catch(function (error) {
-      console.log(error.response);
+      console.log(error);
       dispatch(setObject('auth', false));
     })
   }

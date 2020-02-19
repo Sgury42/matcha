@@ -1,32 +1,6 @@
 import axios from 'axios';
-import { setObject, updateObject } from '../objects/actions';
+import { setObject, updateObject, addItem, removeItem } from '../objects/actions';
 import Cookies from 'js-cookie';
-
-export const addPicture = (picturePath) => {
-  const picture = {
-    url_picture: picturePath
-  }
-
-  return (dispatch) => {
-    if (!Cookies.get('token')) {
-      return dispatch(setObject('auth', false));
-    }
-    axios.post('http://localhost:8080/accounts/pictures/', picture, {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        "token": Cookies.get('token')
-      }
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-  }
-}
 
 export const hashtags = (usrHashtags) => {
   return (dispatch) => {
@@ -43,7 +17,6 @@ export const hashtags = (usrHashtags) => {
     })
     .then(function (response) {
       dispatch(updateObject('currentUser', { hashtags: usrHashtags.hashtags }));
-      console.log(response);
     })
     .catch(function (error) {
       console.log(error);
@@ -66,29 +39,6 @@ export const updateProfile = (route, form) => {
     })
     .then(function (response) {
       dispatch(updateObject('currentUser', form));
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error.response);
-    })
-  }
-}
-export const newData = (route, form) => {
-  return (dispatch) => {
-    if (!Cookies.get('token')) {
-      return dispatch(setObject('auth', false));
-    }
-    axios.post('http://localhost:8080' + route, form, {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        "token": Cookies.get('token')
-      }
-    })
-    .then(function (response) {
-      dispatch(updateObject('currentUser', form));
-      console.log(response);
     })
     .catch(function (error) {
       console.log(error.response);
@@ -110,10 +60,58 @@ export const profilePictureUpload = (formData) => {
       }
     })
     .then(function (response) {
-      console.log(response);
+      dispatch(updateObject('currentUser', { 'profilePicture': response.data }));
     })
     .catch(function (error) {
       console.log(error.response);
+    })
+  }
+}
+
+export const pictureUpload = (formData) => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.post('http://localhost:8080/accounts/pictures', formData, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      dispatch(addItem('currentUser', 'pictures', response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+}
+
+export const deletePicture = (form, deleteFrom) => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.delete('http://localhost:8080/accounts/pictures', {
+      params: form,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      if (deleteFrom === 'pictures')
+        dispatch(removeItem('currentUser', 'pictures', response.data));
+      else if (deleteFrom === 'profilePicture')
+        dispatch(updateObject('currentUser', { 'profilePicture': response.data }));
+    })
+    .catch(function (error) {
+      console.log(error);
     })
   }
 }
