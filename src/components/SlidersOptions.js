@@ -30,15 +30,15 @@ const SlidersOptions = (props) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // dispatch(updateProfile('/accounts/research/perimeter/', form));     //  NEED TO ADD research_perimeter IN accounts;
+      dispatch(updateProfile('/accounts/research/perimeter/', form));
     }, 1000);
     return () => clearTimeout(timer);
   }, [form.research_perimeter]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch(updateProfile('/accounts/research/agemin/', {'research_age_min': form.ageRange[0]}));
-      dispatch(updateProfile('/accounts/research/agemax/', {'research_age_max': form.ageRange[1]}));
+      dispatch(updateProfile('/accounts/research/agemin/', {'research_ageMin': form.ageRange[0]}));
+      dispatch(updateProfile('/accounts/research/agemax/', {'research_ageMax': form.ageRange[1]}));
     }, 1000);
     return () => clearTimeout(timer);
   }, [form.ageRange]);

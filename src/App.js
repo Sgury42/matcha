@@ -31,13 +31,13 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
-    if (currentUser.length && [!currentUser.latitude || !currentUser.longitude]) {
-      dispatch(fetchLocation());
-    }
+    // if (currentUser.length && [!currentUser.latitude || !currentUser.longitude]) {
+    //   dispatch(fetchLocation());
+    // }
   }, []);
 
   useEffect(() => {
-    if (currentUser.pictures && !currentUser.pictures.length) {
+    if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
   }, [currentUser]);

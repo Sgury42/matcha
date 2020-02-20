@@ -108,7 +108,8 @@ export const deletePicture = (form, deleteFrom) => {
       if (deleteFrom === 'pictures')
         dispatch(removeItem('currentUser', 'pictures', response.data));
       else if (deleteFrom === 'profilePicture')
-        dispatch(updateObject('currentUser', { 'profilePicture': response.data }));
+        // dispatch(updateObject('currentUser', { 'profilePicture': response.data }));
+        console.log(response);
     })
     .catch(function (error) {
       console.log(error);

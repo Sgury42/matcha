@@ -13,9 +13,11 @@ export const register = (form) => {
     })
     .then(function (response) {
       console.log(response);
+      dispatch(setObject('status', 'registrationOK'));
     })
     .catch(function (error) {
       if (error.response) {
+        console.log(error)
         dispatch(setObject('error', error.response.data));
       }
     })
@@ -23,7 +25,6 @@ export const register = (form) => {
 }
 
 export const logIn = (form) => {
-  console.log(form);
   return (dispatch) => {
     axios.post('http://localhost:8080/accounts/login/', {mail: form.mail, passwd: form.passwd } , {
       headers: {
@@ -38,7 +39,7 @@ export const logIn = (form) => {
       dispatch(fetchCurrentUser());
     })
     .catch(function (error) {
-      if (error.response.data === 'Not Found') {
+      if (error.response.status === 404 || error.response.status === 403) {
         dispatch(setObject('error', 'Are you sure you already have an account?'));
       } else {
         dispatch(setObject('error', 'Oups try again !'));
@@ -84,7 +85,6 @@ export const fetchCurrentUser = () => {
           }
         })
         .then(function (response) {
-          console.log(response.data);
           dispatch(updateObject('currentUser', { pictures: response.data} ));
         })
         .catch(function (error) {
@@ -110,6 +110,30 @@ export const fetchLocation = () => {
     })
     .catch(function (error) {
       console.log(error.response);
+    })
+  }
+}
+
+export const fetchDatas = (path) => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.get('http://localhost:8080' + path, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      if (path === '/matchs') {
+        console.log(response);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
     })
   }
 }

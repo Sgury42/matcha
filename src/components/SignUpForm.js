@@ -27,6 +27,7 @@ const SignUpForm = () => {
   const alert = useSelector(state => state.objects.error);
   const isLoggedIn = useSelector(state => state.objects.auth);
   const location = useSelector(state => state.objects.location);
+  const status = useSelector(state => state.objects.status);
   const [open, setOpen] = useState(false);
 
   const [form, setForm] = useState({
@@ -38,8 +39,8 @@ const SignUpForm = () => {
     repeatPasswd: '',
     dateBirth: '2002-01-01',
     gender: '',
-    latitude: '',
-    longitude: ''
+    latitude: 0,
+    longitude: 0
   })
   const { login, firstname, name, mail, passwd, repeatPasswd, dateBirth, gender } = form;
   const [errors, setErrors] = useState({
@@ -58,13 +59,18 @@ const SignUpForm = () => {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (status === 'registrationOK') {
+      history.push('/');
+    }
+  }, [status]);
+
   useEffect (() => {
     dispatch(fetchLocation());
   }, []);
 
   useEffect(() => {
-    setForm({ ...form, ['latitude']: location.latitude ? location.latitude : ''});
-    setForm({ ...form, ['longitude']: location.longitude ? location.longitude : '' });
+    setForm({ ...form, ['latitude']: location.latitude ? location.latitude : 0, ['longitude']: location.longitude ? location.longitude : 0});
   }, [location]);
 
   const formIsValid = () => {
@@ -100,7 +106,6 @@ const SignUpForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    console.log(form);
     if (formIsValid()) {
       dispatch(register(form));
     }

@@ -48,7 +48,9 @@ const SwipeBox = () => {
     },
     researchParameters: {
       hastags: ["geek", "norminet", "love", "42", "student", "matchacouple", "react", "node", "norminet", "love", "matchacouple", "geek", "42", "student", "geek", "42", "student", "react", "node", "norminet", "love", "matchacouple", "react", "node",  "42", "student", "geek", "42", "student", "react", "node", "norminet", "love", "matchacouple", "react", "node"]
-    }
+    },
+    popularité: "67",
+    online: true,
   }
 /////////////////
 

@@ -5,7 +5,7 @@ const initialState = {
   currentUser: {},
   error: null,
   profileStep: 'picture',
-  location: {}
+  location: {},
 };
 
 const objectsReducer = (state = initialState, action) => {
@@ -44,12 +44,12 @@ const objectsReducer = (state = initialState, action) => {
         ...state,
         [objectName]: null
       }
+      break
     }
     
-    case 'ADD_ITEM':
+    case 'ADD_ITEM': {
       edited = [...state[objectName][item]];
       edited.push(data);
-      console.log(edited);
       return {
         ...state,
         [objectName] : {
@@ -57,8 +57,10 @@ const objectsReducer = (state = initialState, action) => {
           [item]: edited,
         }
       }
+      break
+    }
 
-      case 'REMOVE_ITEM':
+      case 'REMOVE_ITEM': {
         edited = [...state[objectName][item]];
         let index;
         if (index = edited.indexOf(data) > -1)
@@ -70,6 +72,8 @@ const objectsReducer = (state = initialState, action) => {
             [item]: edited,
           }
         }
+        break
+      }
 
     default:
       return state

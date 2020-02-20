@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { red, grey } from '@material-ui/core/colors';
+import { red, grey, green } from '@material-ui/core/colors';
 
 const theme = createMuiTheme();
 
@@ -11,6 +11,7 @@ const matchaTheme = createMuiTheme({
         },
         secondary: {
           main: red[700],
+          light: green[500]
         }
     },
     overrides: {
@@ -23,7 +24,7 @@ const matchaTheme = createMuiTheme({
         MuiCard: {
           root: {
           marginTop: theme.spacing(5),
-          padding: 30,
+          padding: 15,
           width: '100%',
           height: 'fit-content',
         },
