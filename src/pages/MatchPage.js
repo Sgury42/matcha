@@ -142,10 +142,17 @@ const MatchPage = () => {
   const isLogged = useSelector(state => state.objects.auth);
 
   useEffect(() => {
-    if (isLogged) {
+    if (!isLogged) {
       history.push('/');
     }
   }, [isLogged]);
+
+  useEffect(() => {
+    if (currentUser.pictures && !currentUser.profilePicture) {
+      history.push('/create-profile');
+    }
+  }, [])
+  
 
   useEffect(() => {
     dispatch(fetchDatas('/matchs'));

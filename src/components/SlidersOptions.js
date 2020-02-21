@@ -27,6 +27,17 @@ const SlidersOptions = (props) => {
     research_perimeter: props.research_perimeter ? props.research_perimeter : 30,
     ageRange: [props.research_ageMin ? props.research_ageMin : 18, props.research_ageMax ? props.research_ageMax : 25 ]
   });
+  const handleDistanceChange = (e, newValue) => {
+    setForm({ ...form, ['research_perimeter']: newValue });
+  }
+  const handleInputDistanceChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value === '' ? '' : Number(e.target.value)});
+  }
+
+  const handleAgeChange = (e, newValue) => {
+    setForm({ ...form, ['ageRange']: newValue });
+  }
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,17 +55,7 @@ const SlidersOptions = (props) => {
   }, [form.ageRange]);
  
 
-  const handleDistanceChange = (e, newValue) => {
-    setForm({ ...form, ['research_perimeter']: newValue });
-  }
-  const handleInputDistanceChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value === '' ? '' : Number(e.target.value)});
-  }
-
-  const handleAgeChange = (e, newValue) => {
-    setForm({ ...form, ['ageRange']: newValue });
-  }
-
+  
   return (
     <Grid container spacing={1} justify="center" >
       <Grid item xs={12} >

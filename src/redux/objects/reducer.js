@@ -9,8 +9,8 @@ const initialState = {
 };
 
 const objectsReducer = (state = initialState, action) => {
-  const { objectName, object, type, listName, item, idField, data } = action
-  let added, edited;
+  const { objectName, object, type, item, data } = action
+  let edited;
   switch(type) {
 
     case 'SET_OBJECT': {

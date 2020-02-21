@@ -130,6 +130,8 @@ export const fetchDatas = (path) => {
     .then(function (response) {
       if (path === '/matchs') {
         console.log(response);
+      } else if (path === '/cibles') {
+        console.log(response);
       }
     })
     .catch(function (error) {

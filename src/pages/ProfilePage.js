@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }from 'react';
 import { useSelector } from 'react-redux';
 import PictureUpload from '../components/PictureUpload';
 // import { DescriptionUpload } from '../components/index';
@@ -13,12 +13,18 @@ import { useHistory } from 'react-router-dom';
 
 const ProfilePage = () => {
   const history = useHistory();
-  const isLoggedIn = useSelector(state => state.objects.auth);
   const currentUser = useSelector(state => state.objects.currentUser);
+  const isLoggedIn = useSelector(state => state.objects.auth);
 
   if (!isLoggedIn) {
     history.push('/');
   }
+
+  useEffect(() => {
+    if (currentUser.pictures && !currentUser.profilePicture) {
+      history.push('/create-profile');
+    }
+  }, [])
 
 
   return (

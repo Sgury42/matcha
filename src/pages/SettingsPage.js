@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import {useSelector } from 'react-redux';
 import PasswdUpdate from '../components/PasswdUpdate';
 import { Grid, makeStyles } from '@material-ui/core';
 import EmailUpdate from '../components/EmailUpdate';
@@ -15,6 +17,14 @@ const useStyles = makeStyles(theme => ({
 const SettingsPage = () => {
 
   const classes = useStyles();
+  const history = useHistory();
+  const currentUser = useSelector(state => state.objects.currentUser);
+
+  useEffect(() => {
+    if (currentUser.pictures && !currentUser.profilePicture) {
+      history.push('/create-profile');
+    }
+  }, [])
 
   return (
     <Grid container spacing={5} justify="center" alignItems="stretch">

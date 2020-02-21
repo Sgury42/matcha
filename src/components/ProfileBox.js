@@ -1,5 +1,7 @@
-import React from 'react';
-import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
+import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import ReportIcon from '@material-ui/icons/Report';
@@ -29,11 +31,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SwipeBox = () => {
+const SwipeBox = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const usrId = props.usrId ? props.usrId : props.match.params.usrId;
+  // const userInfos = useSelector(state => state.objects.usrToDisplay);
+
+  useEffect(() => {
+    // dispatch(fetchUser('path', usrId));
+  }, []);
 
 //example datas 
   const userInfos = {
+    login: "sgury",
     name: "gury",
     firstname: "sandra",
     mail: "sandra.gury@gmail.com",
@@ -57,7 +68,7 @@ const SwipeBox = () => {
     return (
         <Grid container spacing={1} justify="center">
           <Grid item lg={6} md ={8} sm={10} xs={12} >
-            <Card id="swipeBox">
+            <Card id="swipeBox" height="auto">
               <CardMedia>
                 <GridList cellHeight={250} cols={2}>
                   {userInfos.pictures.others.map(tile =>(
@@ -73,7 +84,7 @@ const SwipeBox = () => {
                     <Avatar alt={userInfos.firstname} src={"./photos/" + userInfos.pictures.profilePicture} className={classes.avatar}/>
                   </Grid>
                   <Grid item>
-                    <Typography variant="h4">{userInfos.firstname} - {userInfos.age}</Typography>
+                    <Typography variant="h4">{userInfos.login} - {userInfos.age}</Typography>
                     <Typography variant="body1">{userInfos.description}</Typography>
                   </Grid>
                   <div className={classes.grow} />

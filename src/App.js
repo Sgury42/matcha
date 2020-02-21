@@ -5,20 +5,13 @@ import theme from './theme';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 // import { Container } from '@material-ui/core';
-import HomePage from './pages/HomePage';
 import { CssBaseline } from '@material-ui/core';
-import MatchPage from './pages/MatchPage';
-import CreateProfilePage from './pages/CreateProfilePage';
-import LogInPage from './pages/LogInPage';
-import ProfilePage from './pages/ProfilePage';
-import SettingsPage from './pages/SettingsPage';
-import NotFoundPage from './pages/NotFoundPage';
-import NavBar from './components/NavBar';
+import { HomePage, MatchPage, CreateProfilePage, LogInPage, NotFoundPage, SettingsPage, ProfilePage, } from './pages/index';
 import { useDispatch } from 'react-redux';
 import { fetchCurrentUser, fetchLocation } from './redux/requests';
-import { SignUpForm } from './components/index';
 import Cookies from 'js-cookie';
 import { setObject } from './redux/objects/actions';
+import { NavBar, SignUpForm, ProfileBox } from './components/index';
 
 
 const App = () => {
@@ -30,10 +23,8 @@ const App = () => {
   const profileStep = useSelector(state => state.objects.profileStep);
 
   useEffect(() => {
+    console.log(Cookies.get('token'));
     dispatch(fetchCurrentUser());
-    // if (currentUser.length && [!currentUser.latitude || !currentUser.longitude]) {
-    //   dispatch(fetchLocation());
-    // }
   }, []);
 
   useEffect(() => {
@@ -62,6 +53,7 @@ const App = () => {
               <Route path="/profile" component={ProfilePage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/create-profile" component={CreateProfilePage} />
+              <Route path="/:usrId" component={ProfileBox} />
               <Route component={NotFoundPage} />
             </Switch>
           {/* </Container> */}

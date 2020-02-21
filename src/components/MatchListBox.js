@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, Avatar, Grid, Typography, CardActions, IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/styles';
 import ChatIcon from '@material-ui/icons/Chat';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
 import ReportOutlinedIcon from '@material-ui/icons/ReportOutlined';
@@ -24,28 +25,44 @@ const useStyles = makeStyles(theme =>({
 const MatchListBox = (props) => {
 
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleBlock = () => {
-    console.log(props.currentUserId);
-    console.log(props.match.id);
-    // dispatch(block({fromUser: }))
+
+  const handleClick = (e, action) => {
+    switch (action) {
+      case 'block':
+        // dispatch(usrInterac('path', {fromUser: props.currentUserId, toUser: props.match.id}));
+        break ;
+      case 'report':
+        // dispatch(usrInterac('path', {fromUser: props.currentUserId, toUser: props.match.id}));
+        break ;
+      case 'visitProfile':
+        history.push('/' + props.match.id);
+        break ;
+      case 'dislike':
+        // dispatch(usrInterac('path', {fromUser: props.currentUserId, toUser: props.match.id}));
+        break ;
+      case 'chat':
+        history.push('/chat/' + props.match.id);
+        break ;
+    }
   }
 
   return (
     <Card>
     <Grid container>
     <div className={ classes.grow } />
-    <IconButton onClick={handleBlock}>
+    <IconButton onClick={e => handleClick(e, 'block')}>
       <BlockOutlinedIcon />
     </IconButton>
-    <IconButton>
+    <IconButton onClick={e => handleClick(e, 'report')}>
       <ReportOutlinedIcon />
     </IconButton>
     </Grid>
       <Grid container spacing={1} align="center">
         <Grid item xs={12}>
-          <Avatar  alt={props.match.firstname} src={"./photos/" + props.match.pictures.profilePicture} className={classes.avatar}/>
+          <Avatar  alt={props.match.firstname} src={"./photos/" + props.match.pictures.profilePicture} className={classes.avatar} onClick={e => handleClick(e, 'visitProfile')} />
         </Grid>
         <Grid container justify="center">
           <Typography variant="h4">{props.match.login}</Typography>
@@ -55,14 +72,17 @@ const MatchListBox = (props) => {
           <FiberManualRecordIcon fontSize="small" color="disabled"/>
           }
         </Grid>
+        <Grid container justify="center">
+          <Typography variant="subtitle1">compatibility: {props.match.popularite}%</Typography>
+        </Grid>
       </Grid>
       <CardActions>
-      <IconButton>
+      <IconButton onClick={e => handleClick(e, 'dislike')}>
         <FavoriteTwoToneIcon className={classes.icons} color="secondary" />
       </IconButton>
       <div className={classes.grow} />
-        <IconButton>
-          <ChatIcon className={classes.icons} color="secondary" />
+        <IconButton onClick={e => handleClick(e, 'chat')}>
+          <ChatIcon className={classes.icons} color="secondary"/>
         </IconButton>
       </CardActions>
     </Card>
