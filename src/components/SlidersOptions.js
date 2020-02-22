@@ -42,7 +42,7 @@ const SlidersOptions = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(updateProfile('/accounts/research/perimeter/', form));
-    }, 1000);
+    }, 500);
     return () => clearTimeout(timer);
   }, [form.research_perimeter]);
 
@@ -50,7 +50,7 @@ const SlidersOptions = (props) => {
     const timer = setTimeout(() => {
       dispatch(updateProfile('/accounts/research/agemin/', {'research_ageMin': form.ageRange[0]}));
       dispatch(updateProfile('/accounts/research/agemax/', {'research_ageMax': form.ageRange[1]}));
-    }, 1000);
+    }, 500);
     return () => clearTimeout(timer);
   }, [form.ageRange]);
  
