@@ -11,7 +11,8 @@ import { useDispatch } from 'react-redux';
 import { fetchCurrentUser, fetchLocation } from './redux/requests';
 import Cookies from 'js-cookie';
 import { setObject } from './redux/objects/actions';
-import { NavBar, SignUpForm, ProfileBox } from './components/index';
+import { NavBar, SignUpForm, ProfileBox, Chat} from './components/index';
+// import io from 'socket.io-client';
 
 
 const App = () => {
@@ -37,12 +38,17 @@ const App = () => {
     console.log(currentUser);
   }, [currentUser])
 
+//   var socket = require('socket.io-client')('http://localhost');
+// socket.on('connect', () => {
+//   console.log('socket connected');
+// });
 
   return (
       <MuiThemeProvider theme={theme}>
       <CssBaseline />
         <div className="App">
           <NavBar />
+          {/* <Chat /> */}
           {/* <ProfileBox /> */}
           {/* <Container maxWidth="lg" id="page-body"> */}
             <Switch>
@@ -53,7 +59,8 @@ const App = () => {
               <Route path="/profile" component={ProfilePage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/create-profile" component={CreateProfilePage} />
-              <Route path="/:usrId" component={ProfileBox} />
+              <Route path="/profile/:usrId" component={ProfileBox} />
+              <Route path="/accounts/confirm/:token" component={LogInPage} />
               <Route component={NotFoundPage} />
             </Switch>
           {/* </Container> */}

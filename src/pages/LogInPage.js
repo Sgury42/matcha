@@ -4,8 +4,9 @@ import { deleteObject } from '../redux/objects/actions';
 import { useHistory } from 'react-router-dom';
 import { LogInForm } from '../components/index';
 import { Snackbar } from '@material-ui/core';
+import { confirmEmail } from '../redux/requests';
 
-const LogInPage = () => {
+const LogInPage = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.objects.auth);
@@ -33,6 +34,10 @@ const LogInPage = () => {
     setOpen(false);
     dispatch(deleteObject('error'));
   };
+
+  if (props.match.params.token) {
+    dispatch(confirmEmail(props.match.params.token));
+  }
 
   return (
     <>

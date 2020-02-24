@@ -139,3 +139,22 @@ export const fetchDatas = (path) => {
     })
   }
 }
+
+export const confirmEmail = (token) => {
+  return (dispatch) => {
+    axios.put('http://localhost:8080/accounts/confirm/' + token, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      }
+    })
+    .then(function (response) {
+        console.log(response);
+        
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+}
