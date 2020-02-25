@@ -10,7 +10,7 @@ const LogInPage = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.objects.auth);
-  const alert = useSelector(state => state.objects.error);
+  const alert = useSelector(state => state.objects.alert);
   const [open, setOpen] = useState(false);
 
   // const currentUser = useSelector(state => state.objects.currentUser);
@@ -32,7 +32,7 @@ const LogInPage = (props) => {
     //   return;
     // }
     setOpen(false);
-    dispatch(deleteObject('error'));
+    dispatch(deleteObject('alert'));
   };
 
   if (props.match.params.token) {

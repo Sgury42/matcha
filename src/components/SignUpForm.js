@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { makeStyles, Card, Grid, TextField, Typography, IconButton, RadioGroup, Radio, FormControlLabel, Snackbar } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-import { register, fetchLocation } from '../redux/requests';
+import { sendReq, fetchLocation } from '../redux/requests';
 import { deleteObject } from '../redux/objects/actions';
 import { useHistory } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const SignUpForm = () => {
   const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const alert = useSelector(state => state.objects.error);
+  const alert = useSelector(state => state.objects.alert);
   const isLoggedIn = useSelector(state => state.objects.auth);
   const location = useSelector(state => state.objects.location);
   const status = useSelector(state => state.objects.status);
@@ -107,7 +107,7 @@ const SignUpForm = () => {
     e.preventDefault();
 
     if (formIsValid()) {
-      dispatch(register(form));
+      dispatch(sendReq('/accounts/register/', form));
     }
   }
 
@@ -122,11 +122,8 @@ const SignUpForm = () => {
   }
 
   const handleClose = () => {
-    // if (reason === 'clickaway') {
-    //   return;
-    // }
     setOpen(false);
-    dispatch(deleteObject('error'));
+    dispatch(deleteObject('alert'));
   };
 
   return (

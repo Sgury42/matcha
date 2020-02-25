@@ -38,7 +38,18 @@ export const updateProfile = (route, form) => {
       }
     })
     .then(function (response) {
-      dispatch(updateObject('currentUser', form));
+      switch(route) {
+        case '/accounts/passwd/':
+          dispatch(setObject('alert', 'password updated !'));
+          break ;
+        case '/accounts/mail/':
+          dispatch(setObject('alert', 'email updated !'));
+        case '/accounts/userLogin/':
+          dispatch(setObject('alert', 'Hi ' + form.login));
+
+        default :
+          dispatch(updateObject('currentUser', form));
+      }
     })
     .catch(function (error) {
       console.log(error.response);

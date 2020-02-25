@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import {useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteObject } from '../redux/objects/actions';
 import PasswdUpdate from '../components/PasswdUpdate';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, makeStyles, Snackbar } from '@material-ui/core';
 import EmailUpdate from '../components/EmailUpdate';
 import LoginUpdate from '../components/LoginUpdate';
 import DeleteAccount from '../components/DeleteAccount';
@@ -18,13 +19,27 @@ const SettingsPage = () => {
 
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
   const currentUser = useSelector(state => state.objects.currentUser);
+  const alert = useSelector(state => state.objects.alert);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
   }, [])
+
+  useEffect(() => {
+    if (alert) {
+      setOpen(true);
+    }
+  }, [alert]);
+
+  const handleClose = () => {
+    setOpen(false);
+    dispatch(deleteObject('alert'));
+  };
 
   return (
     <Grid container spacing={5} justify="center" alignItems="stretch">
@@ -41,6 +56,7 @@ const SettingsPage = () => {
       <Grid item xs={11}>
         <DeleteAccount />
       </Grid>
+      <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
     </Grid>
   );
 };

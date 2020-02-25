@@ -2,9 +2,9 @@ import axios from 'axios';
 import { setObject, updateObject } from '../objects/actions';
 import Cookies from 'js-cookie';
 
-export const register = (form) => {
+export const sendReq = (route, form) => {
   return (dispatch) => {
-    axios.post('http://localhost:8080/accounts/register/', form, {
+    axios.post('http://localhost:8080' + route, form, {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -12,37 +12,37 @@ export const register = (form) => {
       }
     })
     .then(function (response) {
-      console.log(response);
-      dispatch(setObject('status', 'registrationOK'));
-    })
-    .catch(function (error) {
-      if (error.response) {
-        console.log(error)
-        dispatch(setObject('error', error.response.data));
+      switch(route) {
+        case '/accounts/login/':
+          dispatch(setObject('auth', true));
+          Cookies.set('token', response.data.token);
+          dispatch(fetchCurrentUser());
+          break ;
+        case '/accounts/register/':
+          dispatch(setObject('alert', 'Check your mail box !'));
+          dispatch(setObject('status', 'registrationOK'));
+          break ;
+        case '/accounts/forgotPasswd':
+          dispatch(setObject('alert', 'Check your mail box !'));
+          break ;
       }
     })
-  }
-}
-
-export const logIn = (form) => {
-  return (dispatch) => {
-    axios.post('http://localhost:8080/accounts/login/', {mail: form.mail, passwd: form.passwd } , {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-      }
-    })
-    .then(function (response) {
-      dispatch(setObject('auth', true));
-      Cookies.set('token', response.data.token);
-      dispatch(fetchCurrentUser());
-    })
     .catch(function (error) {
-      if (error.response.status === 404 || error.response.status === 403) {
-        dispatch(setObject('error', 'Are you sure you already have an account?'));
-      } else {
-        dispatch(setObject('error', 'Oups try again !'));
+      switch(route) {
+        case '/accounts/login/':
+          if (error.response.status === 404 || error.response.status === 403)
+            dispatch(setObject('alert', 'Are you sure you already have an account?'));
+          else
+            console.log('test');
+            dispatch(setObject('alert', 'Oups try again !'));
+          break ;
+        case '/accounts/register/':
+          if (error.response)
+            dispatch(setObject('alert', error.response.data ? error.response.data : "Oups something went wrong !"));
+            break ;
+        case '/accounts/forgotPasswd':
+          dispatch(setObject('alert', 'Oups something went wrong !'))
+          break ;
       }
     })
   }
@@ -150,7 +150,8 @@ export const confirmEmail = (token) => {
       }
     })
     .then(function (response) {
-        console.log(response);
+      dispatch(setObject('alert', 'email verified !'));
+      console.log(response);
         
     })
     .catch(function (error) {
