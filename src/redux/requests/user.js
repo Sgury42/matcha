@@ -30,10 +30,9 @@ export const sendReq = (route, form) => {
     .catch(function (error) {
       switch(route) {
         case '/accounts/login/':
-          if (error.response.status === 404 || error.response.status === 403)
+          if (error.response && (error.response.status === 404 || error.response.status === 403))
             dispatch(setObject('alert', 'Are you sure you already have an account?'));
           else
-            console.log('test');
             dispatch(setObject('alert', 'Oups try again !'));
           break ;
         case '/accounts/register/':
@@ -131,7 +130,7 @@ export const fetchDatas = (path) => {
       if (path === '/matchs') {
         console.log(response);
       } else if (path === '/cibles') {
-        console.log(response);
+        dispatch(setObject('cibles', response.data));
       }
     })
     .catch(function (error) {

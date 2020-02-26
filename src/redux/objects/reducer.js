@@ -6,6 +6,8 @@ const initialState = {
   alert: null,
   profileStep: 'picture',
   location: {},
+  cibles: [],
+  index: 0,
 };
 
 const objectsReducer = (state = initialState, action) => {

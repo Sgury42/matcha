@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchDatas } from '../redux/requests';
 import { useHistory } from 'react-router-dom';
 import { deleteObject } from '../redux/objects/actions';
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Grid } from '@material-ui/core';
+import { ProfileBox } from '../components/index';
 
 
 const HomePage = (props) => {
@@ -13,6 +14,8 @@ const HomePage = (props) => {
   const currentUser = useSelector(state => state.objects.currentUser);
   const isLogged = useSelector(state => state.objects.auth);
   const alert = useSelector(state => state.objects.alert);
+  const cibles = useSelector(state => state.objects.cibles);
+  const index = useSelector(state => state.objects.index);
   const [open, setOpen] = useState(false);
 
 
@@ -26,22 +29,27 @@ const HomePage = (props) => {
     if (isLogged) {
         if (currentUser.pictures && !currentUser.profilePicture) {
           history.push('/create-profile');
-        } else 
-            dispatch(fetchDatas('/cibles'));
+        }
     }
   }, []);
 
+  useEffect(() => {
+  }, [cibles]);
+
   const handleClose = () => {
-    // if (reason === 'clickaway') {
-    //   return;
-    // }
     setOpen(false);
     dispatch(deleteObject('alert'));
   };
   
-
   return (
+    <>
     <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
+    {cibles[index] ? 
+      <ProfileBox userInfos={cibles[index]} usrId={cibles[index].id} currentUserId={currentUser.id} index={index} />
+      :
+      null
+    }
+    </>
   );
 
 }

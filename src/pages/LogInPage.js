@@ -28,16 +28,16 @@ const LogInPage = (props) => {
   }, [alert]);
 
   const handleClose = () => {
-    // if (reason === 'clickaway') {
-    //   return;
-    // }
     setOpen(false);
     dispatch(deleteObject('alert'));
   };
 
-  if (props.match.params.token) {
-    dispatch(confirmEmail(props.match.params.token));
-  }
+  useEffect (() => {
+    if (props.match.params.token) {
+      dispatch(confirmEmail(props.match.params.token));
+    }
+  }, [])
+
 
   return (
     <>

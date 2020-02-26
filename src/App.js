@@ -8,10 +8,10 @@ import { useHistory } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { HomePage, MatchPage, CreateProfilePage, LogInPage, NotFoundPage, SettingsPage, ProfilePage, } from './pages/index';
 import { useDispatch } from 'react-redux';
-import { fetchCurrentUser, fetchLocation } from './redux/requests';
+import { fetchCurrentUser, fetchDatas } from './redux/requests';
 import Cookies from 'js-cookie';
 import { setObject } from './redux/objects/actions';
-import { NavBar, SignUpForm, ProfileBox, Chat} from './components/index';
+import { NavBar, SignUpForm, ProfileBox } from './components/index';
 // import io from 'socket.io-client';
 
 
@@ -22,16 +22,21 @@ const App = () => {
   const currentUser = useSelector(state => state.objects.currentUser);
   const isLoggedIn = useSelector(state => state.objects.auth);
   const profileStep = useSelector(state => state.objects.profileStep);
+  // const cibles = useSelector(state => state.objects.cibles)
+
 
   useEffect(() => {
-    console.log(Cookies.get('token'));
-    dispatch(fetchCurrentUser());
+    if (Cookies.get('token')) {
+      dispatch(setObject('auth', true));
+      dispatch(fetchCurrentUser());
+    }
   }, []);
 
   useEffect(() => {
     if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
-    }
+    } else 
+      dispatch(fetchDatas('/cibles'));
   }, [currentUser]);
 
   useEffect(() => {
@@ -48,11 +53,10 @@ const App = () => {
       <CssBaseline />
         <div className="App">
           <NavBar />
-          {/* <Chat /> */}
-          {/* <ProfileBox /> */}
           {/* <Container maxWidth="lg" id="page-body"> */}
             <Switch>
               <Route path="/" component={HomePage} exact />
+              {/* <Route path="/" render={(props) => <HomePage {...props} cibles={cibles} /> } /> */}
               <Route path="/match" component={MatchPage} />
               <Route path="/logIn" component={LogInPage} />
               <Route path="/signUp" component={SignUpForm} />

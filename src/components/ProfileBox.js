@@ -5,6 +5,7 @@ import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import ReportIcon from '@material-ui/icons/Report';
+import { usrInteraction } from '../redux/requests';
 // import { mergeClasses } from '@material-ui/styles';
 
 
@@ -34,36 +35,21 @@ const useStyles = makeStyles(theme => ({
 const SwipeBox = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { userInfos } = props;
 
-  const usrId = props.usrId ? props.usrId : props.match.params.usrId;
+  // const usrId = props.usrId ? props.usrId : props.match.params.usrId;
   // const userInfos = useSelector(state => state.objects.usrToDisplay);
 
   useEffect(() => {
     // dispatch(fetchUser('path', usrId));
+    console.log(userInfos);
   }, []);
 
-//example datas 
-  const userInfos = {
-    login: "sgury",
-    name: "gury",
-    firstname: "sandra",
-    mail: "sandra.gury@gmail.com",
-    passwd: "xxx",
-    dateBirth: "May 14 1993",
-    age: "26",
-    gender: "woman",
-    description: "Hi! I'm new on Matcha but already love it!",
-    pictures: {
-        profilePicture: "sandrapp.jpeg",
-        others: ["sandrap1.jpeg", "sandrap2.jpeg", "sandrap3.jpeg", "sandrap4.jpeg"]
-    },
-    researchParameters: {
-      hastags: ["geek", "norminet", "love", "42", "student", "matchacouple", "react", "node", "norminet", "love", "matchacouple", "geek", "42", "student", "geek", "42", "student", "react", "node", "norminet", "love", "matchacouple", "react", "node",  "42", "student", "geek", "42", "student", "react", "node", "norminet", "love", "matchacouple", "react", "node"]
-    },
-    popularité: "67",
-    online: true,
+  const handleLike = () => {
+    console.log('usrId = ' + props.usrId);
+    console.log('currentId = ' + props.currentUserId);
+     dispatch(usrInteraction('/likes', {to_id: props.usrId}, props.index));
   }
-/////////////////
 
     return (
         <Grid container spacing={1} justify="center">
@@ -71,9 +57,9 @@ const SwipeBox = (props) => {
             <Card id="swipeBox" height="auto">
               <CardMedia>
                 <GridList cellHeight={250} cols={2}>
-                  {userInfos.pictures.others.map(tile =>(
+                  {userInfos.pictures.map(tile =>(
                     <GridListTile key={tile} cols={1}>
-                      <img src={"./photos/" + tile} alt={tile} />
+                      <img src={tile} alt={tile} />
                     </GridListTile>
                   ))}
                 </GridList>
@@ -81,7 +67,7 @@ const SwipeBox = (props) => {
               <CardContent>
                 <Grid container spacing={1}>
                   <Grid item>
-                    <Avatar alt={userInfos.firstname} src={"./photos/" + userInfos.pictures.profilePicture} className={classes.avatar}/>
+                    <Avatar alt={userInfos.firstname} src={userInfos.profilePicture} className={classes.avatar}/>
                   </Grid>
                   <Grid item>
                     <Typography variant="h4">{userInfos.login} - {userInfos.age}</Typography>
@@ -95,13 +81,13 @@ const SwipeBox = (props) => {
                   </Grid>
                 </Grid>
                 <Grid container spacing={1} className={classes.hashtagBox}>
-                  {userInfos.researchParameters.hastags.map((hashtag, key) =>(
+                  {/* {userInfos.hashtags.map((hashtag, key) =>(
                     <Grid item key={key}>
                       <Chip color="secondary"
                         label={ <p>#{hashtag}</p> }>
                       </Chip>
                     </Grid>
-                  ))}
+                  ))} */}
                 </Grid>
               </CardContent>
               <CardActions>
@@ -109,7 +95,7 @@ const SwipeBox = (props) => {
                   <NotInterestedIcon />
                 </IconButton>
                 <div className={classes.grow}/>
-                <IconButton aria-label="like" color="secondary" className={classes.likeButton}>
+                <IconButton aria-label="like" color="secondary" className={classes.likeButton} onClick={handleLike}>
                   <FavoriteTwoToneIcon />
                 </IconButton>
               </CardActions>

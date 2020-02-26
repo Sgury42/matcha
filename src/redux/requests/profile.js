@@ -127,3 +127,29 @@ export const deletePicture = (form, deleteFrom) => {
     })
   }
 }
+
+export const usrInteraction = (route, form, index) => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.post('http://localhost:8080' + route, form, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      switch(route) {
+        case '/likes':
+          dispatch(setObject('index', index + 1));
+          break ;
+        }
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+}
