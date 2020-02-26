@@ -146,7 +146,9 @@ export const usrInteraction = (route, form, index) => {
         case '/likes':
           dispatch(setObject('index', index + 1));
           break ;
-        }
+        default :
+        console.log(response);
+      }
     })
     .catch(function (error) {
       console.log(error);
