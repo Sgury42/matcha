@@ -7,13 +7,19 @@ const initialState = {
   profileStep: 'picture',
   location: {},
   cibles: [],
+  matches: [],
   index: 0,
+  notifications: [],
 };
 
 const objectsReducer = (state = initialState, action) => {
   const { objectName, object, type, item, data } = action
   let edited;
   switch(type) {
+
+    case 'RESET_APP': {
+      return initialState;
+    }
 
     case 'SET_OBJECT': {
       if (!_.isEqual(state[objectName], object)) {

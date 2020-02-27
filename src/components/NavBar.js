@@ -1,14 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton } from '@material-ui/core';
+import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton, Badge } from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import PowerSettingsNewOutlinedIcon from '@material-ui/icons/PowerSettingsNewOutlined';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
-import { setObject } from '../redux/objects/actions';
+import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
+import { resetApp } from '../redux/objects/actions';
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,14 +19,12 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   menuButton: {
-    // marginRight: theme.spacing(2),
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
   },
   link: {
-      // flexGrow: 1,
       textDecoration: 'none',
   },
   titleLink: {
@@ -39,11 +37,11 @@ const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.objects.auth);
+  const notifications = useSelector(state => state.objects.notifications);
 
   const logOut = () => {
-    dispatch(setObject('auth', false));
-    dispatch(setObject('curentUser', {}));
     Cookies.remove('token');
+    dispatch(resetApp());
   }
 
     return (
@@ -73,6 +71,11 @@ const NavBar = () => {
                       <SettingsOutlinedIcon color='primary' fontSize='large' />
                     </IconButton>
                   </Link>
+                  <IconButton aria-label="notifications">
+                    <Badge badgeContent={notifications.length ? notifications.length : "0"} color="secondary" overlap="circle">
+                      <MenuRoundedIcon color='primary' fontSize='large' />
+                    </Badge>
+                  </IconButton>
                   <Link to="/" onClick={() => logOut()}>
                     <IconButton aria-label="LogOut">
                       <PowerSettingsNewOutlinedIcon color='secondary' fontSize='large' />

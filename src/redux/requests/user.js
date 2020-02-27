@@ -17,6 +17,7 @@ export const sendReq = (route, form) => {
           dispatch(setObject('auth', true));
           Cookies.set('token', response.data.token);
           dispatch(fetchCurrentUser());
+          window.location.reload();
           break ;
         case '/accounts/register/':
           dispatch(setObject('alert', 'Check your mail box !'));
@@ -130,6 +131,7 @@ export const fetchDatas = (path) => {
       if (path === '/matchs') {
         console.log(response);
       } else if (path === '/cibles') {
+        console.log(response);
         dispatch(setObject('cibles', response.data));
       }
     })

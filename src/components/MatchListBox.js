@@ -1,8 +1,9 @@
 import React from 'react';
-import { Card, Avatar, Grid, Typography, CardActions, IconButton } from '@material-ui/core';
+import { Card, Avatar, Grid, Typography, CardActions, IconButton, Tooltip } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
+import { usrInteraction } from '../redux/requests';
 import ChatIcon from '@material-ui/icons/Chat';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
 import ReportOutlinedIcon from '@material-ui/icons/ReportOutlined';
@@ -32,16 +33,16 @@ const MatchListBox = (props) => {
   const handleClick = (e, action) => {
     switch (action) {
       case 'block':
-        // dispatch(usrInterac('path', {fromUser: props.currentUserId, toUser: props.match.id}));
+        // dispatch(usrInteraction('path', {toUser: props.match.id}));
         break ;
       case 'report':
-        // dispatch(usrInterac('path', {fromUser: props.currentUserId, toUser: props.match.id}));
+        dispatch(usrInteraction('/accounts/report', {to_id: props.match.id, message: 'report'}));
         break ;
       case 'visitProfile':
         history.push('/' + props.match.id);
         break ;
       case 'dislike':
-        // dispatch(usrInterac('path', {fromUser: props.currentUserId, toUser: props.match.id}));
+        // dispatch(usrInteraction('/unmatch', {to_id: props.match.id}));                //need to test with real match profile
         break ;
       case 'chat':
         history.push('/chat/' + props.match.id);
@@ -49,37 +50,45 @@ const MatchListBox = (props) => {
     }
   }
 
+  console.log(props.match);
+
   return (
     <Card>
     <Grid container>
     <div className={ classes.grow } />
-    <IconButton onClick={e => handleClick(e, 'block')}>
-      <BlockOutlinedIcon />
-    </IconButton>
-    <IconButton onClick={e => handleClick(e, 'report')}>
-      <ReportOutlinedIcon />
-    </IconButton>
+    <Tooltip title="block" arrow>
+      <IconButton onClick={e => handleClick(e, 'block')}>
+        <BlockOutlinedIcon />
+      </IconButton>
+    </Tooltip>
+    <Tooltip title="report" arrow>
+      <IconButton onClick={e => handleClick(e, 'report')}>
+        <ReportOutlinedIcon />
+      </IconButton>
+    </Tooltip>
     </Grid>
       <Grid container spacing={1} align="center">
         <Grid item xs={12}>
-          <Avatar  alt={props.match.firstname} src={"./photos/" + props.match.pictures.profilePicture} className={classes.avatar} onClick={e => handleClick(e, 'visitProfile')} />
+          <Avatar  alt={props.match.firstname} src={props.match.profilePicture} className={classes.avatar} onClick={e => handleClick(e, 'visitProfile')} />
         </Grid>
         <Grid container justify="center">
           <Typography variant="h4">{props.match.login}</Typography>
-          {props.match.connected ?
+          {props.match.online ?
           <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
           :
           <FiberManualRecordIcon fontSize="small" color="disabled"/>
           }
         </Grid>
         <Grid container justify="center">
-          <Typography variant="subtitle1">compatibility: {props.match.popularite}%</Typography>
+          <Typography variant="subtitle1">compatibility: {parseInt(props.match.score)}%</Typography>
         </Grid>
       </Grid>
       <CardActions>
+    <Tooltip title="unmatch" arrow>
       <IconButton onClick={e => handleClick(e, 'dislike')}>
         <FavoriteTwoToneIcon className={classes.icons} color="secondary" />
       </IconButton>
+    </Tooltip>
       <div className={classes.grow} />
         <IconButton onClick={e => handleClick(e, 'chat')}>
           <ChatIcon className={classes.icons} color="secondary"/>

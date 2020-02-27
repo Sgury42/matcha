@@ -7,7 +7,7 @@ import { Snackbar, Grid } from '@material-ui/core';
 import { ProfileBox } from '../components/index';
 
 
-const HomePage = (props) => {
+const HomePage = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -34,6 +34,7 @@ const HomePage = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log(cibles);
   }, [cibles]);
 
   const handleClose = () => {

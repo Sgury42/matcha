@@ -39,11 +39,8 @@ const SwipeBox = (props) => {
   const dispatch = useDispatch();
   const { userInfos } = props;
 
-  // const usrId = props.usrId ? props.usrId : props.match.params.usrId;
-  // const userInfos = useSelector(state => state.objects.usrToDisplay);
 
   useEffect(() => {
-    // dispatch(fetchUser('path', usrId));
     console.log(userInfos);
   }, []);
 
@@ -91,7 +88,7 @@ const SwipeBox = (props) => {
                     </Grid>
                     </Grid>
                     <Grid container justify="center">
-                      <Typography variant="subtitle2" >compatibility {userInfos.score}% </Typography>
+                      <Typography variant="subtitle2" >compatibility {parseInt(userInfos.score)}% </Typography>
                     </Grid>
                     <Typography variant="body1">{userInfos.description}</Typography>
                   <div className={classes.grow} />

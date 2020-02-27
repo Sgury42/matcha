@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
@@ -35,18 +35,19 @@ const App = () => {
   useEffect(() => {
     if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
-    } else 
+    }
+    else 
       dispatch(fetchDatas('/cibles'));
   }, [currentUser]);
+
+  // useEffect(() => {
+  //   if (currentUser.pictures && currentUser.profilePicture)
+  //     dispatch(fetchDatas('/cibles'));
+  // }, [])
 
   useEffect(() => {
     console.log(currentUser);
   }, [currentUser])
-
-//   var socket = require('socket.io-client')('http://localhost');
-// socket.on('connect', () => {
-//   console.log('socket connected');
-// });
 
   return (
       <MuiThemeProvider theme={theme}>
@@ -56,7 +57,6 @@ const App = () => {
           {/* <Container maxWidth="lg" id="page-body"> */}
             <Switch>
               <Route path="/" component={HomePage} exact />
-              {/* <Route path="/" render={(props) => <HomePage {...props} cibles={cibles} /> } /> */}
               <Route path="/match" component={MatchPage} />
               <Route path="/logIn" component={LogInPage} />
               <Route path="/signUp" component={SignUpForm} />

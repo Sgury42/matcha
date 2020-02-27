@@ -35,3 +35,9 @@ export const removeItem = (objectName, item, data) => {
     data
   }
 }
+
+export const resetApp = () => {
+  return {
+    type: 'RESET_APP'
+  }
+}
