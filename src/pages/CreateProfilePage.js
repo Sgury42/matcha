@@ -5,6 +5,8 @@ import { Grid, Card, IconButton } from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { PictureUpload, DescriptionUpload, HashtagsUpload, OrientationUpload, SlidersOptions, Location } from '../components/index';
 import { setObject } from '../redux/objects/actions';
+import Cookies from 'js-cookie';
+
 
 const CreateProfilePage = () => {
 
@@ -12,17 +14,22 @@ const CreateProfilePage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const step = useSelector(state => state.objects.profileStep);
-  const isLoggedIn = useSelector(state => state.objects.auth);
   const currentUser = useSelector(state => state.objects.currentUser);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!Cookies.get('token')) {
       history.push('/');
     }
-  })
+  }, []);
+
+  useEffect(() => {
+    if (currentUser.pictures && !currentUser.profilePicture) {
+      history.push('/create-profile');
+    }
+  }, [])
 
   const handleClick = () => {
-    dispatch(setObject('profileStep', ''));
+    dispatch(setObject('profileStep', false));
     history.push('/');
   }
 

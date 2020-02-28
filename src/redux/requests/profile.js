@@ -72,6 +72,7 @@ export const profilePictureUpload = (formData) => {
     })
     .then(function (response) {
       dispatch(updateObject('currentUser', { 'profilePicture': response.data }));
+      console.log(response.data);
     })
     .catch(function (error) {
       console.log(error.response);

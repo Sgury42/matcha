@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { fetchDatas } from '../redux/requests';
 import MatchListBox from '../components/MatchListBox';
 import { Grid } from '@material-ui/core';
+import Cookies from 'js-cookie';
+
 
 const MatchPage = () => {
 
@@ -11,22 +13,21 @@ const MatchPage = () => {
   const history = useHistory();
   const matches = useSelector(state => state.objects.cibles);       /// !!!!!!!!!!!!!!!!!change for matches !!!!!!!!!!!!!!
   const currentUser = useSelector(state => state.objects.currentUser);
-  const isLogged = useSelector(state => state.objects.auth);
-
+  
   useEffect(() => {
-    if (!isLogged) {
+    if (!Cookies.get('token')) {
       history.push('/');
     }
-  }, [isLogged]);
+  }, []);
 
   useEffect(() => {
     if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
   }, [])
-  
+
   useEffect(() => {
-    dispatch(fetchDatas('/matchs'));
+    // dispatch(fetchDatas('/matchs'));
   }, []);
 
   useEffect(() => {

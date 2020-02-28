@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteObject } from '../redux/objects/actions';
 import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { LogInForm } from '../components/index';
 import { Snackbar } from '@material-ui/core';
 import { confirmEmail } from '../redux/requests';
@@ -16,7 +17,7 @@ const LogInPage = (props) => {
   // const currentUser = useSelector(state => state.objects.currentUser);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (Cookies.get('token')) {
       history.push('/');
     }
   });

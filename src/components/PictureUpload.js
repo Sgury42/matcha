@@ -53,7 +53,6 @@ const PictureUpload = (props) => {
     }
   }, [imgCounter]);
 
-
   useEffect(() => {
     setPictures(props.pictures ? props.pictures : []);
   }, [props.pictures]);
@@ -126,7 +125,7 @@ const PictureUpload = (props) => {
           <Grid container justify="center" alignContent="center" alignItems="center">
             <Grid item xs={12} className={classes.flexItem} >
               <Box {...defaultProps} borderRadius="50%">
-                <img id="profilePicture" src={profilePicture} alt="profile" width="100%" height="" />
+                <img id="profilePicture" src={profilePicture} alt="profile" width="100%" />
               </Box>
               <input accept="image/*" className={classes.input} id="profileButton" type="file" 
                 style={{ display: 'none' }} onChange={e => handleChange(e, profilePicture)} />

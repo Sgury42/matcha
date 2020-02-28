@@ -1,6 +1,7 @@
 import React, { useEffect }from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PictureUpload from '../components/PictureUpload';
+import { fetchDatas } from '../redux/requests';
 // import { DescriptionUpload } from '../components/index';
 import DescriptionUpload from '../components/DescriptionUpload';
 import HashtagsUpload from '../components/HashtagsUpload';
@@ -9,23 +10,26 @@ import SlidersOptions from '../components/SlidersOptions';
 import Location from '../components/Location'
 import { Grid, Card,  } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 
 
 const ProfilePage = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const currentUser = useSelector(state => state.objects.currentUser);
-  const isLoggedIn = useSelector(state => state.objects.auth);
-
-  if (!isLoggedIn) {
-    history.push('/');
-  }
 
   useEffect(() => {
-    if (currentUser.pictures && !currentUser.profilePicture) {
+    if (!Cookies.get('token')) {
+      history.push('/');
+    } else if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
-  }, [])
+  }, []);
 
+  useEffect(() => {
+    dispatch(fetchDatas('/cibles'));
+  }, [currentUser]);
 
   return (
     <Grid container justify='space-evenly'>

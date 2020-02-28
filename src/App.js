@@ -20,15 +20,14 @@ const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const currentUser = useSelector(state => state.objects.currentUser);
-  const isLoggedIn = useSelector(state => state.objects.auth);
-  const profileStep = useSelector(state => state.objects.profileStep);
-  // const cibles = useSelector(state => state.objects.cibles)
 
 
   useEffect(() => {
     if (Cookies.get('token')) {
-      dispatch(setObject('auth', true));
       dispatch(fetchCurrentUser());
+      dispatch(setObject('auth', true));
+      dispatch(fetchDatas('/cibles'));
+      dispatch(fetchDatas('/matchs'));
     }
   }, []);
 
@@ -36,14 +35,7 @@ const App = () => {
     if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
-    else 
-      dispatch(fetchDatas('/cibles'));
   }, [currentUser]);
-
-  // useEffect(() => {
-  //   if (currentUser.pictures && currentUser.profilePicture)
-  //     dispatch(fetchDatas('/cibles'));
-  // }, [])
 
   useEffect(() => {
     console.log(currentUser);

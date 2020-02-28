@@ -48,7 +48,7 @@ export const sendReq = (route, form) => {
   }
 }
 
-export const fetchCurrentUser = () => {
+export function fetchCurrentUser() {
   return (dispatch) => {
     if (!Cookies.get('token')) {
       return dispatch(setObject('auth', false));
@@ -86,8 +86,9 @@ export const fetchCurrentUser = () => {
         })
         .then(function (response) {
           dispatch(updateObject('currentUser', { pictures: response.data} ));
+          return true;
         })
-        .catch(function (error) {
+        .catch( function (error) {
           console.log(error);
         })
       })
@@ -129,9 +130,9 @@ export const fetchDatas = (path) => {
     })
     .then(function (response) {
       if (path === '/matchs') {
+        console.log('matches fetched');
         console.log(response);
       } else if (path === '/cibles') {
-        console.log(response);
         dispatch(setObject('cibles', response.data));
       }
     })

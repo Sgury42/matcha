@@ -5,6 +5,7 @@ import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { sendReq, fetchLocation } from '../redux/requests';
 import { deleteObject } from '../redux/objects/actions';
 import { useHistory } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -54,10 +55,10 @@ const SignUpForm = () => {
   });
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (Cookies.get('token')) {
       history.push('/');
     }
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
     if (status === 'registrationOK') {

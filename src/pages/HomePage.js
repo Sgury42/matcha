@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import { deleteObject } from '../redux/objects/actions';
 import { Snackbar, Grid } from '@material-ui/core';
 import { ProfileBox } from '../components/index';
+import Cookies from 'js-cookie';
+
 
 
 const HomePage = () => {
@@ -24,14 +26,16 @@ const HomePage = () => {
       setOpen(true);
     }
   }, [alert]);
-  
+
   useEffect(() => {
-    if (isLogged) {
-        if (currentUser.pictures && !currentUser.profilePicture) {
-          history.push('/create-profile');
-        }
+    if (!Cookies.get('token')) {
+      history.push('/');
+    } else if (currentUser.pictures && !currentUser.profilePicture) {
+      history.push('/create-profile');
     }
   }, []);
+  
+
 
   useEffect(() => {
     console.log(cibles);

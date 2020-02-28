@@ -7,6 +7,7 @@ import { Grid, makeStyles, Snackbar } from '@material-ui/core';
 import EmailUpdate from '../components/EmailUpdate';
 import LoginUpdate from '../components/LoginUpdate';
 import DeleteAccount from '../components/DeleteAccount';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -22,6 +23,7 @@ const SettingsPage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.objects.currentUser);
   const alert = useSelector(state => state.objects.alert);
+  const isLogged = useSelector(state => state.objects.auth);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -29,6 +31,12 @@ const SettingsPage = () => {
       history.push('/create-profile');
     }
   }, [])
+
+  useEffect(() => {
+    if (!Cookies.get('token')) {
+      history.push('/');
+    }
+  }, []);
 
   useEffect(() => {
     if (alert) {
