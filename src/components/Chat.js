@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import { useSelector } from 'react-redux';
@@ -82,8 +82,7 @@ const Chat = () => {
     const classes = useStyles();
     const currentUser = useSelector(state => state.objects.currentUser);
 
-    // state = {msg: []}
-    const [msg, setMsg] = useState([]);
+    state = {msg: []}
 
     axios.get('http://localhost:8080/chats', {
       headers: {
@@ -95,13 +94,12 @@ const Chat = () => {
       }
     })
     .then(function (response) {
-        // this.setState({data: response})
-        console.log(response);
+        this.setState({data: response})
     })
     .catch(function (error) {
       console.log(error.response);
     })
-    // console.log(this.state.data)
+    console.log(this.state.data)
     return <div style={styles.container}>
         <div style={styles.channelList}>{}</div>
         <form className={classes.root} noValidate autoComplete="off" >
