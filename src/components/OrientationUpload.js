@@ -23,12 +23,16 @@ const OrientationUpload = (props) => {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
-    research_gender: props.research_gender ? props.research_gender : '',
+    research_gender: props.research_gender ? props.research_gender : 'A',
     orientation: "bi"
   });
 
   useEffect(() => {
-    if (!form.research_gender) {
+    setForm({ ...form, ['research_gender']: props.research_gender ? props.research_gender : 'A'})
+  }, [props.research_gender]);
+
+  useEffect(() => {
+    if (!form.research_gender || form.research_gender === 'A') {
       setForm({ ...form, ['orientation']: "bi" });
     } else {
       setForm({ ...form, ['orientation']: form.research_gender === props.gender ? "gay" : "hetero"});
@@ -41,11 +45,11 @@ const OrientationUpload = (props) => {
 
   const handleChange = (e) => {
     if (e.target.value === "hetero") {
-      setForm({ ...form, ['research_gender']: props.gender === "F" ? "H" : "F" });
+      setForm({ ...form, ['research_gender']: props.gender === "F" ? "M" : "F" });
     } else if (e.target.value === "gay") {
       setForm({ ...form, ['research_gender']: props.gender });
     } else if (e.target.value === "bi") {
-      setForm({ ...form, ['research_gender']: ''});
+      setForm({ ...form, ['research_gender']: 'A'});
     }
   }
 

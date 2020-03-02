@@ -10,7 +10,6 @@ import { confirmEmail } from '../redux/requests';
 const LogInPage = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.objects.auth);
   const alert = useSelector(state => state.objects.alert);
   const [open, setOpen] = useState(false);
 

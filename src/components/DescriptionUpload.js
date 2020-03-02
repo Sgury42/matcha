@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, useTheme } from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 import { useDispatch } from 'react-redux';
@@ -32,6 +32,12 @@ const DescriptionUpload = (props) => {
     description: props.description ? props.description : '',
   });
   const [charCount, setCharCount] = useState(form.description ? form.description.length : 0);
+
+  useEffect(() => {
+    setForm({
+    description: props.description ? props.description : '',
+    })
+  }, [props.description]);
 
   const handleChange = (e) => {
     const { length } = e.target.value;

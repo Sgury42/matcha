@@ -4,7 +4,7 @@ import { fetchDatas } from '../redux/requests';
 import { useHistory } from 'react-router-dom';
 import { deleteObject } from '../redux/objects/actions';
 import { Snackbar, Grid } from '@material-ui/core';
-import { ProfileBox } from '../components/index';
+import { SwipeBox } from '../components/index';
 import Cookies from 'js-cookie';
 
 
@@ -50,9 +50,10 @@ const HomePage = () => {
     <>
     <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
     {cibles[index] ? 
-      <ProfileBox userInfos={cibles[index]} usrId={cibles[index].id} currentUserId={currentUser.id} index={index} />
+      <SwipeBox userInfos={cibles[index]} usrId={cibles[index].id} currentUserId={currentUser.id} index={index} />
       :
       null
+      //{/* <img src="https://cdn.pixabay.com/photo/2016/10/06/05/19/engagement-1718244_960_720.jpg" width="100%" /> */}
     }
     </>
   );

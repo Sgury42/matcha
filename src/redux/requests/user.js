@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setObject, updateObject } from '../objects/actions';
+import { setObject, updateObject, resetApp } from '../objects/actions';
 import Cookies from 'js-cookie';
 
 export const sendReq = (route, form) => {
@@ -26,6 +26,8 @@ export const sendReq = (route, form) => {
         case '/accounts/forgotPasswd':
           dispatch(setObject('alert', 'Check your mail box !'));
           break ;
+        default:
+          console.log(response);
       }
     })
     .catch(function (error) {
@@ -61,9 +63,9 @@ export function fetchCurrentUser() {
         "token": Cookies.get('token')
       }
     })
-    .then(function (response) {
-      dispatch(setObject('currentUser', response.data[0]));
-      dispatch(setObject('auth', true));
+    .then(async function (response) {
+      await dispatch(setObject('currentUser', response.data[0]));
+      await dispatch(setObject('auth', true));
       axios.get('http://localhost:8080/accounts/getProfilePicture/', {
         headers: {
           "Content-Type": "application/json",
@@ -72,9 +74,9 @@ export function fetchCurrentUser() {
           "token": Cookies.get('token')
         }
       })
-      .then(function (response) {
+      .then(async function (response) {
         if (response.data[0]) {
-          dispatch(updateObject('currentUser', { profilePicture: response.data[0].url_picture }));
+          await dispatch(updateObject('currentUser', { profilePicture: response.data[0].url_picture }));
         }
         axios.get('http://localhost:8080/accounts/pictures', {
           headers: {
@@ -84,8 +86,8 @@ export function fetchCurrentUser() {
             "token": Cookies.get('token')
           }
         })
-        .then(function (response) {
-          dispatch(updateObject('currentUser', { pictures: response.data} ));
+        .then(async function (response) {
+          await dispatch(updateObject('currentUser', { pictures: response.data} ));
           return true;
         })
         .catch( function (error) {
@@ -155,6 +157,54 @@ export const confirmEmail = (token) => {
       dispatch(setObject('alert', 'email verified !'));
       console.log(response);
         
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+}
+
+export const disconnect = () => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.post('http://localhost:8080/disconnect', null, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      // Cookies.remove('token');
+      // dispatch(resetApp());
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+}
+
+export const deleteAccount = () => {
+  return (dispatch) => {
+    if (!Cookies.get('token')) {
+      return dispatch(setObject('auth', false));
+    }
+    axios.delete('http://localhost:8080/accounts', {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "token": Cookies.get('token')
+      }
+    })
+    .then(function (response) {
+      Cookies.remove('token');
+      dispatch(resetApp());
+      console.log(response);
     })
     .catch(function (error) {
       console.log(error);

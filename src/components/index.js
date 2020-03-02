@@ -11,6 +11,7 @@ export { default as LoginUpdate } from './LoginUpdate';
 export { default as MachListBox } from './MatchListBox';
 export { default as PasswdUpdate } from './PasswdUpdate';
 export { default as ProfileBox } from './ProfileBox';
+export { default as SwipeBox } from './SwipeBox';
 export { default as NavBar } from './NavBar';
 export { default as Location } from './Location';
 export { default as Chat } from './Chat';

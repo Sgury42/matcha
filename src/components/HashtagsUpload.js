@@ -4,8 +4,6 @@ import { setObject } from '../redux/objects/actions';
 import { hashtags } from '../redux/requests';
 import { Card, makeStyles, Grid, Typography, IconButton, TextField, Chip, Button} from '@material-ui/core';
 import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
-import red from '@material-ui/core/colors/red';
-
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -35,8 +33,13 @@ const HashtagsUpload = (props) => {
   });
   const [listHashtags, setListHashtags] = useState(["catperson", "coffee", "travel", "vegan", "netflixandchill", "lol", "book", "gymrat", "dance", "lover", "geek", "42", "outdoors", "no-gym", "dogperson"]);
 
-  const redShades = [red[200], red[300], red[400], red[500], red[600], red[700], red[800], red[900] ];
   const [hashtagInput, setHashtagInput] = useState('');
+
+  useEffect(() => {
+    setUsrHashtags({
+    hashtags: props.usrHashtags ? props.usrHashtags : [],
+    })
+  }, [props.usrHashtags]);
 
   useEffect(() => {
     var index;
@@ -46,6 +49,7 @@ const HashtagsUpload = (props) => {
         index = tmpArray.indexOf(hashtag);
         tmpArray.splice(index, 1);
       }
+      return true;
     })
     setListHashtags(tmpArray);
   }, [usrHashtags.hashtags])
@@ -96,8 +100,7 @@ const HashtagsUpload = (props) => {
     return (
       usrHashtags.hashtags.map((hashtag, key) =>
         <Grid item key={key}>
-          <Chip id={hashtag} style={{ backgroundColor: `${redShades[Math.floor(Math.random()*redShades.length)]}`, color: 'white'}}
-          // {/* <Chip id={hashtag} style={{ backgrountColor: 'secondary', color: 'white'}} */}
+          <Chip id={hashtag} color="secondary" style={{ color: 'white'}}
           onDelete={() => handleDelete(hashtag)}
           label={
             <p>#{hashtag}</p>

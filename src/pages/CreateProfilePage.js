@@ -20,13 +20,7 @@ const CreateProfilePage = () => {
     if (!Cookies.get('token')) {
       history.push('/');
     }
-  }, []);
-
-  useEffect(() => {
-    if (currentUser.pictures && !currentUser.profilePicture) {
-      history.push('/create-profile');
-    }
-  }, [])
+  });
 
   const handleClick = () => {
     dispatch(setObject('profileStep', false));

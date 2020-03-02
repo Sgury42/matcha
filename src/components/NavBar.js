@@ -1,14 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton, Badge } from '@material-ui/core';
+import { resetApp } from '../redux/objects/actions';
+import Cookies from 'js-cookie';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import PowerSettingsNewOutlinedIcon from '@material-ui/icons/PowerSettingsNewOutlined';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
-import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
-import { resetApp } from '../redux/objects/actions';
+import NotificationsNoneRoundedIcon from '@material-ui/icons/NotificationsNoneRounded';
+import { disconnect } from '../redux/requests';
 
 
 const useStyles = makeStyles(theme => ({
@@ -36,10 +37,11 @@ const useStyles = makeStyles(theme => ({
 const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.objects.auth);
+  // const isLoggedIn = useSelector(state => state.objects.auth);
   const notifications = useSelector(state => state.objects.notifications);
 
   const logOut = () => {
+    dispatch(disconnect());
     Cookies.remove('token');
     dispatch(resetApp());
   }
@@ -54,7 +56,7 @@ const NavBar = () => {
                   </Typography>
                 </Link>
                 <div className={classes.grow} />
-                {isLoggedIn ?
+                {Cookies.get('token') ?
                 <React.Fragment>
                   <Link to="/match">
                     <IconButton aria-label="match">
@@ -73,7 +75,7 @@ const NavBar = () => {
                   </Link>
                   <IconButton aria-label="notifications">
                     <Badge badgeContent={notifications.length ? notifications.length : "0"} color="secondary" overlap="circle">
-                      <MenuRoundedIcon color='primary' fontSize='large' />
+                      <NotificationsNoneRoundedIcon color='primary' fontSize='large' />
                     </Badge>
                   </IconButton>
                   <Link to="/" onClick={() => logOut()}>

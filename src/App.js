@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
@@ -6,36 +6,44 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 // import { Container } from '@material-ui/core';
 import { CssBaseline } from '@material-ui/core';
-import { HomePage, MatchPage, CreateProfilePage, LogInPage, NotFoundPage, SettingsPage, ProfilePage, } from './pages/index';
+import { HomePage, MatchPage, CreateProfilePage, LogInPage, NotFoundPage, SettingsPage, ProfilePage } from './pages/index';
 import { useDispatch } from 'react-redux';
 import { fetchCurrentUser, fetchDatas } from './redux/requests';
 import Cookies from 'js-cookie';
 import { setObject } from './redux/objects/actions';
-import { NavBar, SignUpForm, ProfileBox } from './components/index';
-// import io from 'socket.io-client';
-
+import { NavBar, SignUpForm, ProfileBox, Chat } from './components/index';
 
 const App = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
   const currentUser = useSelector(state => state.objects.currentUser);
-
+  const isLogged = useSelector(state => state.objects.auth);
 
   useEffect(() => {
     if (Cookies.get('token')) {
-      dispatch(fetchCurrentUser());
       dispatch(setObject('auth', true));
+      dispatch(fetchCurrentUser());
       dispatch(fetchDatas('/cibles'));
-      dispatch(fetchDatas('/matchs'));
+      // dispatch(fetchDatas('/matchs'));
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (isLogged) {
+      // dispatch(fetchCurrentUser());
+      // dispatch(fetchDatas('/cibles'));
+      // dispatch(fetchDatas('/matchs'));
+  //   }
+  // }, [isLogged])
 
   useEffect(() => {
     if (currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
   }, [currentUser]);
+
+console.log(Cookies.get('token'));
 
   useEffect(() => {
     console.log(currentUser);
@@ -55,8 +63,9 @@ const App = () => {
               <Route path="/profile" component={ProfilePage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/create-profile" component={CreateProfilePage} />
-              <Route path="/profile/:usrId" component={ProfileBox} />
+              <Route path="/:usrId" component={ProfileBox} />
               <Route path="/accounts/confirm/:token" component={LogInPage} />
+              <Route path="/chat/:to_id/:from_id" component={Chat} />
               <Route component={NotFoundPage} />
             </Switch>
           {/* </Container> */}

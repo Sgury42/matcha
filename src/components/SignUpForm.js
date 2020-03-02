@@ -141,7 +141,7 @@ const SignUpForm = () => {
                   <Typography variant="h5">I am...</Typography>
                   <RadioGroup aria-label="gender" name="gender" value={gender} onChange={handleChange}>
                     <FormControlLabel value="F" control={<Radio />} label="a woman" />
-                    <FormControlLabel value="H" control={<Radio />} label="a man" />
+                    <FormControlLabel value="M" control={<Radio />} label="a man" />
                 </RadioGroup>
                 </Grid>
                 <Typography variant="caption" color="error">{ errors.genderError }</Typography>

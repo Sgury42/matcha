@@ -27,6 +27,14 @@ const SlidersOptions = (props) => {
     research_perimeter: props.research_perimeter ? props.research_perimeter : 30,
     ageRange: [props.research_ageMin ? props.research_ageMin : 18, props.research_ageMax ? props.research_ageMax : 25 ]
   });
+
+  useEffect(() => {
+    setForm({
+      research_perimeter: props.research_perimeter ? props.research_perimeter : 30,
+      ageRange: [props.research_ageMin ? props.research_ageMin : 18, props.research_ageMax ? props.research_ageMax : 25 ]
+    })
+  }, [props.research_perimeter, props.research_ageMin, props.research_ageMax]);
+
   const handleDistanceChange = (e, newValue) => {
     setForm({ ...form, ['research_perimeter']: newValue });
   }

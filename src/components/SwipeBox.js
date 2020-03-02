@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
 import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -35,34 +34,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProfileBox = (props) => {
+const SwipeBox = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
-  // const { userInfos, usrid, currentUserId } = props;
-  const [datas, setDatas] = useState({});
+  const { userInfos } = props;
 
 
   useEffect(() => {
-    console.log(props);
-    if (!props.location.state) {
-      history.push('/');
-    } else if (props.location.state.userInfos) {
-      setDatas({
-        userInfos: props.location.state.userInfos,
-        usrId: props.location.state.usrId,
-        currentUserId: props.location.state.currentUserId
-      })
-    }
+    console.log(userInfos);
   }, []);
 
-  useEffect(() => {
-    console.log(datas);
-  }, [datas]);
-
   const handleLike = () => {
-    console.log('usrId = ' + datas.usrId);
-    console.log('currentId = ' + datas.currentUserId);
+    console.log('usrId = ' + props.usrId);
+    console.log('currentId = ' + props.currentUserId);
      dispatch(usrInteraction('/likes', {to_id: props.usrId}, props.index));
   }
 
@@ -71,19 +55,17 @@ const ProfileBox = (props) => {
   }
 
   const handleReport = () => {
-    dispatch(usrInteraction('/accounts/report', {to_id: datas.usrId, message: 'report'}));
+    dispatch(usrInteraction('/accounts/report', {to_id: props.usrId, message: 'report'}));
     dispatch(setObject('index', props.index + 1));
   }
 
     return (
-      <>
-      {datas.userInfos ?
         <Grid container spacing={1} justify="center">
           <Grid item lg={6} md ={8} sm={10} xs={12} >
             <Card id="swipeBox" height="auto">
               <CardMedia>
                 <GridList cellHeight={250} cols={2}>
-                  {datas.userInfos.pictures.map(tile =>(
+                  {userInfos.pictures.map(tile =>(
                     <GridListTile key={tile} cols={1}>
                       <img src={tile} alt={tile} />
                     </GridListTile>
@@ -93,12 +75,12 @@ const ProfileBox = (props) => {
               <CardContent>
                 <Grid container spacing={1} >
                   <Grid item>
-                    <Avatar alt={datas.userInfos.firstname} src={datas.userInfos.profilePicture} className={classes.avatar}/>
+                    <Avatar alt={userInfos.firstname} src={userInfos.profilePicture} className={classes.avatar}/>
                   </Grid>
                   <Grid item>
                     <Grid container >
-                    <Typography variant="h4">{datas.userInfos.login} - {datas.userInfos.age} ans</Typography>
-                    {datas.userInfos.online ?
+                    <Typography variant="h4">{userInfos.login} - {userInfos.age} ans</Typography>
+                    {userInfos.online ?
                     <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
                     :
                     <FiberManualRecordIcon fontSize="small" color="disabled"/>
@@ -106,9 +88,9 @@ const ProfileBox = (props) => {
                     </Grid>
                     </Grid>
                     <Grid container justify="center">
-                      <Typography variant="subtitle2" >compatibility {parseInt(datas.userInfos.score)}% </Typography>
+                      <Typography variant="subtitle2" >compatibility {parseInt(userInfos.score)}% </Typography>
                     </Grid>
-                    <Typography variant="body1">{datas.userInfos.description}</Typography>
+                    <Typography variant="body1">{userInfos.description}</Typography>
                   <div className={classes.grow} />
                   <Grid item>
                     <IconButton onClick={handleReport}>
@@ -117,7 +99,7 @@ const ProfileBox = (props) => {
                   </Grid>
                 </Grid>
                 <Grid container spacing={1} className={classes.hashtagBox}>
-                  {datas.userInfos.hashtags.map((hashtag, key) =>(
+                  {userInfos.hashtags.map((hashtag, key) =>(
                     <Grid item key={key}>
                       <Chip color="secondary"
                         label={ <p>#{hashtag}</p> }>
@@ -138,11 +120,7 @@ const ProfileBox = (props) => {
             </Card>
           </Grid>
         </Grid>
-        :
-        <span>test</span>
-      }
-      </>
     )
 }
 
-export default ProfileBox;
+export default SwipeBox;
