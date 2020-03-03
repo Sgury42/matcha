@@ -132,8 +132,7 @@ export const fetchDatas = (path) => {
     })
     .then(function (response) {
       if (path === '/matchs') {
-        console.log('matches fetched');
-        console.log(response);
+        dispatch(setObject('matches', response.data));
       } else if (path === '/cibles') {
         dispatch(setObject('cibles', response.data));
       }
@@ -178,8 +177,6 @@ export const disconnect = () => {
       }
     })
     .then(function (response) {
-      // Cookies.remove('token');
-      // dispatch(resetApp());
       console.log(response);
     })
     .catch(function (error) {

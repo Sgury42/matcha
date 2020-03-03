@@ -79,7 +79,7 @@ const SignUpForm = () => {
     if (login.length < 2 || login.length > 50) {
       newErrors.loginError = '2 to 50 characters';
     }
-    if (gender !== 'F' && gender !== 'H') {
+    if (gender !== 'F' && gender !== 'M') {
       newErrors.genderError = 'gender required';
     }
     if (!firstname || firstname.length < 2 || firstname.length > 15) {

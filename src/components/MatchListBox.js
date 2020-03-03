@@ -32,16 +32,16 @@ const MatchListBox = (props) => {
   const handleClick = (e, action) => {
     switch (action) {
       case 'block':
-        // dispatch(usrInteraction('path', {toUser: props.match.id}));
+        dispatch(usrInteraction('path', {toUser: props.match.id}));
         break ;
       case 'report':
         dispatch(usrInteraction('/accounts/report', {to_id: props.match.id, message: 'report'}));
         break ;
       case 'visitProfile':
-        history.push('/' + props.match.id, {userInfos: props.match, usrId: props.match.id, currentUserId: props.currentUserId});
+        history.push('/matchProfile/' + props.match.id, {userInfos: props.match, usrId: props.match.id, currentUserId: props.currentUserId});
         break ;
       case 'dislike':
-        // dispatch(usrInteraction('/unmatch', {to_id: props.match.id}));                //need to test with real match profile
+        dispatch(usrInteraction('/unmatch', {to_id: props.match.id}));
         break ;
       case 'chat':
         history.push('/chat/' + props.match.id + '/' + props.currentUserId);
@@ -49,8 +49,7 @@ const MatchListBox = (props) => {
     }
   }
 
-  // console.log(props.match);
-  // console.log(props.match);
+  console.log(props.match);
 
   return (
     <Card>

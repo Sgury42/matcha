@@ -19,23 +19,16 @@ const App = () => {
   const history = useHistory();
   const currentUser = useSelector(state => state.objects.currentUser);
   const isLogged = useSelector(state => state.objects.auth);
+  const matches = useSelector(state => state.objects.matches);
 
   useEffect(() => {
     if (Cookies.get('token')) {
       dispatch(setObject('auth', true));
       dispatch(fetchCurrentUser());
       dispatch(fetchDatas('/cibles'));
-      // dispatch(fetchDatas('/matchs'));
+      dispatch(fetchDatas('/matchs'));
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (isLogged) {
-      // dispatch(fetchCurrentUser());
-      // dispatch(fetchDatas('/cibles'));
-      // dispatch(fetchDatas('/matchs'));
-  //   }
-  // }, [isLogged])
 
   useEffect(() => {
     if (currentUser.pictures && !currentUser.profilePicture) {
@@ -43,7 +36,11 @@ const App = () => {
     }
   }, [currentUser]);
 
-console.log(Cookies.get('token'));
+// console.log(Cookies.get('token'));
+
+  // useEffect(() => {
+  //   console.log(matches);
+  // }, [matches])
 
   useEffect(() => {
     console.log(currentUser);
@@ -63,7 +60,7 @@ console.log(Cookies.get('token'));
               <Route path="/profile" component={ProfilePage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/create-profile" component={CreateProfilePage} />
-              <Route path="/:usrId" component={ProfileBox} />
+              <Route path="/matchProfile/:usrId" component={ProfileBox} />
               <Route path="/accounts/confirm/:token" component={LogInPage} />
               <Route path="/chat/:to_id/:from_id" component={Chat} />
               <Route component={NotFoundPage} />

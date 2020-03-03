@@ -11,7 +11,7 @@ const MatchPage = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const matches = useSelector(state => state.objects.cibles);       /// !!!!!!!!!!!!!!!!!change for matches !!!!!!!!!!!!!!
+  const matches = useSelector(state => state.objects.matches);       /// !!!!!!!!!!!!!!!!!change for matches !!!!!!!!!!!!!!
   const currentUser = useSelector(state => state.objects.currentUser);
   
   useEffect(() => {

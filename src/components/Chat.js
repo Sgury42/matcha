@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, componentWillUnmount } from "react";
 import { TextField, Button } from '@material-ui/core';
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -14,6 +14,31 @@ class App extends Component {
             to_id: props.match.params.to_id,
             from_id: props.match.params.from_id,
         }
+
+        let reqMessages = async () => {
+          await axios.get('http://localhost:8080/chats', {
+              headers: {
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                  "token": Cookies.get('token'),
+                  "to_id": this.state.to_id
+              }
+          }).then(async function (response) {
+              var messages = response.data
+              var tmp = []
+              for (const index in messages) {
+                  tmp.push(messages[index])
+              }
+              return tmp
+          }).then((tmp) => {
+              if (tmp.length !== this.state.messages.length){
+                  window.location.reload(false);
+              }
+          }).catch(function (error) {
+              console.log(error.response);
+          })
+      }
 
         console.log(this.state.to_id);
 
@@ -77,6 +102,8 @@ class App extends Component {
         }
         this.getMessages()
     }
+
+
 
     getMessages = async () => {
         const messages = []
@@ -153,31 +180,20 @@ class App extends Component {
         })
     }
 
+
+    myInterval = setInterval(this.reqMessages, 5000);
+
+
+    componentWillUnmount() {
+      clearInterval(this.myInterval)
+    }
+
+
     render() {
-        setInterval(async ()=>{
-            await axios.get('http://localhost:8080/chats', {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-                    "token": Cookies.get('token'),
-                    "to_id": this.state.to_id
-                }
-            }).then(async function (response) {
-                var messages = response.data
-                var tmp = []
-                for (const index in messages) {
-                    tmp.push(messages[index])
-                }
-                return tmp
-            }).then((tmp) => {
-                if (tmp.length !== this.state.messages.length){
-                    window.location.reload(false);
-                }
-            }).catch(function (error) {
-                console.log(error.response);
-            })
-        }, 5000)
+
+      
+
+
         return <div style={this.styles.container}>
             <div style={this.styles.channelList} id="box_message">{this.state.messages.map(el => (
                 <div key={el.id} className="talk-bubble" style={this.getStyle(el.from_id)}>

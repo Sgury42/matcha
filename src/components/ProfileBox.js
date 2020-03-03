@@ -9,7 +9,6 @@ import ReportIcon from '@material-ui/icons/Report';
 import { usrInteraction } from '../redux/requests';
 import { setObject } from '../redux/objects/actions';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-// import { mergeClasses } from '@material-ui/styles';
 
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +38,6 @@ const ProfileBox = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  // const { userInfos, usrid, currentUserId } = props;
   const [datas, setDatas] = useState({});
 
 

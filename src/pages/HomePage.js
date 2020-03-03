@@ -35,8 +35,6 @@ const HomePage = () => {
     }
   }, []);
   
-
-
   useEffect(() => {
     console.log(cibles);
   }, [cibles]);
