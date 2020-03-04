@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
+import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box, Tooltip } from '@material-ui/core';
 import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
@@ -9,11 +9,16 @@ import ReportIcon from '@material-ui/icons/Report';
 import { usrInteraction } from '../redux/requests';
 import { setObject } from '../redux/objects/actions';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
+
 
 
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
+  },
+  halfGrow: {
+    flexGrow: 0.35
   },
   iconButton: {
     transform: "scale(1.8)",
@@ -29,8 +34,14 @@ const useStyles = makeStyles(theme => ({
     width: "100px"
   },
   hashtagBox: {
-    maxHeight: "150px",
-    overflowY: "scroll"
+    maxHeight: "200px",
+    overflow: "auto"
+  },
+  textInfos: {
+    fontSize: 20,
+  },
+  botMarg: {
+    marginBottom: theme.spacing(3)
   }
 }));
 
@@ -95,23 +106,46 @@ const ProfileBox = (props) => {
                   </Grid>
                   <Grid item>
                     <Grid container >
-                    <Typography variant="h4">{datas.userInfos.login} - {datas.userInfos.age} ans</Typography>
+                    <Typography variant="h4">{datas.userInfos.login}</Typography>
                     {datas.userInfos.online ?
                     <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
                     :
-                    <FiberManualRecordIcon fontSize="small" color="disabled"/>
+                    <Typography variant="body2" style={{color: "#757575"}}>xx xx xxxx</Typography>
                     }
                     </Grid>
                     </Grid>
+
+
+                    <Grid container spacing={5} className={classes.botMarg}>
+                    <div className={classes.halfGrow} />
+                      <Grid item>
+                        <Typography variant="body1" className={classes.textInfos}>{datas.userInfos.firstname} - {datas.userInfos.name}</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>{datas.userInfos.age} years old</Typography>
+                      </Grid>
+                      <div className={classes.halfGrow} />
+                      <Grid item>
+                        <Typography variant="body1" className={classes.textInfos}>75017 test City</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>20km away</Typography>
+                      </Grid>
+                    </Grid>
+
+                    
                     <Grid container justify="center">
                       <Typography variant="subtitle2" >compatibility {parseInt(datas.userInfos.score)}% </Typography>
                     </Grid>
                     <Typography variant="body1">{datas.userInfos.description}</Typography>
                   <div className={classes.grow} />
                   <Grid item>
-                    <IconButton onClick={handleReport}>
-                      <ReportIcon />
-                    </IconButton>
+                    <Tooltip title="block" arrow>
+                      <IconButton>
+                        <BlockOutlinedIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="report" arrow>
+                      <IconButton onClick={handleReport}>
+                        <ReportIcon />
+                      </IconButton>
+                    </Tooltip>
                   </Grid>
                 </Grid>
                 <Grid container spacing={1} className={classes.hashtagBox}>
@@ -125,13 +159,12 @@ const ProfileBox = (props) => {
                 </Grid>
               </CardContent>
               <CardActions>
-                <IconButton aria-label="dislike" edge="start" className={classes.iconButton} onClick={handleDislike} >
-                  <NotInterestedIcon />
-                </IconButton>
                 <div className={classes.grow}/>
-                <IconButton aria-label="like" color="secondary" className={classes.likeButton} onClick={handleLike}>
-                  <FavoriteTwoToneIcon />
-                </IconButton>
+                <Tooltip title="unmatch" arrow>
+                  <IconButton aria-label="like" color="secondary" className={classes.likeButton} onClick={handleLike}>
+                    <FavoriteTwoToneIcon />
+                  </IconButton>
+                </Tooltip>
               </CardActions>
             </Card>
           </Grid>

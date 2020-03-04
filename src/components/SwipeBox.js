@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
   },
+  halfGrow: {
+    flexGrow: 0.35
+  },
   iconButton: {
     transform: "scale(1.8)",
     margin: "25px"
@@ -31,6 +34,12 @@ const useStyles = makeStyles(theme => ({
   hashtagBox: {
     maxHeight: "150px",
     overflowY: "scroll"
+  },
+  textInfos: {
+    fontSize: 20,
+  },
+  botMarg: {
+    marginBottom: theme.spacing(3)
   }
 }));
 
@@ -79,14 +88,28 @@ const SwipeBox = (props) => {
                   </Grid>
                   <Grid item>
                     <Grid container >
-                    <Typography variant="h4">{userInfos.login} - {userInfos.age} ans</Typography>
+                    <Typography variant="h4">{userInfos.login}</Typography>
                     {userInfos.online ?
                     <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
                     :
-                    <FiberManualRecordIcon fontSize="small" color="disabled"/>
+                    <Typography variant="body2" style={{color: "#757575"}}>xx xx xxxx</Typography>
                     }
                     </Grid>
                     </Grid>
+
+                    <Grid container spacing={5} className={classes.botMarg}>
+                    <div className={classes.halfGrow} />
+                      <Grid item>
+                        <Typography variant="body1" className={classes.textInfos}>{userInfos.firstname} - {userInfos.name}</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>{userInfos.age} years old</Typography>
+                      </Grid>
+                      <div className={classes.halfGrow} />
+                      <Grid item>
+                        <Typography variant="body1" className={classes.textInfos}>75017 test City</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>20km away</Typography>
+                      </Grid>
+                    </Grid>
+
                     <Grid container justify="center">
                       <Typography variant="subtitle2" >compatibility {parseInt(userInfos.score)}% </Typography>
                     </Grid>

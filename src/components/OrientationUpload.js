@@ -43,14 +43,15 @@ const OrientationUpload = (props) => {
     dispatch(updateProfile('/accounts/research/gender/', { 'research_gender': form.research_gender }));
   }, [form.research_gender]);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     if (e.target.value === "hetero") {
-      setForm({ ...form, ['research_gender']: props.gender === "F" ? "M" : "F" });
+      await setForm({ ...form, ['research_gender']: props.gender === "F" ? "M" : "F" });
     } else if (e.target.value === "gay") {
-      setForm({ ...form, ['research_gender']: props.gender });
+      await setForm({ ...form, ['research_gender']: props.gender });
     } else if (e.target.value === "bi") {
-      setForm({ ...form, ['research_gender']: 'A'});
+      await setForm({ ...form, ['research_gender']: 'A'});
     }
+    console.log(form);
   }
 
   return (

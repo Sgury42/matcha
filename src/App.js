@@ -19,19 +19,19 @@ const App = () => {
   const history = useHistory();
   const currentUser = useSelector(state => state.objects.currentUser);
   const isLogged = useSelector(state => state.objects.auth);
-  const matches = useSelector(state => state.objects.matches);
+  // const matches = useSelector(state => state.objects.matches);
 
   useEffect(() => {
     if (Cookies.get('token')) {
-      dispatch(setObject('auth', true));
-      dispatch(fetchCurrentUser());
-      dispatch(fetchDatas('/cibles'));
-      dispatch(fetchDatas('/matchs'));
+        dispatch(setObject('auth', true));
+        dispatch(fetchCurrentUser());
+        dispatch(fetchDatas('/cibles'));
+        // dispatch(fetchDatas('/matchs'));
     }
   }, []);
 
   useEffect(() => {
-    if (currentUser.pictures && !currentUser.profilePicture) {
+    if (currentUser && currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
   }, [currentUser]);

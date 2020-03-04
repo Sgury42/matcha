@@ -75,7 +75,7 @@ const MatchListBox = (props) => {
           {props.match.online ?
           <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
           :
-          <FiberManualRecordIcon fontSize="small" color="disabled"/>
+          <Typography variant="body2" style={{color: "#757575"}}>xx xx xxxx</Typography>
           }
         </Grid>
         <Grid container justify="center">

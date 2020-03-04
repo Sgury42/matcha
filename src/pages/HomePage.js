@@ -30,7 +30,7 @@ const HomePage = () => {
   useEffect(() => {
     if (!Cookies.get('token')) {
       history.push('/');
-    } else if (currentUser.pictures && !currentUser.profilePicture) {
+    } else if (currentUser && currentUser.pictures && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
   }, []);
