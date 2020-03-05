@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { setObject, updateObject, resetApp } from '../objects/actions';
 import Cookies from 'js-cookie';
+// import openSocket from "socket.io-client";
+
 
 export const sendReq = (route, form) => {
   return (dispatch) => {
@@ -14,9 +16,14 @@ export const sendReq = (route, form) => {
     .then(function (response) {
       switch(route) {
         case '/accounts/login/':
-          dispatch(setObject('auth', true));
+          // const socket = openSocket('http://localhost:8080');
+          // dispatch(setObject('auth', true));
           Cookies.set('token', response.data.token);
-          dispatch(fetchCurrentUser());
+          // dispatch(fetchCurrentUser());
+          // io.on('connection', (socket) => {
+            // console.log("usr room joined !")
+            // socket.join('USR' + found.id);
+          // })
           window.location.reload();
           break ;
         case '/accounts/register/':

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import openSocket from "socket.io-client";
 import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton, Badge } from '@material-ui/core';
 import { resetApp } from '../redux/objects/actions';
 import Cookies from 'js-cookie';
@@ -37,8 +38,12 @@ const useStyles = makeStyles(theme => ({
 const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const socket = openSocket('http://localhost:8080');
+
   // const isLoggedIn = useSelector(state => state.objects.auth);
   const notifications = useSelector(state => state.objects.notifications);
+
+  // socket.on('test', (msg) => {console.log(msg)});
 
   const logOut = () => {
     dispatch(disconnect());

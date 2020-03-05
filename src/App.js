@@ -10,6 +10,7 @@ import { HomePage, MatchPage, CreateProfilePage, LogInPage, NotFoundPage, Settin
 import { useDispatch } from 'react-redux';
 import { fetchCurrentUser, fetchDatas } from './redux/requests';
 import Cookies from 'js-cookie';
+import openSocket, { io } from "socket.io-client";
 import { setObject } from './redux/objects/actions';
 import { NavBar, SignUpForm, ProfileBox, Chat } from './components/index';
 
@@ -17,6 +18,7 @@ const App = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const socket = openSocket('http://localhost:8080');
   const currentUser = useSelector(state => state.objects.currentUser);
   const isLogged = useSelector(state => state.objects.auth);
   // const matches = useSelector(state => state.objects.matches);
@@ -31,8 +33,14 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (currentUser && currentUser.pictures && !currentUser.profilePicture) {
-      history.push('/create-profile');
+    if (currentUser) { 
+      if (currentUser.pictures && !currentUser.profilePicture) {
+        history.push('/create-profile');
+      }
+      socket.on('connect', (socket) => {
+        console.log("usr room joined !")
+        io.join('USR' + currentUser.id);
+      });
     }
   }, [currentUser]);
 
