@@ -16,15 +16,10 @@ export const sendReq = (route, form) => {
     .then(function (response) {
       switch(route) {
         case '/accounts/login/':
-          // const socket = openSocket('http://localhost:8080');
-          // dispatch(setObject('auth', true));
+          dispatch(setObject('auth', true));
           Cookies.set('token', response.data.token);
-          // dispatch(fetchCurrentUser());
-          // io.on('connection', (socket) => {
-            // console.log("usr room joined !")
-            // socket.join('USR' + found.id);
-          // })
-          window.location.reload();
+          dispatch(fetchCurrentUser());
+          // window.location.href = 'http://localhost:3000';
           break ;
         case '/accounts/register/':
           dispatch(setObject('alert', 'Check your mail box !'));

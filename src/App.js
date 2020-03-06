@@ -10,18 +10,20 @@ import { HomePage, MatchPage, CreateProfilePage, LogInPage, NotFoundPage, Settin
 import { useDispatch } from 'react-redux';
 import { fetchCurrentUser, fetchDatas } from './redux/requests';
 import Cookies from 'js-cookie';
-import openSocket, { io } from "socket.io-client";
 import { setObject } from './redux/objects/actions';
 import { NavBar, SignUpForm, ProfileBox, Chat } from './components/index';
+
+import socketIOClient from 'socket.io-client';
 
 const App = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const socket = openSocket('http://localhost:8080');
   const currentUser = useSelector(state => state.objects.currentUser);
   const isLogged = useSelector(state => state.objects.auth);
   // const matches = useSelector(state => state.objects.matches);
+
+  const socket = socketIOClient('http://localhost:8080');
 
   useEffect(() => {
     if (Cookies.get('token')) {
@@ -37,12 +39,17 @@ const App = () => {
       if (currentUser.pictures && !currentUser.profilePicture) {
         history.push('/create-profile');
       }
-      socket.on('connect', (socket) => {
         console.log("usr room joined !")
-        io.join('USR' + currentUser.id);
-      });
+        socket.emit('join', 'USR' + currentUser.id);
     }
   }, [currentUser]);
+
+  // useEffect(() => {
+  //   if (isLogged) {
+  //     console.log("usr joined room : USR_" + currentUser.id);
+  //     socket.emit('join', 'USR_' + currentUser.id);
+  //   }
+  // }, [isLogged]);
 
 // console.log(Cookies.get('token'));
 

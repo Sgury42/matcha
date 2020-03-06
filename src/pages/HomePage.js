@@ -47,10 +47,8 @@ const HomePage = () => {
   return (
     <>
     <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
-    {cibles[index] ? 
+    {cibles && 
       <SwipeBox userInfos={cibles[index]} usrId={cibles[index].id} currentUserId={currentUser.id} index={index} />
-      :
-      null
       //{/* <img src="https://cdn.pixabay.com/photo/2016/10/06/05/19/engagement-1718244_960_720.jpg" width="100%" /> */}
     }
     </>
