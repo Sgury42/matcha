@@ -24,7 +24,7 @@ const CreateProfilePage = () => {
 
   const handleClick = () => {
     dispatch(setObject('profileStep', false));
-    history.push('/');
+    history.push('/profile');
   }
 
   switch(step) {
@@ -33,7 +33,7 @@ const CreateProfilePage = () => {
         return (
           <Grid container spacing={1} justify="center">
             <Grid item xs={12} sm={10} md={8} lg={6}>
-              <PictureUpload pictures={ currentUser.pictures } profilePicture={ currentUser.profilePicture } />
+              {currentUser && <PictureUpload pictures={ currentUser.pictures } profilePicture={ currentUser.profilePicture } />}
             </Grid>
           </Grid>
         );
@@ -43,7 +43,7 @@ const CreateProfilePage = () => {
       return (
         <Grid container spacing={1} justify="center">
           <Grid item xs={12} sm={10} md={8} lg={6}>
-            <DescriptionUpload createProfile='true' description={ currentUser.description } />
+            { currentUser && <DescriptionUpload createProfile='true' description={ currentUser.description } />}
           </Grid>
         </Grid>
       );
@@ -53,7 +53,7 @@ const CreateProfilePage = () => {
       return (
         <Grid container spacing={1} justify="center">
           <Grid item xs={12} sm={10} md={8} lg={6}>
-            <HashtagsUpload createProfile='true' usrHashtags={ currentUser.hashtags } />
+            {currentUser && <HashtagsUpload createProfile='true' usrHashtags={ currentUser.hashtags } />}
           </Grid>
         </Grid>
       );
@@ -64,10 +64,10 @@ const CreateProfilePage = () => {
         <Grid container spacing={1} justify="center">
           <Grid item xs={12} sm={10} md={8} lg={6}>
             <Card>
-              <OrientationUpload gender={ currentUser.gender } research_gender={ currentUser.research_gender } />
-              <Location />
-              <SlidersOptions research_perimeter={ currentUser.research_perimeter } research_ageMin={ currentUser.research_age_min }
-                research_ageMax={ currentUser.research_age_max } />
+              {currentUser && <OrientationUpload gender={ currentUser.gender } research_gender={ currentUser.research_gender } />}
+              {currentUser && <Location latitude={ currentUser.latitude } longitude={ currentUser.longitude } />}
+              {currentUser && <SlidersOptions research_perimeter={ currentUser.research_perimeter } research_ageMin={ currentUser.research_age_min }
+                research_ageMax={ currentUser.research_age_max } />}
               <Grid item align='center'>
                 <IconButton name="next" onClick={ handleClick }>
                   <ChevronRightSharpIcon color="secondary" />
@@ -83,7 +83,7 @@ const CreateProfilePage = () => {
       return (
         <Grid container spacing={1} justify="center">
           <Grid item xs={12} sm={10} md={8} lg={6}>
-            <PictureUpload pictures={ currentUser.pictures } />
+            {currentUser && <PictureUpload pictures={ currentUser.pictures } />}
           </Grid>
         </Grid>
       );

@@ -14,6 +14,7 @@ import { setObject } from './redux/objects/actions';
 import { NavBar, SignUpForm, ProfileBox, Chat } from './components/index';
 
 import socketIOClient from 'socket.io-client';
+// import { connectSocket } from './socket/notifications';
 
 const App = () => {
 
@@ -23,14 +24,14 @@ const App = () => {
   const isLogged = useSelector(state => state.objects.auth);
   // const matches = useSelector(state => state.objects.matches);
 
-  const socket = socketIOClient('http://localhost:8080');
 
   useEffect(() => {
+    console.log(Cookies.get('token'));
     if (Cookies.get('token')) {
-        dispatch(setObject('auth', true));
+        // dispatch(setObject('auth', true));
         dispatch(fetchCurrentUser());
         dispatch(fetchDatas('/cibles'));
-        // dispatch(fetchDatas('/matchs'));
+        dispatch(fetchDatas('/matchs'));
     }
   }, []);
 
@@ -39,19 +40,20 @@ const App = () => {
       if (currentUser.pictures && !currentUser.profilePicture) {
         history.push('/create-profile');
       }
-        console.log("usr room joined !")
-        socket.emit('join', 'USR' + currentUser.id);
+      if (currentUser && Cookies.get('token'))
+        dispatch(setObject('auth', true));
+        dispatch(fetchDatas('/cibles'));
     }
   }, [currentUser]);
 
   // useEffect(() => {
   //   if (isLogged) {
-  //     console.log("usr joined room : USR_" + currentUser.id);
-  //     socket.emit('join', 'USR_' + currentUser.id);
+  //     const socket = socketIOClient('http://localhost:8080');
+  //     // var socket = io('ws://localhost:3000', {transports: ['websocket']});
+  //     console.log("usr room joined !")
+  //     socket.emit('join', 'USR' + currentUser.id);
   //   }
   // }, [isLogged]);
-
-// console.log(Cookies.get('token'));
 
   // useEffect(() => {
   //   console.log(matches);
@@ -60,6 +62,8 @@ const App = () => {
   useEffect(() => {
     console.log(currentUser);
   }, [currentUser])
+
+  // console.log(Cookies.get('token'));
 
   return (
       <MuiThemeProvider theme={theme}>

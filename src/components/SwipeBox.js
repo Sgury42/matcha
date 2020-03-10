@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
+// import { distance } from 'google-distance-matrix';
 import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
 import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -47,15 +48,21 @@ const SwipeBox = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { userInfos } = props;
+  const [lastConnection, setLastConnection] = useState(userInfos.lastConnection);
+  const [address, setAddress] = useState('');
+  // const [distance, setDistance] = useState('');
+  const usrLocation = props.currentUser.location;
+  const cibleLocation = props.userInfos.location;
 
 
   useEffect(() => {
-    console.log(userInfos);
+    const date = new Date(lastConnection);
+    setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
+    getAddress(cibleLocation.latitude, cibleLocation.longitude);
+    // getDistance();
   }, []);
 
   const handleLike = () => {
-    console.log('usrId = ' + props.usrId);
-    console.log('currentId = ' + props.currentUserId);
      dispatch(usrInteraction('/likes', {to_id: props.usrId}, props.index));
   }
 
@@ -67,6 +74,41 @@ const SwipeBox = (props) => {
     dispatch(usrInteraction('/accounts/report', {to_id: props.usrId, message: 'report'}));
     dispatch(setObject('index', props.index + 1));
   }
+
+  const getAddress = (lat, lng) => {
+    const KEY = "AIzaSyCH94qlFWu_Vp6qeV5NISrdDFChutvy5-0";
+    fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=" + KEY)
+    .then(response => {
+      response.json()
+      .then(datas => {
+        const address = datas.results[6].formatted_address;
+        setAddress(address);
+      })
+    })
+    .catch(err => console.log(err));
+  }
+
+  // const getDistance = () => {
+  //   const KEY = "AIzaSyAozW69CsDID7NBJM7QxO_XxBr14V6nJ_E";
+  //   fetch("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + usrLocation.latitude + "," + usrLocation.longitude +"&destinations=" + cibleLocation.latitude + "," + cibleLocation.longitude + "&key=" + KEY)
+  //   .then(response => {
+  //     response.json()
+  //     .then(datas => {
+  //       console.log(datas);
+  //     })
+  //   })
+  //   .catch(err => console.log(err));
+  // }
+  // const getDistance = () => {
+  //   const distance = require('google-distance-matrix');
+  //   distance.key('AIzaSyAozW69CsDID7NBJM7QxO_XxBr14V6nJ_E');
+  //   distance.matrix(usrLocation, cibleLocation, (err, distances) => {
+  //     if (!err)
+  //       console.log(distances);
+  //     else
+  //       console.log(err);
+  //   })
+  // }
 
     return (
         <Grid container spacing={1} justify="center">
@@ -92,7 +134,7 @@ const SwipeBox = (props) => {
                     {userInfos.online ?
                     <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
                     :
-                    <Typography variant="body2" style={{color: "#757575"}}>xx xx xxxx</Typography>
+                    <Typography variant="body2" style={{color: "#757575"}}>last connection {lastConnection}</Typography>
                     }
                     </Grid>
                     </Grid>
@@ -105,7 +147,7 @@ const SwipeBox = (props) => {
                       </Grid>
                       <div className={classes.halfGrow} />
                       <Grid item>
-                        <Typography variant="body1" className={classes.textInfos}>75017 test City</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>{address}</Typography>
                         <Typography variant="body1" className={classes.textInfos}>20km away</Typography>
                       </Grid>
                     </Grid>

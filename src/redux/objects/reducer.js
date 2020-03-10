@@ -7,7 +7,7 @@ const initialState = {
   profileStep: 'picture',
   location: {},
   // cibles: [],
-  matches: [],
+  // matches: [],
   index: 0,
   notifications: [],
 };

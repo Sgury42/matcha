@@ -57,6 +57,8 @@ const SignUpForm = () => {
   useEffect(() => {
     if (Cookies.get('token')) {
       history.push('/');
+    } else {
+      dispatch(fetchLocation());
     }
   }, []);
 
@@ -65,10 +67,6 @@ const SignUpForm = () => {
       history.push('/');
     }
   }, [status]);
-
-  useEffect (() => {
-    dispatch(fetchLocation());
-  }, []);
 
   useEffect(() => {
     setForm({ ...form, ['latitude']: location.latitude ? location.latitude : 0, ['longitude']: location.longitude ? location.longitude : 0});

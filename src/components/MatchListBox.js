@@ -3,12 +3,13 @@ import { Card, Avatar, Grid, Typography, CardActions, IconButton, Tooltip } from
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { usrInteraction } from '../redux/requests';
+import { usrInteraction, fetchDatas } from '../redux/requests';
 import ChatIcon from '@material-ui/icons/Chat';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
 import ReportOutlinedIcon from '@material-ui/icons/ReportOutlined';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
+import { setObject } from '../redux/objects/actions';
 
 const useStyles = makeStyles(theme =>({
   grow: {
@@ -28,11 +29,19 @@ const MatchListBox = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const lastConnection = "xx xx xxx";
+  // const [lastConnection, setLastConnection] = useState(props.match.lastConnection);
+
+  // useEffect(() => {
+  //   const date = new Date(lastConnection);
+  //   setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
+  // }, []);
 
   const handleClick = (e, action) => {
     switch (action) {
       case 'block':
-        dispatch(usrInteraction('path', {toUser: props.match.id}));
+        dispatch(usrInteraction('/accounts/block', {to_id: props.match.id}));
+        window.location.reload();
         break ;
       case 'report':
         dispatch(usrInteraction('/accounts/report', {to_id: props.match.id, message: 'report'}));
@@ -42,6 +51,7 @@ const MatchListBox = (props) => {
         break ;
       case 'dislike':
         dispatch(usrInteraction('/unmatch', {to_id: props.match.id}));
+        window.location.reload();
         break ;
       case 'chat':
         history.push('/chat/' + props.match.id + '/' + props.currentUserId);
@@ -75,7 +85,7 @@ const MatchListBox = (props) => {
           {props.match.online ?
           <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
           :
-          <Typography variant="body2" style={{color: "#757575"}}>xx xx xxxx</Typography>
+          <Typography variant="body2" style={{color: "#757575"}}>last connection {lastConnection}</Typography>
           }
         </Grid>
         <Grid container justify="center">

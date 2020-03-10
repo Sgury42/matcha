@@ -1,11 +1,16 @@
-// import openSocket from 'socket.io-client';
+import socketIOClient from 'socket.io-client';
 
-// const  socket = openSocket('http://localhost:8080');
+// const socket = socketIOClient('http://localhost:8080');
 
-// export const sayHello = () => {
-//   socket.on('sayHello', (msg) => {
-//     console.log(msg);
-//   });
-//   // socket.emit('subscribeToTimer', 1000);
-// }
-
+export const connectSocket = () => {
+  try {
+    // socket = io(window.location.host, {
+      // query: { token: Cookies.get('auth') }
+    // })
+    socket.on('connect', () => {
+      // init(socket)
+      // dispatch(updateObject('auth', { socketIsConnected: true }))
+    })
+  } catch (err) {
+    console.error('Error connecting to socket !')
+}

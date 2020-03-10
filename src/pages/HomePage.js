@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchDatas } from '../redux/requests';
 import { useHistory } from 'react-router-dom';
-import { deleteObject } from '../redux/objects/actions';
+import { deleteObject, setObject } from '../redux/objects/actions';
 import { Snackbar, Grid } from '@material-ui/core';
 import { SwipeBox } from '../components/index';
 import Cookies from 'js-cookie';
@@ -30,10 +30,15 @@ const HomePage = () => {
   useEffect(() => {
     if (!Cookies.get('token')) {
       history.push('/');
-    } else if (currentUser && currentUser.pictures && !currentUser.profilePicture) {
+    } else if (currentUser && !currentUser.profilePicture) {
       history.push('/create-profile');
     }
   }, []);
+
+  useEffect(() => {
+    if (cibles && index >= cibles.length)
+      dispatch(setObject('index', 0));
+  });
   
   useEffect(() => {
     console.log(cibles);
@@ -47,8 +52,8 @@ const HomePage = () => {
   return (
     <>
     <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
-    {cibles && 
-      <SwipeBox userInfos={cibles[index]} usrId={cibles[index].id} currentUserId={currentUser.id} index={index} />
+    {cibles && cibles[index] && currentUser && cibles.length &&
+      <SwipeBox userInfos={cibles[index]} usrId={cibles[index].id} currentUser={currentUser} index={index} />
       //{/* <img src="https://cdn.pixabay.com/photo/2016/10/06/05/19/engagement-1718244_960_720.jpg" width="100%" /> */}
     }
     </>

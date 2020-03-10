@@ -98,11 +98,6 @@ const SlidersOptions = (props) => {
                 </Grid>
               </Grid>
             </Grid>
-            {/* <Grid item xs={12} className={classes.flexItem}>
-              <IconButton name="submit" onClick={handleSlidersOptions}>
-                <ChevronRightSharpIcon color="secondary" />
-              </IconButton>
-            </Grid> */}
           </Grid>
         </Card>
       </Grid>

@@ -117,10 +117,11 @@ export const deletePicture = (form, deleteFrom) => {
       }
     })
     .then(function (response) {
-      if (deleteFrom === 'pictures')
+      if (deleteFrom === 'pictures') {
+        console.log(response.data);
         dispatch(removeItem('currentUser', 'pictures', response.data));
+      }
       else if (deleteFrom === 'profilePicture')
-        // dispatch(updateObject('currentUser', { 'profilePicture': response.data }));
         console.log(response);
     })
     .catch(function (error) {
@@ -147,6 +148,8 @@ export const usrInteraction = (route, form, index) => {
         case '/likes':
           dispatch(setObject('index', index + 1));
           break ;
+        case '/accounts/report':
+          dispatch(setObject('alert', 'user reported !'));
         default :
         console.log(response);
       }

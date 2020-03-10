@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "express": "^4.17.1",
+    "google-distance-matrix": "^1.1.1",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.15",
     "react": "^16.12.0",

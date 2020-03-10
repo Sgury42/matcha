@@ -27,28 +27,23 @@ const Location = (props) => {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
-    latitude: props.latitude ? props.latitude : '',
-    longitude: props.longitude ? props.longitude : ''
+    latitude: props.latitude ? props.latitude : 0,
+    longitude: props.longitude ? props.longitude : 0
   });
-
   const [currentAddress, setCurrentAddress] = useState('');
   const [address, setAddress] = useState('');
 
   useEffect(() => {
-    setForm({
-      latitude: props.latitude ? props.latitude : 0,
-      longitude: props.longitude ? props.longitude : 0
-    })
     if (props.latitude && props.longitude) {
       getAddress(props.latitude, props.longitude);
     }
   }, [props.latitude, props.longitude]);
 
   useEffect(() => {
-    console.log(form.latitude);
-    console.log(form.longitude);
-    if (form.latitude && form.longitude)
+    if (form.latitude && form.longitude) {
       dispatch(updateProfile('/accounts/locations', form));
+      getAddress(form.latitude, form.longitude);
+    }
   }, [form])
 
 
@@ -75,11 +70,6 @@ const Location = (props) => {
     })
     .catch(err => console.log(err));
   }
-
-  useEffect(() => {
-    console.log(form);
-  },[form])
-
 
   return (
     <Grid container spacing={1} justify="center">

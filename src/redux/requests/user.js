@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { setObject, updateObject, resetApp } from '../objects/actions';
 import Cookies from 'js-cookie';
-// import openSocket from "socket.io-client";
 
 
 export const sendReq = (route, form) => {
@@ -19,9 +18,10 @@ export const sendReq = (route, form) => {
           dispatch(setObject('auth', true));
           Cookies.set('token', response.data.token);
           dispatch(fetchCurrentUser());
-          // window.location.href = 'http://localhost:3000';
+          window.location.href = 'http://localhost:3000/profile';
           break ;
         case '/accounts/register/':
+          console.log(response);
           dispatch(setObject('alert', 'Check your mail box !'));
           dispatch(setObject('status', 'registrationOK'));
           break ;
@@ -66,8 +66,8 @@ export function fetchCurrentUser() {
       }
     })
     .then(async function (response) {
-      await dispatch(setObject('currentUser', response.data[0]));
-      await dispatch(setObject('auth', true));
+      await dispatch(setObject('currentUser', response.data));
+      console.log(response.data);
       axios.get('http://localhost:8080/accounts/getProfilePicture/', {
         headers: {
           "Content-Type": "application/json",
@@ -134,6 +134,7 @@ export const fetchDatas = (path) => {
     })
     .then(function (response) {
       if (path === '/matchs') {
+        console.log(response);
         dispatch(setObject('matches', response.data));
       } else if (path === '/cibles') {
         dispatch(setObject('cibles', response.data));

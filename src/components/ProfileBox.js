@@ -60,14 +60,20 @@ const ProfileBox = (props) => {
       setDatas({
         userInfos: props.location.state.userInfos,
         usrId: props.location.state.usrId,
-        currentUserId: props.location.state.currentUserId
+        currentUserId: props.location.state.currentUserId,
+        lastConnection: props.location.state.userInfos.lastConnection
       })
     }
   }, []);
 
+  // useEffect(() => {
+  //   console.log(datas);
+  // }, [datas]);
+
   useEffect(() => {
-    console.log(datas);
-  }, [datas]);
+    const date = new Date(datas.lastConnection);
+    setDatas({...datas, ['lastConnection']: new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date)});
+  }, []);
 
   const handleLike = () => {
     console.log('usrId = ' + datas.usrId);
@@ -110,7 +116,7 @@ const ProfileBox = (props) => {
                     {datas.userInfos.online ?
                     <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
                     :
-                    <Typography variant="body2" style={{color: "#757575"}}>xx xx xxxx</Typography>
+                    <Typography variant="body2" style={{color: "#757575"}}>last connection {datas.lastConnection}</Typography>
                     }
                     </Grid>
                     </Grid>

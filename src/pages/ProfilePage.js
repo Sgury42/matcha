@@ -22,13 +22,12 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!Cookies.get('token')) {
       history.push('/');
-    } else if (currentUser && currentUser.pictures && !currentUser.profilePicture) {
-      history.push('/create-profile');
     }
   }, []);
 
   useEffect(() => {
-    dispatch(fetchDatas('/cibles'));
+    if (currentUser && currentUser.pictures && !currentUser.profilePicture)
+      history.push('/create-profile');
   }, [currentUser]);
 
   return (
@@ -41,7 +40,7 @@ const ProfilePage = () => {
           <Grid item md={12} lg={4} >
             <Card>
               {currentUser && <OrientationUpload gender={ currentUser.gender } research_gender={ currentUser.research_gender } />}
-              {currentUser && <Location latitude={ currentUser.latitude } longitude={ currentUser.longitude } />}
+              {currentUser && <Location latitude={ currentUser.location.latitude } longitude={ currentUser.location.longitude } />}
               {currentUser && <SlidersOptions research_perimeter={ currentUser.research_perimeter } research_ageMin={ currentUser.research_age_min }
               research_ageMax={ currentUser.research_age_max } />}
             </Card>
