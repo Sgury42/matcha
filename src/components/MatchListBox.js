@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Grid, Typography, CardActions, IconButton, Tooltip } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -29,13 +29,12 @@ const MatchListBox = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const lastConnection = "xx xx xxx";
-  // const [lastConnection, setLastConnection] = useState(props.match.lastConnection);
+  const [lastConnection, setLastConnection] = useState(props.match.lastConnection);
 
-  // useEffect(() => {
-  //   const date = new Date(lastConnection);
-  //   setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
-  // }, []);
+  useEffect(() => {
+    const date = new Date(lastConnection);
+    setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
+  }, []);
 
   const handleClick = (e, action) => {
     switch (action) {
@@ -88,9 +87,9 @@ const MatchListBox = (props) => {
           <Typography variant="body2" style={{color: "#757575"}}>last connection {lastConnection}</Typography>
           }
         </Grid>
-        <Grid container justify="center">
+        {/* <Grid container justify="center">
           <Typography variant="subtitle1">compatibility: {parseInt(props.match.score)}%</Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
       <CardActions>
     <Tooltip title="unmatch" arrow>

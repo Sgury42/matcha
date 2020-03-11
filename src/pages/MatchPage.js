@@ -12,7 +12,7 @@ const MatchPage = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const matches = useSelector(state => state.objects.matches);       /// !!!!!!!!!!!!!!!!!change for matches !!!!!!!!!!!!!!
+  const matches = useSelector(state => state.objects.matches);
   const currentUser = useSelector(state => state.objects.currentUser);
   const alert = useSelector(state => state.objects.alert);
   const [open, setOpen] = useState(false);

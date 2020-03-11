@@ -18,10 +18,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
 const SlidersOptions = (props) => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [isMounted, setIsMounted] = useState(false)
+
 
   const [form, setForm] = useState({
     research_perimeter: props.research_perimeter ? props.research_perimeter : 30,
@@ -29,11 +32,8 @@ const SlidersOptions = (props) => {
   });
 
   useEffect(() => {
-    setForm({
-      research_perimeter: props.research_perimeter ? props.research_perimeter : 30,
-      ageRange: [props.research_ageMin ? props.research_ageMin : 18, props.research_ageMax ? props.research_ageMax : 25 ]
-    })
-  }, [props.research_perimeter, props.research_ageMin, props.research_ageMax]);
+    setIsMounted(true)
+  }, [])
 
   const handleDistanceChange = (e, newValue) => {
     setForm({ ...form, ['research_perimeter']: newValue });
@@ -46,24 +46,25 @@ const SlidersOptions = (props) => {
     setForm({ ...form, ['ageRange']: newValue });
   }
 
-
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(updateProfile('/accounts/research/perimeter/', form));
-    }, 500);
-    return () => clearTimeout(timer);
+    if (isMounted) {
+      const timer = setTimeout(() => {
+        dispatch(updateProfile('/accounts/research/perimeter/', form));
+      }, 500);
+      return () => clearTimeout(timer);
+    }
   }, [form.research_perimeter]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(updateProfile('/accounts/research/agemin/', {'research_ageMin': form.ageRange[0]}));
-      dispatch(updateProfile('/accounts/research/agemax/', {'research_ageMax': form.ageRange[1]}));
-    }, 500);
-    return () => clearTimeout(timer);
+    if (isMounted) {
+      const timer = setTimeout(() => {
+        dispatch(updateProfile('/accounts/research/agemin/', {'research_ageMin': form.ageRange[0]}));
+        dispatch(updateProfile('/accounts/research/agemax/', {'research_ageMax': form.ageRange[1]}));
+      }, 500);
+      return () => clearTimeout(timer);
+    }
   }, [form.ageRange]);
  
-
-  
   return (
     <Grid container spacing={1} justify="center" >
       <Grid item xs={12} >

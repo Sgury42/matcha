@@ -29,7 +29,7 @@ const App = () => {
     if (Cookies.get('token')) {
         // dispatch(setObject('auth', true));
         dispatch(fetchCurrentUser());
-        dispatch(fetchDatas('/cibles'));
+        // dispatch(fetchDatas('/cibles'));
         dispatch(fetchDatas('/matchs'));
     }
   }, []);

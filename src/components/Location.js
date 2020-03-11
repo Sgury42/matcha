@@ -17,14 +17,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// url to reverse geocoding = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=LAT,LNG&key=MY-API-KEY' 
-
-
-
 const Location = (props) => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [isMounted, setIsMounted] = useState(false)
 
   const [form, setForm] = useState({
     latitude: props.latitude ? props.latitude : 0,
@@ -34,14 +31,13 @@ const Location = (props) => {
   const [address, setAddress] = useState('');
 
   useEffect(() => {
-    if (props.latitude && props.longitude) {
-      getAddress(props.latitude, props.longitude);
-    }
-  }, [props.latitude, props.longitude]);
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     if (form.latitude && form.longitude) {
-      dispatch(updateProfile('/accounts/locations', form));
+      if (isMounted)
+        dispatch(updateProfile('/accounts/locations', form));
       getAddress(form.latitude, form.longitude);
     }
   }, [form])

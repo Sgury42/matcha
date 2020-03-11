@@ -15,30 +15,7 @@ class App extends Component {
             from_id: props.match.params.from_id,
         }
 
-        let reqMessages = async () => {
-          await axios.get('http://localhost:8080/chats', {
-              headers: {
-                  "Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "*",
-                  "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-                  "token": Cookies.get('token'),
-                  "to_id": this.state.to_id
-              }
-          }).then(async function (response) {
-              var messages = response.data
-              var tmp = []
-              for (const index in messages) {
-                  tmp.push(messages[index])
-              }
-              return tmp
-          }).then((tmp) => {
-              if (tmp.length !== this.state.messages.length){
-                  window.location.reload(false);
-              }
-          }).catch(function (error) {
-              console.log(error.response);
-          })
-      }
+        
 
         console.log(this.state.to_id);
 
@@ -103,7 +80,30 @@ class App extends Component {
         this.getMessages()
     }
 
-
+    reqMessages = async () => {
+        await axios.get('http://localhost:8080/chats', {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                "token": Cookies.get('token'),
+                "to_id": this.state.to_id
+            }
+        }).then(async function (response) {
+            var messages = response.data
+            var tmp = []
+            for (const index in messages) {
+                tmp.push(messages[index])
+            }
+            return tmp
+        }).then((tmp) => {
+            if (tmp.length !== this.state.messages.length){
+                window.location.reload(false);
+            }
+        }).catch(function (error) {
+            console.log(error.response);
+        })
+    }
 
     getMessages = async () => {
         const messages = []
@@ -128,8 +128,7 @@ class App extends Component {
     }
 
     getStyle = (from) => {
-        console.log(from)
-        if (from === this.state.from_id) {
+        if (from == this.state.from_id) {
             return {
                 margin: '10px',
                 display: 'inline-block',
@@ -181,7 +180,7 @@ class App extends Component {
     }
 
 
-    myInterval = setInterval(this.reqMessages, 5000);
+    myInterval = setInterval(this.reqMessages, 2000);
 
 
     componentWillUnmount() {
@@ -203,9 +202,9 @@ class App extends Component {
                     </div>
                 </div>
             ))}</div>
-            <form noValidate autoComplete="off" >
+            <form onSubmit={this.handleSubmit} noValidate autoComplete="off" >
                 <TextField id="multiline" variant="filled" onChange={this.handleChangeInput} value={this.state.newMessage} style={this.styles.input} />
-                <Button variant="contained" onClick={this.handleSubmit} style={this.styles.btn}>Envoyer</Button>
+                <Button variant="contained" onClick="submit" style={this.styles.btn}>Envoyer</Button>
             </form>
         </div>
     }

@@ -15,12 +15,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-
 const OrientationUpload = (props) => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [isMounted, setIsMounted] = useState(false)
 
   const [form, setForm] = useState({
     research_gender: props.research_gender ? props.research_gender : 'A',
@@ -28,8 +27,12 @@ const OrientationUpload = (props) => {
   });
 
   useEffect(() => {
-    setForm({ ...form, ['research_gender']: props.research_gender ? props.research_gender : 'A'})
-  }, [props.research_gender]);
+    setIsMounted(true)
+  }, [])
+
+  // useEffect(() => {
+  //   setForm({ ...form, ['research_gender']: props.research_gender ? props.research_gender : 'A'})
+  // }, [props.research_gender]);
 
   useEffect(() => {
     if (!form.research_gender || form.research_gender === 'A') {
@@ -40,7 +43,9 @@ const OrientationUpload = (props) => {
   }, [form.research_gender])
 
   useEffect(() => {
-    dispatch(updateProfile('/accounts/research/gender/', { 'research_gender': form.research_gender }));
+    if (isMounted) {
+      dispatch(updateProfile('/accounts/research/gender/', { 'research_gender': form.research_gender }));
+    }
   }, [form.research_gender]);
 
   const handleChange = async (e) => {

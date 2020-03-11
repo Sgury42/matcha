@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { setObject, updateObject, resetApp } from '../objects/actions';
 import Cookies from 'js-cookie';
+import { useState } from 'react';
 
 
 export const sendReq = (route, form) => {
@@ -53,33 +54,28 @@ export const sendReq = (route, form) => {
 }
 
 export function fetchCurrentUser() {
-  return (dispatch) => {
+  return async (dispatch) => {
     if (!Cookies.get('token')) {
       return dispatch(setObject('auth', false));
     }
-    axios.get('http://localhost:8080/accounts/params/', {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        "token": Cookies.get('token')
-      }
-    })
-    .then(async function (response) {
-      await dispatch(setObject('currentUser', response.data));
-      console.log(response.data);
-      axios.get('http://localhost:8080/accounts/getProfilePicture/', {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          "token": Cookies.get('token')
-        }
-      })
-      .then(async function (response) {
-        if (response.data[0]) {
-          await dispatch(updateObject('currentUser', { profilePicture: response.data[0].url_picture }));
-        }
+    try {
+      const [res1, res2, res3] = await Promise.all([
+        axios.get('http://localhost:8080/accounts/params/', {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "token": Cookies.get('token')
+          }
+        }),
+        axios.get('http://localhost:8080/accounts/getProfilePicture/', {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "token": Cookies.get('token')
+          }
+        }),
         axios.get('http://localhost:8080/accounts/pictures', {
           headers: {
             "Content-Type": "application/json",
@@ -88,22 +84,16 @@ export function fetchCurrentUser() {
             "token": Cookies.get('token')
           }
         })
-        .then(async function (response) {
-          await dispatch(updateObject('currentUser', { pictures: response.data} ));
-          return true;
-        })
-        .catch( function (error) {
-          console.log(error);
-        })
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-    })
-    .catch(function (error) {
-      console.log(error);
-      dispatch(setObject('auth', false));
-    })
+      ])
+      await dispatch(setObject('currentUser', {
+        ...res1.data,
+        profilePicture: res2.data[0].url_picture,
+        pictures: res3.data
+      }))
+    } catch (e) {
+      console.log(e)
+      dispatch(setObject('auth', false))
+    }
   }
 }
 

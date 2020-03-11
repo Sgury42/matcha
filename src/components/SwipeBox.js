@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { distance } from 'google-distance-matrix';
+import { getPreciseDistance } from 'geolib';
 import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
 import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -47,10 +47,11 @@ const useStyles = makeStyles(theme => ({
 const SwipeBox = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const KEY = process.env.REACT_APP_GOOGLE_API_KEY;
   const { userInfos } = props;
   const [lastConnection, setLastConnection] = useState(userInfos.lastConnection);
   const [address, setAddress] = useState('');
-  // const [distance, setDistance] = useState('');
+  const [distance, setDistance] = useState(0);
   const usrLocation = props.currentUser.location;
   const cibleLocation = props.userInfos.location;
 
@@ -59,7 +60,7 @@ const SwipeBox = (props) => {
     const date = new Date(lastConnection);
     setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
     getAddress(cibleLocation.latitude, cibleLocation.longitude);
-    // getDistance();
+    setDistance(getPreciseDistance(usrLocation, cibleLocation));
   }, []);
 
   const handleLike = () => {
@@ -76,39 +77,20 @@ const SwipeBox = (props) => {
   }
 
   const getAddress = (lat, lng) => {
-    const KEY = "AIzaSyCH94qlFWu_Vp6qeV5NISrdDFChutvy5-0";
     fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=" + KEY)
     .then(response => {
       response.json()
       .then(datas => {
-        const address = datas.results[6].formatted_address;
-        setAddress(address);
+        if (datas.results[6]) {
+          const address = datas.results[6].formatted_address;
+          setAddress(address);
+        } else {
+          setAddress('');
+        }
       })
     })
     .catch(err => console.log(err));
   }
-
-  // const getDistance = () => {
-  //   const KEY = "AIzaSyAozW69CsDID7NBJM7QxO_XxBr14V6nJ_E";
-  //   fetch("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + usrLocation.latitude + "," + usrLocation.longitude +"&destinations=" + cibleLocation.latitude + "," + cibleLocation.longitude + "&key=" + KEY)
-  //   .then(response => {
-  //     response.json()
-  //     .then(datas => {
-  //       console.log(datas);
-  //     })
-  //   })
-  //   .catch(err => console.log(err));
-  // }
-  // const getDistance = () => {
-  //   const distance = require('google-distance-matrix');
-  //   distance.key('AIzaSyAozW69CsDID7NBJM7QxO_XxBr14V6nJ_E');
-  //   distance.matrix(usrLocation, cibleLocation, (err, distances) => {
-  //     if (!err)
-  //       console.log(distances);
-  //     else
-  //       console.log(err);
-  //   })
-  // }
 
     return (
         <Grid container spacing={1} justify="center">
@@ -148,7 +130,7 @@ const SwipeBox = (props) => {
                       <div className={classes.halfGrow} />
                       <Grid item>
                         <Typography variant="body1" className={classes.textInfos}>{address}</Typography>
-                        <Typography variant="body1" className={classes.textInfos}>20km away</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>{distance} meter away</Typography>
                       </Grid>
                     </Grid>
 
