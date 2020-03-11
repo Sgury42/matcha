@@ -111,6 +111,7 @@ export const fetchLocation = () => {
   return (dispatch) => {
     axios('http://ip-api.com/json')
     .then(function (response) {
+      // console.log(response);
       dispatch(setObject('location', { 'latitude': response.data.lat, 'longitude': response.data.lon }));
     })
     .catch(function (error) {

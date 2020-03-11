@@ -59,11 +59,12 @@ const Location = (props) => {
   };
 
   const getAddress = (lat, lng) => {
-    const KEY = "AIzaSyCH94qlFWu_Vp6qeV5NISrdDFChutvy5-0";
+    const KEY = process.env.REACT_APP_GOOGLE_API_KEY;
     fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=" + KEY)
     .then(response => {
       response.json()
       .then(datas => {
+        console.log(datas);
         const address = datas.results[0].formatted_address;
         setCurrentAddress(address);
       })

@@ -9,3 +9,5 @@
 /public/photos
 /public/profilePictures
 /public/pictures
+
+.env

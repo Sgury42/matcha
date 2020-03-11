@@ -24,7 +24,6 @@ const App = () => {
   const isLogged = useSelector(state => state.objects.auth);
   // const matches = useSelector(state => state.objects.matches);
 
-
   useEffect(() => {
     console.log(Cookies.get('token'));
     if (Cookies.get('token')) {

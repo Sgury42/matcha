@@ -7,6 +7,9 @@ import { deleteObject } from '../redux/objects/actions';
 import { useHistory } from "react-router-dom";
 import Cookies from 'js-cookie';
 
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+
+
 const useStyles = makeStyles(theme => ({
   box: {
     margin: 'auto',
@@ -59,6 +62,7 @@ const SignUpForm = () => {
       history.push('/');
     } else {
       dispatch(fetchLocation());
+      getLocation();
     }
   }, []);
 
@@ -69,8 +73,21 @@ const SignUpForm = () => {
   }, [status]);
 
   useEffect(() => {
+    // console.log(location);
     setForm({ ...form, ['latitude']: location.latitude ? location.latitude : 0, ['longitude']: location.longitude ? location.longitude : 0});
   }, [location]);
+
+  const getLocation = () => {
+    const pos = {};
+    const getLocation = navigator.geolocation;
+    if (geolocation) {
+      geolocation.getCurentPosition(findLocal, showError);
+    }
+    function fundLocal(position) {
+      console.log(position);
+    }
+    function showError() {console.log(Error)}
+  }
 
   const formIsValid = () => {
     const newErrors = {};
@@ -83,8 +100,8 @@ const SignUpForm = () => {
     if (!firstname || firstname.length < 2 || firstname.length > 15) {
       newErrors.firstnameError = '2 to 15 characters';
     }
-    if (name.length > 15){
-      newErrors.nameError = '15 characters max'
+    if (!name || name.length < 2 || name.length > 15) {
+      newErrors.nameError = '2 to 15 characters';
     }
     if (!mail || !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail))) {
     newErrors.mailError = 'email is not valid';
@@ -146,11 +163,11 @@ const SignUpForm = () => {
                 <TextField name="login" value={login} label="Login" type="text" variant="outlined" margin="normal"
                   error={Boolean(errors.loginError)} helperText={errors.loginError} required={true}
                   onChange={handleChange} /> 
-                <TextField name="firstname" value={firstname} label="Firstname" type="text" variant="outlined" margin="normal" 
+                <TextField name="firstname" value={firstname} label="First name" type="text" variant="outlined" margin="normal" 
                   error={Boolean(errors.firstnameError)} helperText={errors.firstnameError} required={true}
                   onChange={handleChange} />
                 <TextField name="name" value={name} label="Last name" type="text" variant="outlined" margin="normal" 
-                  error={Boolean(errors.nameError)} helperText={errors.nameError}
+                  error={Boolean(errors.nameError)} helperText={errors.nameError} required={true}
                   onChange={handleChange} />
                 <TextField name="mail" value={mail} label="Email" variant="outlined" margin="normal"
                   error={Boolean(errors.mailError)} helperText={errors.mailError} required={true}
