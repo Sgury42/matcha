@@ -202,9 +202,9 @@ class App extends Component {
                     </div>
                 </div>
             ))}</div>
-            <form noValidate autoComplete="off" >
+            <form onSubmit={this.handleSubmit} noValidate autoComplete="off" >
                 <TextField id="multiline" variant="filled" onChange={this.handleChangeInput} value={this.state.newMessage} style={this.styles.input} />
-                <Button variant="contained" onClick={this.handleSubmit} style={this.styles.btn}>Envoyer</Button>
+                <Button variant="contained" onClick="submit" style={this.styles.btn}>Envoyer</Button>
             </form>
         </div>
     }
