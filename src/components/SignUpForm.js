@@ -7,9 +7,6 @@ import { deleteObject } from '../redux/objects/actions';
 import { useHistory } from "react-router-dom";
 import Cookies from 'js-cookie';
 
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-
-
 const useStyles = makeStyles(theme => ({
   box: {
     margin: 'auto',
@@ -62,7 +59,6 @@ const SignUpForm = () => {
       history.push('/');
     } else {
       dispatch(fetchLocation());
-      getLocation();
     }
   }, []);
 
@@ -76,18 +72,6 @@ const SignUpForm = () => {
     // console.log(location);
     setForm({ ...form, ['latitude']: location.latitude ? location.latitude : 0, ['longitude']: location.longitude ? location.longitude : 0});
   }, [location]);
-
-  const getLocation = () => {
-    const pos = {};
-    const getLocation = navigator.geolocation;
-    if (geolocation) {
-      geolocation.getCurentPosition(findLocal, showError);
-    }
-    function fundLocal(position) {
-      console.log(position);
-    }
-    function showError() {console.log(Error)}
-  }
 
   const formIsValid = () => {
     const newErrors = {};
