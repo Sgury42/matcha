@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Grid, Card, IconButton } from '@material-ui/core';
@@ -15,12 +15,24 @@ const CreateProfilePage = () => {
   const dispatch = useDispatch();
   const step = useSelector(state => state.objects.profileStep);
   const currentUser = useSelector(state => state.objects.currentUser);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    if (!Cookies.get('token')) {
+    if (!Cookies.get('token'))
       history.push('/');
-    }
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      setDataLoaded(true);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    console.log(currentUser);
+    if (dataLoaded && currentUser && currentUser.profilePicture)
+      history.push('/profile');
+  }, [dataLoaded]);
 
   const handleClick = () => {
     dispatch(setObject('profileStep', false));

@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { setObject, updateObject, resetApp } from '../objects/actions';
 import Cookies from 'js-cookie';
-import { useState } from 'react';
-
+import { getPreciseDistance } from 'geolib';
 
 export const sendReq = (route, form) => {
   return (dispatch) => {
@@ -19,7 +18,7 @@ export const sendReq = (route, form) => {
           dispatch(setObject('auth', true));
           Cookies.set('token', response.data.token);
           dispatch(fetchCurrentUser());
-          window.location.href = 'http://localhost:3000/profile';
+          window.location.href = 'http://localhost:3000/create-profile';
           break ;
         case '/accounts/register/':
           console.log(response);
@@ -85,11 +84,18 @@ export function fetchCurrentUser() {
           }
         })
       ])
-      await dispatch(setObject('currentUser', {
-        ...res1.data,
-        profilePicture: res2.data[0].url_picture,
-        pictures: res3.data
-      }))
+      if (res2.data[0]) {
+        await dispatch(setObject('currentUser', {
+          ...res1.data,
+          profilePicture: res2.data[0].url_picture,
+          pictures: res3.data
+        }))
+      } else {
+        await dispatch(setObject('currentUser', {
+          ...res1.data,
+          pictures: res3.data
+        }))
+      }
     } catch (e) {
       console.log(e)
       dispatch(setObject('auth', false))
@@ -101,7 +107,6 @@ export const fetchLocation = () => {
   return (dispatch) => {
     axios('http://ip-api.com/json')
     .then(function (response) {
-      // console.log(response);
       dispatch(setObject('location', { 'latitude': response.data.lat, 'longitude': response.data.lon }));
     })
     .catch(function (error) {
@@ -110,7 +115,7 @@ export const fetchLocation = () => {
   }
 }
 
-export const fetchDatas = (path) => {
+export const fetchDatas = (path, usrLocation, perimeter) => {
   return (dispatch) => {
     if (!Cookies.get('token')) {
       return dispatch(setObject('auth', false));
@@ -123,12 +128,23 @@ export const fetchDatas = (path) => {
         "token": Cookies.get('token')
       }
     })
-    .then(function (response) {
+    .then(async function (response) {
       if (path === '/matchs') {
-        console.log(response);
         dispatch(setObject('matches', response.data));
       } else if (path === '/cibles') {
-        dispatch(setObject('cibles', response.data));
+        if (response.data.length) {
+          const cibles = [];
+          await response.data.forEach(async (el) => {
+            const distance = await getPreciseDistance(usrLocation, el.location);
+            if (distance < perimeter * 1000) {
+              const newEl = el;
+              newEl['distance'] = distance;
+              await cibles.push(newEl);
+            }
+          });
+          await cibles.sort((a, b) => (a.score > b.score) ? -1 : 1);
+          await dispatch(setObject('cibles', cibles));
+        }
       }
     })
     .catch(function (error) {

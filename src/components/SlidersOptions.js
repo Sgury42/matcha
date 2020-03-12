@@ -47,7 +47,7 @@ const SlidersOptions = (props) => {
   }
 
   useEffect(() => {
-    if (isMounted) {
+    if (isMounted || !props.research_perimeter) {
       const timer = setTimeout(() => {
         dispatch(updateProfile('/accounts/research/perimeter/', form));
       }, 500);
@@ -56,7 +56,7 @@ const SlidersOptions = (props) => {
   }, [form.research_perimeter]);
 
   useEffect(() => {
-    if (isMounted) {
+    if (isMounted || !props.research_ageMax || !props.research_ageMin) {
       const timer = setTimeout(() => {
         dispatch(updateProfile('/accounts/research/agemin/', {'research_ageMin': form.ageRange[0]}));
         dispatch(updateProfile('/accounts/research/agemax/', {'research_ageMax': form.ageRange[1]}));

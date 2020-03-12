@@ -42,7 +42,7 @@ const LogInPage = (props) => {
   return (
     <>
       <LogInForm />
-      <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
+      <Snackbar  open={ open } autoHideDuration={5000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
     </>
   );
 }

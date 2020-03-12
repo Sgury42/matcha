@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 // import { Container } from '@material-ui/core';
 import { CssBaseline } from '@material-ui/core';
-import { HomePage, MatchPage, CreateProfilePage, LogInPage, NotFoundPage, SettingsPage, ProfilePage } from './pages/index';
+import { HomePage, MatchListPage, CreateProfilePage, LogInPage, NotFoundPage, SettingsPage, ProfilePage, MatchPage } from './pages/index';
 import { useDispatch } from 'react-redux';
 import { fetchCurrentUser, fetchDatas } from './redux/requests';
 import Cookies from 'js-cookie';
@@ -25,7 +25,6 @@ const App = () => {
   // const matches = useSelector(state => state.objects.matches);
 
   useEffect(() => {
-    console.log(Cookies.get('token'));
     if (Cookies.get('token')) {
         // dispatch(setObject('auth', true));
         dispatch(fetchCurrentUser());
@@ -41,28 +40,22 @@ const App = () => {
       }
       if (currentUser && Cookies.get('token'))
         dispatch(setObject('auth', true));
-        dispatch(fetchDatas('/cibles'));
+        dispatch(fetchDatas('/cibles', currentUser.location, currentUser.research_perimeter));
     }
   }, [currentUser]);
 
-  // useEffect(() => {
-  //   if (isLogged) {
-  //     const socket = socketIOClient('http://localhost:8080');
-  //     // var socket = io('ws://localhost:3000', {transports: ['websocket']});
-  //     console.log("usr room joined !")
-  //     socket.emit('join', 'USR' + currentUser.id);
-  //   }
-  // }, [isLogged]);
-
-  // useEffect(() => {
-  //   console.log(matches);
-  // }, [matches])
+  useEffect(() => {
+    if (isLogged) {
+      const socket = socketIOClient('http://localhost:8080');
+      // var socket = io('ws://localhost:3000', {transports: ['websocket']});
+      console.log("usr room joined !")
+      socket.emit('join', 'USR' + currentUser.id);
+    }
+  }, [isLogged]);
 
   useEffect(() => {
     console.log(currentUser);
   }, [currentUser])
-
-  // console.log(Cookies.get('token'));
 
   return (
       <MuiThemeProvider theme={theme}>
@@ -72,7 +65,7 @@ const App = () => {
           {/* <Container maxWidth="lg" id="page-body"> */}
             <Switch>
               <Route path="/" component={HomePage} exact />
-              <Route path="/match" component={MatchPage} />
+              <Route path="/match" component={MatchListPage} />
               <Route path="/logIn" component={LogInPage} />
               <Route path="/signUp" component={SignUpForm} />
               <Route path="/profile" component={ProfilePage} />

@@ -58,8 +58,6 @@ const MatchListBox = (props) => {
     }
   }
 
-  console.log(props.match);
-
   return (
     <Card>
     <Grid container>

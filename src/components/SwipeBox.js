@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getPreciseDistance } from 'geolib';
+// import { getPreciseDistance } from 'geolib';
 import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
 import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -51,7 +51,7 @@ const SwipeBox = (props) => {
   const { userInfos } = props;
   const [lastConnection, setLastConnection] = useState(userInfos.lastConnection);
   const [address, setAddress] = useState('');
-  const [distance, setDistance] = useState(0);
+  // const [distance, setDistance] = useState(0);
   const usrLocation = props.currentUser.location;
   const cibleLocation = props.userInfos.location;
 
@@ -60,7 +60,7 @@ const SwipeBox = (props) => {
     const date = new Date(lastConnection);
     setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
     getAddress(cibleLocation.latitude, cibleLocation.longitude);
-    setDistance(getPreciseDistance(usrLocation, cibleLocation));
+    // setDistance(getPreciseDistance(usrLocation, cibleLocation));
   }, []);
 
   const handleLike = () => {
@@ -130,7 +130,7 @@ const SwipeBox = (props) => {
                       <div className={classes.halfGrow} />
                       <Grid item>
                         <Typography variant="body1" className={classes.textInfos}>{address}</Typography>
-                        <Typography variant="body1" className={classes.textInfos}>{distance} meter away</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>{userInfos.distance} meter away</Typography>
                       </Grid>
                     </Grid>
 

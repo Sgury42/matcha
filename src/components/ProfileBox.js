@@ -49,35 +49,30 @@ const ProfileBox = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [datas, setDatas] = useState({});
+  const [datas, setDatas] = useState({
+    userInfos: props.location.state.userInfos,
+    usrId: props.location.state.usrId,
+    currentUserId: props.location.state.currentUserId,
+    lastConnection: '',
+  });
 
 
   useEffect(() => {
-    console.log(props);
     if (!props.location.state) {
       history.push('/');
-    } else if (props.location.state.userInfos) {
-      setDatas({
-        userInfos: props.location.state.userInfos,
-        usrId: props.location.state.usrId,
-        currentUserId: props.location.state.currentUserId,
-        lastConnection: props.location.state.userInfos.lastConnection
-      })
+    } else {
+      const date = new Date(props.location.state.userInfos.lastConnection);
+      setDatas({...datas, ['lastConnection']: new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date)})
+      getAddress(props.location.state.userInfos.location.latitude, props.location.state.userInfos.location.longitude);
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log(datas);
-  // }, [datas]);
 
   useEffect(() => {
-    const date = new Date(datas.lastConnection);
-    setDatas({...datas, ['lastConnection']: new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date)});
-  }, []);
+    console.log(datas);
+  }, [datas]);
 
   const handleLike = () => {
-    console.log('usrId = ' + datas.usrId);
-    console.log('currentId = ' + datas.currentUserId);
      dispatch(usrInteraction('/likes', {to_id: props.usrId}, props.index));
   }
 
@@ -90,9 +85,22 @@ const ProfileBox = (props) => {
     dispatch(setObject('index', props.index + 1));
   }
 
+  const getAddress = (lat, lng) => {
+    fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=" + process.env.REACT_APP_GOOGLE_API_KEY)
+    .then(response => {
+      response.json()
+      .then(data => {
+        if (data.results[6]) {
+          setDatas({...datas, ['location']: data.results[6].formatted_address});
+        } else {
+          return '';
+        }
+      })
+    })
+    .catch(err => console.log(err));
+  }
+
     return (
-      <>
-      {datas.userInfos ?
         <Grid container spacing={1} justify="center">
           <Grid item lg={6} md ={8} sm={10} xs={12} >
             <Card id="swipeBox" height="auto">
@@ -130,14 +138,9 @@ const ProfileBox = (props) => {
                       </Grid>
                       <div className={classes.halfGrow} />
                       <Grid item>
-                        <Typography variant="body1" className={classes.textInfos}>75017 test City</Typography>
+                        <Typography variant="body1" className={classes.textInfos}>{datas.location}</Typography>
                         <Typography variant="body1" className={classes.textInfos}>20km away</Typography>
                       </Grid>
-                    </Grid>
-
-                    
-                    <Grid container justify="center">
-                      <Typography variant="subtitle2" >compatibility {parseInt(datas.userInfos.score)}% </Typography>
                     </Grid>
                     <Typography variant="body1">{datas.userInfos.description}</Typography>
                   <div className={classes.grow} />
@@ -175,10 +178,6 @@ const ProfileBox = (props) => {
             </Card>
           </Grid>
         </Grid>
-        :
-        <span>test</span>
-      }
-      </>
     )
 }
 

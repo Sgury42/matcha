@@ -46,8 +46,15 @@ export const updateProfile = (route, form) => {
           dispatch(setObject('alert', 'email updated !'));
         case '/accounts/userLogin/':
           dispatch(setObject('alert', 'Hi ' + form.login));
+        case '/accounts/research/agemin/':
+          dispatch(updateObject('currentUser', {research_age_min: form.research_ageMin}));
+          break ;
+        case '/accounts/research/agemax':
+          dispatch(updateObject('currentUser', {research_age_max: form.research_ageMax}));
+          break ;
 
         default :
+          console.log(form);
           dispatch(updateObject('currentUser', form));
       }
     })

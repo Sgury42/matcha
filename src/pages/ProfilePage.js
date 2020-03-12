@@ -26,21 +26,21 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-    if (currentUser && currentUser.pictures && !currentUser.profilePicture)
+    if (currentUser && !currentUser.profilePicture)
       history.push('/create-profile');
-  }, [currentUser]);
+  }, []);
 
   return (
     <Grid container justify='space-evenly'>
       <Grid item md={11} lg={10}>
         <Grid container justify="space-evenly" wrap="wrap" alignItems="stretch">
           <Grid item md={12} lg={7}>
-              {currentUser && <PictureUpload pictures={ currentUser.pictures } profilePicture={ currentUser.profilePicture } />}
+              {currentUser && currentUser.profilePicture && <PictureUpload pictures={ currentUser.pictures } profilePicture={ currentUser.profilePicture } />}
           </Grid>
           <Grid item md={12} lg={4} >
             <Card>
               {currentUser && <OrientationUpload gender={ currentUser.gender } research_gender={ currentUser.research_gender } />}
-              {currentUser && <Location latitude={ currentUser.location.latitude } longitude={ currentUser.location.longitude } />}
+              {currentUser && currentUser.profilePicture && <Location latitude={ currentUser.location.latitude } longitude={ currentUser.location.longitude } />}
               {currentUser && <SlidersOptions research_perimeter={ currentUser.research_perimeter } research_ageMin={ currentUser.research_age_min }
               research_ageMax={ currentUser.research_age_max } />}
             </Card>
