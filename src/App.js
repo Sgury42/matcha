@@ -4,7 +4,6 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-// import { Container } from '@material-ui/core';
 import { CssBaseline } from '@material-ui/core';
 import { HomePage, MatchListPage, CreateProfilePage, LogInPage, NotFoundPage, SettingsPage, ProfilePage, MatchPage } from './pages/index';
 import { useDispatch } from 'react-redux';
@@ -14,7 +13,7 @@ import { setObject } from './redux/objects/actions';
 import { NavBar, SignUpForm, ProfileBox, Chat } from './components/index';
 
 import socketIOClient from 'socket.io-client';
-// import { connectSocket } from './socket/notifications';
+import { connectSocket } from './socket/notifications';
 
 const App = () => {
 
@@ -41,15 +40,14 @@ const App = () => {
       if (currentUser && Cookies.get('token'))
         dispatch(setObject('auth', true));
         dispatch(fetchDatas('/cibles', currentUser.location, currentUser.research_perimeter));
+        dispatch(fetchDatas('/notifications'));
     }
   }, [currentUser]);
 
   useEffect(() => {
     if (isLogged) {
       const socket = socketIOClient('http://localhost:8080');
-      // var socket = io('ws://localhost:3000', {transports: ['websocket']});
-      console.log("usr room joined !")
-      socket.emit('join', 'USR' + currentUser.id);
+      connectSocket(socket, currentUser.id, dispatch, fetchDatas);
     }
   }, [isLogged]);
 

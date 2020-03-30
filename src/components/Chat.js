@@ -15,10 +15,6 @@ class App extends Component {
             from_id: props.match.params.from_id,
         }
 
-        
-
-        console.log(this.state.to_id);
-
         this.styles = {
             channelList: {
                 display: "flex",
@@ -173,6 +169,18 @@ class App extends Component {
             }
         }).then(() => {
             window.location.reload(false);
+            axios.post('http://localhost:8080/notifications/chat', {
+              from_id: this.state.from_id,
+              to_id: this.state.to_id,
+              chat_id: '0'
+            }, {
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                "token": Cookies.get('token')
+              }
+            }).then(() => {console.log('notification sent')})
 
         }).catch(function (error) {
             console.log(error.response);

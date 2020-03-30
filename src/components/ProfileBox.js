@@ -68,10 +68,6 @@ const ProfileBox = (props) => {
   }, []);
 
 
-  useEffect(() => {
-    console.log(datas);
-  }, [datas]);
-
   const handleLike = () => {
      dispatch(usrInteraction('/likes', {to_id: props.usrId}, props.index));
   }

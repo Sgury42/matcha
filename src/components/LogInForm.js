@@ -46,7 +46,6 @@ const LogInForm = () => {
 
   const handleClick = (e, action) => {
     if (action === 'sendNewPasswd') {
-      console.log(form.mail);
       dispatch(sendReq('/accounts/forgotPasswd', { mail: form.mail }));
       setOpen(false);
     } else

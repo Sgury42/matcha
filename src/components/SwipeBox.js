@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { getPreciseDistance } from 'geolib';
+import socketIOClient from 'socket.io-client';
 import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
 import { sizing } from '@material-ui/system';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -9,7 +9,6 @@ import ReportIcon from '@material-ui/icons/Report';
 import { usrInteraction } from '../redux/requests';
 import { setObject } from '../redux/objects/actions';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-// import { mergeClasses } from '@material-ui/styles';
 
 
 const useStyles = makeStyles(theme => ({
@@ -51,7 +50,6 @@ const SwipeBox = (props) => {
   const { userInfos } = props;
   const [lastConnection, setLastConnection] = useState(userInfos.lastConnection);
   const [address, setAddress] = useState('');
-  // const [distance, setDistance] = useState(0);
   const usrLocation = props.currentUser.location;
   const cibleLocation = props.userInfos.location;
 
@@ -60,11 +58,10 @@ const SwipeBox = (props) => {
     const date = new Date(lastConnection);
     setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
     getAddress(cibleLocation.latitude, cibleLocation.longitude);
-    // setDistance(getPreciseDistance(usrLocation, cibleLocation));
   }, []);
 
   const handleLike = () => {
-     dispatch(usrInteraction('/likes', {to_id: props.usrId}, props.index));
+     dispatch(usrInteraction('/likes', {to_id: props.usrId, from_id: props.currentUser.id, like_id: '0'}, props.index));
   }
 
   const handleDislike = () => {

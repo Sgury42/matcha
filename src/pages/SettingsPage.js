@@ -23,20 +23,16 @@ const SettingsPage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.objects.currentUser);
   const alert = useSelector(state => state.objects.alert);
-  // const isLogged = useSelector(state => state.objects.auth);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (currentUser && !currentUser.profilePicture) {
-      history.push('/create-profile');
-    }
-  }, [])
 
   useEffect(() => {
     if (!Cookies.get('token')) {
       history.push('/');
     }
-  }, []);
+    if (currentUser && !currentUser.profilePicture) {
+      history.push('/create-profile');
+    }
+  })
 
   useEffect(() => {
     if (alert) {

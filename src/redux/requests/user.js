@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setObject, updateObject, resetApp } from '../objects/actions';
+import { setObject, resetApp } from '../objects/actions';
 import Cookies from 'js-cookie';
 import { getPreciseDistance } from 'geolib';
 
@@ -15,7 +15,7 @@ export const sendReq = (route, form) => {
     .then(function (response) {
       switch(route) {
         case '/accounts/login/':
-          dispatch(setObject('auth', true));
+          // dispatch(setObject('auth', true));
           Cookies.set('token', response.data.token);
           dispatch(fetchCurrentUser());
           window.location.href = 'http://localhost:3000/create-profile';
@@ -41,12 +41,16 @@ export const sendReq = (route, form) => {
             dispatch(setObject('alert', 'Oups try again !'));
           break ;
         case '/accounts/register/':
+          console.log(error);
           if (error.response)
             dispatch(setObject('alert', error.response.data ? error.response.data : "Oups something went wrong !"));
             break ;
         case '/accounts/forgotPasswd':
           dispatch(setObject('alert', 'Oups something went wrong !'))
           break ;
+
+        default:
+          console.log(error);
       }
     })
   }
@@ -132,6 +136,7 @@ export const fetchDatas = (path, usrLocation, perimeter) => {
       if (path === '/matchs') {
         dispatch(setObject('matches', response.data));
       } else if (path === '/cibles') {
+        console.log(response);
         if (response.data.length) {
           const cibles = [];
           await response.data.forEach(async (el) => {
@@ -145,6 +150,8 @@ export const fetchDatas = (path, usrLocation, perimeter) => {
           await cibles.sort((a, b) => (a.score > b.score) ? -1 : 1);
           await dispatch(setObject('cibles', cibles));
         }
+      } else if (path === '/notifications') {
+        dispatch(setObject('notifications', response.data));
       }
     })
     .catch(function (error) {

@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import openSocket from "socket.io-client";
-import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton, Badge } from '@material-ui/core';
+import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton, Badge, Drawer, Card } from '@material-ui/core';
 import { resetApp } from '../redux/objects/actions';
+import { disconnect, updateProfile, fetchDatas } from '../redux/requests';
 import Cookies from 'js-cookie';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import PowerSettingsNewOutlinedIcon from '@material-ui/icons/PowerSettingsNewOutlined';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import NotificationsNoneRoundedIcon from '@material-ui/icons/NotificationsNoneRounded';
-import { disconnect } from '../redux/requests';
+import socketIOClient from 'socket.io-client';
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,32 +23,89 @@ const useStyles = makeStyles(theme => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    flexGrow: 1,
-  },
   link: {
       textDecoration: 'none',
   },
   titleLink: {
     textDecoration: 'none',
     color: 'inherit',
-},
+  },
+  newNotif: {
+    margin: 20,
+    padding: 20,
+    backgroundColor: 'rgb(211, 47, 47, 0.2)',
+    borderRadius: 10,
+    border: '1px solid rgb(211, 47, 47)'
+  },
+  oldNotif: {
+    margin: 20,
+    padding: 20,
+    borderRadius: 10,
+    border: '1px solid rgb(211, 47, 47)'
+  }
 }));
   
 const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const socket = openSocket('http://localhost:8080');
 
   // const isLoggedIn = useSelector(state => state.objects.auth);
+  const [drowerIsOpen, setDrowerIsOpen] = useState(false);
   const notifications = useSelector(state => state.objects.notifications);
+  const currentUser = useSelector(state => state.objects.currentUser);
+  const [notificationCount, setNotificationCount] = useState(0);
 
-  // socket.on('test', (msg) => {console.log(msg)});
+  useEffect(() => {
+    console.log(notifications);
+    notifCount();
+  }, [notifications]);
+
+  const notifCount = () => {
+    let count = 0;
+    notifications.forEach((notif) => {
+      console.log(notif.status);
+      if (notif.status) {
+        count++;
+      }
+    })
+    setNotificationCount(count);
+  }
 
   const logOut = () => {
     dispatch(disconnect());
     Cookies.remove('token');
     dispatch(resetApp());
+    const socket = socketIOClient('http://localhost:8080');
+    socket.close();
+  }
+
+  const handleClick = () => {
+    setDrowerIsOpen(true);
+    dispatch(updateProfile('/notifications/read', {id: currentUser.id}));
+    dispatch(fetchDatas('/notifications'));
+    notifCount();
+  }
+
+  const list = () => {
+    return (
+      notifications.map((notif, key) =>
+      <div key={key}>
+      {notif.status ?
+        <div key={key} className={classes.newNotif}>
+          <Typography variant="body1" key={key}>
+            {notif.message}
+          </Typography>
+        </div>
+        :
+        <div key={key} className={classes.oldNotif}>
+          <Typography variant="body1" key={key}>
+            {notif.message}
+          </Typography>
+        </div>
+        }
+      </div>
+      )
+    )
   }
 
     return (
@@ -78,11 +135,14 @@ const NavBar = () => {
                       <SettingsOutlinedIcon color='primary' fontSize='large' />
                     </IconButton>
                   </Link>
-                  <IconButton aria-label="notifications">
-                    <Badge badgeContent={notifications.length ? notifications.length : "0"} color="secondary" overlap="circle">
+                  <IconButton aria-label="notifications" onClick={handleClick}>
+                    <Badge badgeContent={notificationCount} color="secondary" overlap="circle">
                       <NotificationsNoneRoundedIcon color='primary' fontSize='large' />
                     </Badge>
                   </IconButton>
+                  <Drawer anchor='right' open={drowerIsOpen} onClose={() => setDrowerIsOpen(false)}>
+                    {list()}
+                  </Drawer>
                   <Link to="/" onClick={() => logOut()}>
                     <IconButton aria-label="LogOut">
                       <PowerSettingsNewOutlinedIcon color='secondary' fontSize='large' />

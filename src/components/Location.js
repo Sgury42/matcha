@@ -60,7 +60,6 @@ const Location = (props) => {
     .then(response => {
       response.json()
       .then(datas => {
-        console.log(datas);
         const address = datas.results[0].formatted_address;
         setCurrentAddress(address);
       })

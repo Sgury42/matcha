@@ -52,6 +52,8 @@ export const updateProfile = (route, form) => {
         case '/accounts/research/agemax':
           dispatch(updateObject('currentUser', {research_age_max: form.research_ageMax}));
           break ;
+        case '/notifications/read':
+          break ;
 
         default :
           console.log(form);
@@ -154,6 +156,13 @@ export const usrInteraction = (route, form, index) => {
       switch(route) {
         case '/likes':
           dispatch(setObject('index', index + 1));
+          if (response.status === 200) {
+            dispatch(usrInteraction('/notifications/like', form));
+          } else if (response.status === 250) {
+            dispatch(setObject('alert', 'NEW MATCH !'));
+            dispatch(usrInteraction('/notifications/match', form))
+            console.log('MATCH !')
+          }
           break ;
         case '/accounts/report':
           dispatch(setObject('alert', 'user reported !'));

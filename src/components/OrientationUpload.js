@@ -56,7 +56,6 @@ const OrientationUpload = (props) => {
     } else if (e.target.value === "bi") {
       await setForm({ ...form, ['research_gender']: 'A'});
     }
-    console.log(form);
   }
 
   return (

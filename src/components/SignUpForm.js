@@ -26,7 +26,6 @@ const SignUpForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const alert = useSelector(state => state.objects.alert);
-  const isLoggedIn = useSelector(state => state.objects.auth);
   const location = useSelector(state => state.objects.location);
   const status = useSelector(state => state.objects.status);
   const [open, setOpen] = useState(false);
@@ -69,7 +68,6 @@ const SignUpForm = () => {
   }, [status]);
 
   useEffect(() => {
-    // console.log(location);
     setForm({ ...form, ['latitude']: location.latitude ? location.latitude : 0, ['longitude']: location.longitude ? location.longitude : 0});
   }, [location]);
 

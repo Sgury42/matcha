@@ -29,10 +29,9 @@ const CreateProfilePage = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    console.log(currentUser);
     if (dataLoaded && currentUser && currentUser.profilePicture)
       history.push('/profile');
-  }, [dataLoaded]);
+  });
 
   const handleClick = () => {
     dispatch(setObject('profileStep', false));

@@ -1,16 +1,14 @@
-import socketIOClient from 'socket.io-client';
 
-// const socket = socketIOClient('http://localhost:8080');
+export const connectSocket = (socket, usrId, dispatch, fetchDatas) => {
 
-export const connectSocket = () => {
-  try {
-    // socket = io(window.location.host, {
-      // query: { token: Cookies.get('auth') }
-    // })
-    socket.on('connect', () => {
-      // init(socket)
-      // dispatch(updateObject('auth', { socketIsConnected: true }))
+  socket.on('connect', () => {
+      socket.emit('join', 'USR' + usrId);
     })
-  } catch (err) {
-    console.error('Error connecting to socket !')
+  socket.on('notification', (msg) => {
+    // console.log(msg);
+    dispatch(fetchDatas('/notifications'));
+  })
+  socket.on('disconnect', () => {
+    console.log('socket disconnected');
+  })
 }
