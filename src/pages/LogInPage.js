@@ -13,8 +13,6 @@ const LogInPage = (props) => {
   const alert = useSelector(state => state.objects.alert);
   const [open, setOpen] = useState(false);
 
-  // const currentUser = useSelector(state => state.objects.currentUser);
-
   useEffect(() => {
     if (Cookies.get('token')) {
       history.push('/profile');
@@ -36,7 +34,7 @@ const LogInPage = (props) => {
     if (props.match.params.token) {
       dispatch(confirmEmail(props.match.params.token));
     }
-  }, [])
+  })
 
 
   return (

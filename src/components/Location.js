@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import PlacesAutocomplete, { geocodeByAddress, geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
-import Geocode from 'react-geocode';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { updateProfile } from '../redux/requests';
 import { Card, makeStyles, Grid, Typography, TextField } from '@material-ui/core';
 
@@ -38,9 +37,21 @@ const Location = (props) => {
     if (form.latitude && form.longitude) {
       if (isMounted)
         dispatch(updateProfile('/accounts/locations', form));
+      const getAddress = (lat, lng) => {
+        const KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+        fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=" + KEY)
+        .then(response => {
+          response.json()
+          .then(datas => {
+            const address = datas.results[0].formatted_address;
+            setCurrentAddress(address);
+          })
+        })
+        .catch(err => console.log(err));
+      }
       getAddress(form.latitude, form.longitude);
     }
-  }, [form])
+  }, [form.latitude, form.longitude])
 
 
   const handleChange = value => {
@@ -54,26 +65,12 @@ const Location = (props) => {
     setForm({['latitude']: LatLon.lat, ['longitude']: LatLon.lng});
   };
 
-  const getAddress = (lat, lng) => {
-    const KEY = process.env.REACT_APP_GOOGLE_API_KEY;
-    fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=" + KEY)
-    .then(response => {
-      response.json()
-      .then(datas => {
-        const address = datas.results[0].formatted_address;
-        setCurrentAddress(address);
-      })
-    })
-    .catch(err => console.log(err));
-  }
-
   return (
     <Grid container spacing={1} justify="center">
       <Grid item xs={12} >
         <Card id="Location">
           <Typography className={ classes.margBot } variant="h4">
             I live in...
-            {/* <span className={ classes.addressDisplay }>{currentAddress}</span> */}
           </Typography>
           <Typography variant="body1" className={ classes.margBot }>
             {currentAddress}
@@ -90,11 +87,7 @@ const Location = (props) => {
                     backgroundColor: suggestion.active ? "#D32F2F" : "#fff",
                     color: suggestion.active ? "white" : "black",
                     display: 'flex',
-                    //flexWrap: 'wrap',
-                    //flex: 1,
-                    //alignItems: 'center',
                     maxWidth: "150px",
-                    //overflow: 'hidden'
                   }
                   return <div {...getSuggestionItemProps(suggestion, {style})}>
                   {suggestion.description}</div>

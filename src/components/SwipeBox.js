@@ -1,8 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
-import socketIOClient from 'socket.io-client';
-import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions, Box} from '@material-ui/core';
-import { sizing } from '@material-ui/system';
+import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions } from '@material-ui/core';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import ReportIcon from '@material-ui/icons/Report';
@@ -50,7 +48,6 @@ const SwipeBox = (props) => {
   const { userInfos } = props;
   const [lastConnection, setLastConnection] = useState(userInfos.lastConnection);
   const [address, setAddress] = useState('');
-  const usrLocation = props.currentUser.location;
   const cibleLocation = props.userInfos.location;
 
 

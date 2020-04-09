@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchDatas } from '../redux/requests';
 import { useHistory } from 'react-router-dom';
 import { deleteObject, setObject } from '../redux/objects/actions';
 import { Snackbar, Grid } from '@material-ui/core';
@@ -14,7 +13,6 @@ const HomePage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.objects.currentUser);
-  const isLogged = useSelector(state => state.objects.auth);
   const alert = useSelector(state => state.objects.alert);
   const cibles = useSelector(state => state.objects.cibles);
   const index = useSelector(state => state.objects.index);

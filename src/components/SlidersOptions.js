@@ -36,14 +36,22 @@ const SlidersOptions = (props) => {
   }, [])
 
   const handleDistanceChange = (e, newValue) => {
-    setForm({ ...form, ['research_perimeter']: newValue });
+    setForm({ ...form, 'research_perimeter': newValue });
   }
   const handleInputDistanceChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value === '' ? '' : Number(e.target.value)});
   }
 
+  const handleDistanceBlur = () => {
+    if (form.research_perimeter < 0) {
+      setForm({ ...form, 'research_perimeter': 0 });
+    } else if (form.research_perimeter > 250) {
+      setForm({ ...form, 'research_perimeter': 250 });
+    }
+  };
+
   const handleAgeChange = (e, newValue) => {
-    setForm({ ...form, ['ageRange']: newValue });
+    setForm({ ...form, 'ageRange': newValue });
   }
 
   useEffect(() => {
@@ -81,7 +89,8 @@ const SlidersOptions = (props) => {
                   color="secondary" max={250} aria-labelledby="distance-slider" />
                 </Grid>
                 <Grid item xs={4}>
-                  <Input name='research_perimeter' className={classes.input} value={form.research_perimeter} margin="dense" onChange={handleInputDistanceChange}
+                  <Input name='research_perimeter' className={classes.input} value={form.research_perimeter} margin="dense"
+                  onBlur={handleDistanceBlur} onChange={handleInputDistanceChange}
                     inputProps={{ step: 10, min: 0, max: 250, type: 'number', 'aria-labelledby': 'input-slider', }} />
                   <Typography variant="body1">Km</Typography>
                 </Grid>

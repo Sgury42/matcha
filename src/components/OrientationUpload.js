@@ -27,34 +27,32 @@ const OrientationUpload = (props) => {
   });
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  // useEffect(() => {
-  //   setForm({ ...form, ['research_gender']: props.research_gender ? props.research_gender : 'A'})
-  // }, [props.research_gender]);
-
-  useEffect(() => {
-    if (!form.research_gender || form.research_gender === 'A') {
-      setForm({ ...form, ['orientation']: "bi" });
+    if (props.research_gender === props.gender) {
+      setForm({ ...form, 'orientation': "gay" });
+    } else if (props.research_gender !== props.gender && props.research_gender !== "A") {
+      setForm({ ...form, 'orientation': "hetero" });
     } else {
-      setForm({ ...form, ['orientation']: form.research_gender === props.gender ? "gay" : "hetero"});
+      setForm({ ...form, 'orientation': "bi"});
     }
-  }, [form.research_gender])
+    setIsMounted(true);
+  }, [])
 
   useEffect(() => {
     if (isMounted || !props.research_gender) {
+      console.log('gender updated');
       dispatch(updateProfile('/accounts/research/gender/', { 'research_gender': form.research_gender }));
     }
-  }, [form.research_gender]);
+  }, [form.research_gender])
 
-  const handleChange = async (e) => {
-    if (e.target.value === "hetero") {
-      await setForm({ ...form, ['research_gender']: props.gender === "F" ? "M" : "F" });
-    } else if (e.target.value === "gay") {
-      await setForm({ ...form, ['research_gender']: props.gender });
-    } else if (e.target.value === "bi") {
-      await setForm({ ...form, ['research_gender']: 'A'});
+  const handleChange = (e) => {
+    if (e.target.value) {
+      if (e.target.value === "hetero") {
+        setForm({ ...form, 'research_gender': props.gender === "F" ? "M" : "F", 'orientation': e.target.value });
+      } else if (e.target.value === "gay") {
+        setForm({ ...form, 'research_gender': props.gender, 'orientation': e.target.value });
+      } else if (e.target.value === "bi") {
+        setForm({ ...form, 'research_gender': 'A', 'orientation': e.target.value});
+      }
     }
   }
 

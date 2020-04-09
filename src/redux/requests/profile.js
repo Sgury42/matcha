@@ -44,8 +44,12 @@ export const updateProfile = (route, form) => {
           break ;
         case '/accounts/mail/':
           dispatch(setObject('alert', 'email updated !'));
+          dispatch(updateObject('currentUser', form));
+          break ;
         case '/accounts/userLogin/':
           dispatch(setObject('alert', 'Hi ' + form.login));
+          dispatch(updateObject('currentUser', form));
+          break ;
         case '/accounts/research/agemin/':
           dispatch(updateObject('currentUser', {research_age_min: form.research_ageMin}));
           break ;
@@ -57,7 +61,6 @@ export const updateProfile = (route, form) => {
 
         default :
           console.log(form);
-          dispatch(updateObject('currentUser', form));
       }
     })
     .catch(function (error) {
@@ -166,6 +169,8 @@ export const usrInteraction = (route, form, index) => {
           break ;
         case '/accounts/report':
           dispatch(setObject('alert', 'user reported !'));
+          break ;
+          
         default :
         console.log(response);
       }

@@ -1,4 +1,4 @@
-import React, { Component, componentWillUnmount } from "react";
+import React, { Component } from "react";
 import { TextField, Button } from '@material-ui/core';
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -124,7 +124,7 @@ class App extends Component {
     }
 
     getStyle = (from) => {
-        if (from == this.state.from_id) {
+        if (from === this.state.from_id) {  //changed == for === because of warning 
             return {
                 margin: '10px',
                 display: 'inline-block',
@@ -191,9 +191,9 @@ class App extends Component {
     myInterval = setInterval(this.reqMessages, 2000);
 
 
-    componentWillUnmount() {
-      clearInterval(this.myInterval)
-    }
+    // componentWillUnmount() {
+    //   clearInterval(this.myInterval)
+    // }
 
 
     render() {
