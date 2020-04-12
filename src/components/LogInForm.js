@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Card, makeStyles, Grid, TextField, Button, Typography, Link, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
 import { sendReq } from '../redux/requests';
-import { deleteObject } from '../redux/objects/actions'
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 

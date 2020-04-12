@@ -56,6 +56,12 @@ export const updateProfile = (route, form) => {
         case '/accounts/research/agemax':
           dispatch(updateObject('currentUser', {research_age_max: form.research_ageMax}));
           break ;
+        case '/accounts/locations':
+          dispatch(updateObject('currentUser', {location: form}));
+          break ;
+        case '/accounts/research/perimeter/':
+          dispatch(updateObject('currentUser', {research_perimeter: form.research_perimeter}));
+          break ;
         case '/notifications/read':
           break ;
 
@@ -84,7 +90,6 @@ export const profilePictureUpload = (formData) => {
     })
     .then(function (response) {
       dispatch(updateObject('currentUser', { 'profilePicture': response.data }));
-      console.log(response.data);
     })
     .catch(function (error) {
       console.log(error.response);
@@ -130,7 +135,6 @@ export const deletePicture = (form, deleteFrom) => {
     })
     .then(function (response) {
       if (deleteFrom === 'pictures') {
-        console.log(response.data);
         dispatch(removeItem('currentUser', 'pictures', response.data));
       }
       else if (deleteFrom === 'profilePicture')

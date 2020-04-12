@@ -2,29 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { deleteAccount } from '../redux/requests';
-import { makeStyles, Card, Button, Snackbar } from '@material-ui/core';
+import { Card, Button, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-
-// const useStyles = makeStyles(theme => ({
-//   deletePanelHeader: {
-//     backgroundColor: theme.palette.secondary.main,
-//     color: "white"
-//   }
-// }));
 
 const DeleteAccount = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
   const [open, setOpen] = useState(false);
-
-  // const classes = useStyles();
-
-  // const [expanded, setExpanded] = useState('false');
-
-  // const handleChange = (panel) => (event, newExpanded) => {
-  //   setExpanded(newExpanded ? panel : false);
-  // }
 
   const handleDelete = () => {
     dispatch(deleteAccount());

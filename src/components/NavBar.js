@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton, Badge, Drawer, Card } from '@material-ui/core';
+import { Button, AppBar, Toolbar, Typography, makeStyles, IconButton, Badge, Drawer } from '@material-ui/core';
 import { resetApp } from '../redux/objects/actions';
 import { disconnect, updateProfile, fetchDatas } from '../redux/requests';
 import Cookies from 'js-cookie';
@@ -49,21 +49,24 @@ const NavBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  // const isLoggedIn = useSelector(state => state.objects.auth);
   const [drowerIsOpen, setDrowerIsOpen] = useState(false);
   const notifications = useSelector(state => state.objects.notifications);
   const currentUser = useSelector(state => state.objects.currentUser);
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
-    console.log(notifications);
-    notifCount();
+    let count = 0;
+    notifications.forEach((notif) => {
+      if (notif.status) {
+        count++;
+      }
+    })
+    setNotificationCount(count);
   }, [notifications]);
 
   const notifCount = () => {
     let count = 0;
     notifications.forEach((notif) => {
-      console.log(notif.status);
       if (notif.status) {
         count++;
       }

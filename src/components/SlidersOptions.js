@@ -27,7 +27,7 @@ const SlidersOptions = (props) => {
 
 
   const [form, setForm] = useState({
-    research_perimeter: props.research_perimeter ? props.research_perimeter : 30,
+    research_perimeter: props.research_perimeter ? props.research_perimeter : 0,
     ageRange: [props.research_ageMin ? props.research_ageMin : 18, props.research_ageMax ? props.research_ageMax : 25 ]
   });
 
@@ -50,8 +50,8 @@ const SlidersOptions = (props) => {
     }
   };
 
-  const handleAgeChange = (e, newValue) => {
-    setForm({ ...form, 'ageRange': newValue });
+  const handleAgeChange = async (e, newValue) => {
+    await setForm({ ...form, 'ageRange': newValue });
   }
 
   useEffect(() => {

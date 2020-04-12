@@ -19,10 +19,10 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!Cookies.get('token')) {
       history.push('/');
-    }
-    if (currentUser && !currentUser.profilePicture)
+    } else if (currentUser && !currentUser.profilePicture) {
       history.push('/create-profile');
-  });
+    }
+  }, []);
 
   return (
     <Grid container justify='space-evenly'>

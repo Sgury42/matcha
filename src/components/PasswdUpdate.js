@@ -7,8 +7,6 @@ import ChevronRightSharpIcon from '@material-ui/icons/ChevronRightSharp';
 
 const PasswdUpdate = () => {
 
-  // const [passwd, setPasswd] = useState('');
-  // const [repeatPasswd, setRepeatPasswd] = useState('');
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     passwd: '',

@@ -10,7 +10,6 @@ import Cookies from 'js-cookie';
 
 const CreateProfilePage = () => {
 
-  // const steps = ["register", "pictures", "description", "hashtags", "orientationAndpreferences"];
   const history = useHistory();
   const dispatch = useDispatch();
   const step = useSelector(state => state.objects.profileStep);
@@ -31,7 +30,7 @@ const CreateProfilePage = () => {
   useEffect(() => {
     if (dataLoaded && currentUser && currentUser.profilePicture)
       history.push('/profile');
-  });
+  }, [dataLoaded]);
 
   const handleClick = () => {
     dispatch(setObject('profileStep', false));

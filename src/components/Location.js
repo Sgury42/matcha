@@ -62,7 +62,7 @@ const Location = (props) => {
     const results = await geocodeByAddress(value);
     const LatLon = await getLatLng(results[0]);
     setAddress(value);
-    setForm({['latitude']: LatLon.lat, ['longitude']: LatLon.lng});
+    setForm({'latitude': LatLon.lat, 'longitude': LatLon.lng});
   };
 
   return (

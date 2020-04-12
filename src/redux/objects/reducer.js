@@ -2,18 +2,15 @@ import _ from 'lodash'
 
 const initialState = {
   auth: false,
-  // currentUser: {},
   alert: null,
   profileStep: 'picture',
   location: {},
-  // cibles: [],
-  // matches: [],
   index: 0,
   notifications: [],
 };
 
 const objectsReducer = (state = initialState, action) => {
-  const { objectName, object, type, item, data } = action
+  const { objectName, object, type, item, data, index } = action
   let edited;
   switch(type) {
 
@@ -52,7 +49,6 @@ const objectsReducer = (state = initialState, action) => {
         ...state,
         [objectName]: null
       }
-      break
     }
     
     case 'ADD_ITEM': {
@@ -65,14 +61,14 @@ const objectsReducer = (state = initialState, action) => {
           [item]: edited,
         }
       }
-      break
     }
 
       case 'REMOVE_ITEM': {
         edited = [...state[objectName][item]];
-        let index;
-        if (index = edited.indexOf(data) > -1)
+        let index = edited.indexOf(data);
+        if (index > -1) {
           edited.splice(index, 1);
+        }
         return {
           ...state,
           [objectName] : {
@@ -80,7 +76,15 @@ const objectsReducer = (state = initialState, action) => {
             [item]: edited,
           }
         }
-        break
+      }
+
+      case 'REMOVE_LIKED': {
+        let newCibles = [...state[objectName]];
+        newCibles.splice(index, 1);
+        return {
+          ...state,
+          [objectName] : newCibles
+        }
       }
 
     default:

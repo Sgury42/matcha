@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { fetchDatas } from '../redux/requests';
 import { deleteObject } from '../redux/objects/actions';
 import MatchListBox from '../components/MatchListBox';
 import { Grid, Snackbar, Typography } from '@material-ui/core';
@@ -22,7 +21,7 @@ const MatchListPage = () => {
     if (!Cookies.get('token')) {
       history.push('/');
     }
-  }, []);
+  });
 
   useEffect(() => {
     if (alert) {

@@ -36,6 +36,13 @@ export const removeItem = (objectName, item, data) => {
   }
 }
 
+export const removeLiked = (objectName, index) => {
+  return {
+    type: 'REMOVE_LIKED',
+    index, objectName
+  }
+}
+
 export const resetApp = () => {
   return {
     type: 'RESET_APP'

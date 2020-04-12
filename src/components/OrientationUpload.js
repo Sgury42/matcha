@@ -39,7 +39,6 @@ const OrientationUpload = (props) => {
 
   useEffect(() => {
     if (isMounted || !props.research_gender) {
-      console.log('gender updated');
       dispatch(updateProfile('/accounts/research/gender/', { 'research_gender': form.research_gender }));
     }
   }, [form.research_gender])

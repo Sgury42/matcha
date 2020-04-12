@@ -56,9 +56,6 @@ const HashtagsUpload = (props) => {
 
   const handleAddNew = () => {
     if (usrHashtags.hashtags.indexOf(hashtagInput, 1) === parseInt(-1) && hashtagInput) {
-      // if (listHashtags.indexOf(hashtagInput, 1) === parseInt(-1)) {
-        ////////////ADD NEW HASHTAG TO LIST OF ALL HASHTAGS IN DB
-      // }
       handleAdd(hashtagInput);
     }
     setHashtagInput('');
@@ -74,7 +71,6 @@ const HashtagsUpload = (props) => {
     tmpArray = usrHashtags.hashtags;
     tmpArray.push(hashtag);
     setUsrHashtags({ ...usrHashtags, [hashtags]: tmpArray });
-    //ADD NEW LIST OF USER HASHTAGS INTO DB
     dispatch(hashtags(usrHashtags));
 }
 
@@ -93,7 +89,6 @@ const HashtagsUpload = (props) => {
       if ((index = tmpArray.indexOf(hashtag)) > -1) {
         tmpArray.splice(index, 1);
         setUsrHashtags({ ...usrHashtags, [hashtags]: tmpArray });
-      //DELETE FROM DB
         dispatch(hashtags(usrHashtags));
       }
     }

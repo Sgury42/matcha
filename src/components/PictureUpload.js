@@ -4,7 +4,7 @@ import { Card, makeStyles, Grid, Typography, Box, Button, IconButton } from '@ma
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import { useDispatch } from 'react-redux';
-import { addPicture, profilePictureUpload, pictureUpload, deletePicture } from '../redux/requests';
+import { profilePictureUpload, pictureUpload, deletePicture } from '../redux/requests';
 import { setObject } from '../redux/objects/actions';
 
 
@@ -34,7 +34,7 @@ const defaultProps = {
 const PictureUpload = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const ppIcon = "https://i0.wp.com/www.industrialontologies.org/wp-content/uploads/2018/10/cropped-blank-profile-picture-973460_640.png?ssl=1";
+  const ppIcon = "https://devshift.biz/wp-content/uploads/2017/04/profile-icon-png-898.png";
 
   const [profilePicture, setProfilePicture] = useState({
     preview: props.profilePicture ? props.profilePicture : ppIcon,
@@ -42,7 +42,6 @@ const PictureUpload = (props) => {
   const [pictures, setPictures] = useState(props.pictures ? props.pictures : []);
   const [imgCounter, setImgCounter] = useState(pictures.length);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [counter, setCounter] = useState(pictures.length);
   const [PPMissing, setPPMissing] = useState("");
 
   useEffect(() => {
@@ -59,7 +58,6 @@ const PictureUpload = (props) => {
 
   useEffect(() => {
     setImgCounter(pictures.length);
-    setCounter(pictures.length);
   }, [pictures])
 
   useEffect(() => {
@@ -82,7 +80,7 @@ const PictureUpload = (props) => {
       const formData = new FormData();
       formData.append("file", e.target.files[0], e.target.files[0].name);
       dispatch(profilePictureUpload(formData));
-      if (prevProfilePicture && prevProfilePicture != ppIcon)
+      if (prevProfilePicture && prevProfilePicture !== ppIcon)
         dispatch(deletePicture({url_picture: prevProfilePicture}, 'profilePicture'));
     } else if (e && e.target.files[0]) {
       const formData = new FormData();

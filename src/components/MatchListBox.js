@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, Avatar, Grid, Typography, CardActions, IconButton, Tooltip } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { usrInteraction, fetchDatas } from '../redux/requests';
+import { usrInteraction } from '../redux/requests';
 import ChatIcon from '@material-ui/icons/Chat';
 import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
 import ReportOutlinedIcon from '@material-ui/icons/ReportOutlined';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
-import { setObject } from '../redux/objects/actions';
 
 const useStyles = makeStyles(theme =>({
   grow: {
@@ -29,12 +28,6 @@ const MatchListBox = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const [lastConnection, setLastConnection] = useState(props.match.lastConnection);
-
-  useEffect(() => {
-    const date = new Date(lastConnection);
-    setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
-  }, []);
 
   const handleClick = (e, action) => {
     switch (action) {
@@ -54,6 +47,8 @@ const MatchListBox = (props) => {
         break ;
       case 'chat':
         history.push('/chat/' + props.match.id + '/' + props.currentUserId);
+        break ;
+      default:
         break ;
     }
   }
@@ -82,12 +77,9 @@ const MatchListBox = (props) => {
           {props.match.online ?
           <FiberManualRecordIcon fontSize="small"  style={{color: "#8bc34a"}}/>
           :
-          <Typography variant="body2" style={{color: "#757575"}}>last connection {lastConnection}</Typography>
+          <Typography variant="body2" style={{color: "#757575"}}>last connection {props.match.lastConnection}</Typography>
           }
         </Grid>
-        {/* <Grid container justify="center">
-          <Typography variant="subtitle1">compatibility: {parseInt(props.match.score)}%</Typography>
-        </Grid> */}
       </Grid>
       <CardActions>
     <Tooltip title="unmatch" arrow>

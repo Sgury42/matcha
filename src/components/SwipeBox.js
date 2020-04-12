@@ -1,11 +1,11 @@
 import React, { useEffect,useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import { Grid, Card, makeStyles, GridListTile, GridList, Avatar, Typography, IconButton, Chip, CardMedia, CardContent, CardActions } from '@material-ui/core';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import ReportIcon from '@material-ui/icons/Report';
 import { usrInteraction } from '../redux/requests';
-import { setObject } from '../redux/objects/actions';
+import { setObject, removeLiked } from '../redux/objects/actions';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 
@@ -50,7 +50,6 @@ const SwipeBox = (props) => {
   const [address, setAddress] = useState('');
   const cibleLocation = props.userInfos.location;
 
-
   useEffect(() => {
     const date = new Date(lastConnection);
     setLastConnection(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date));
@@ -59,6 +58,7 @@ const SwipeBox = (props) => {
 
   const handleLike = () => {
      dispatch(usrInteraction('/likes', {to_id: props.usrId, from_id: props.currentUser.id, like_id: '0'}, props.index));
+     dispatch(removeLiked('cibles', props.index ));
   }
 
   const handleDislike = () => {

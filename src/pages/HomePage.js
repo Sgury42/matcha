@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { deleteObject, setObject } from '../redux/objects/actions';
-import { Snackbar, Grid } from '@material-ui/core';
+import { Snackbar, Typography } from '@material-ui/core';
 import { SwipeBox } from '../components/index';
 import Cookies from 'js-cookie';
-
 
 
 const HomePage = () => {
@@ -33,14 +32,11 @@ const HomePage = () => {
     }
   }, []);
 
+
   useEffect(() => {
     if (cibles && index >= cibles.length)
       dispatch(setObject('index', 0));
-  });
-  
-  useEffect(() => {
-    console.log(cibles);
-  }, [cibles]);
+  }, [index, cibles, dispatch]);
 
   const handleClose = () => {
     setOpen(false);
@@ -50,9 +46,13 @@ const HomePage = () => {
   return (
     <>
     <Snackbar  open={ open } autoHideDuration={6000} transitionDuration={1000} message={ alert } onClose={ handleClose } />
-    {cibles && cibles[index] && currentUser && cibles.length &&
+    {Cookies.get('token') ?
+    cibles && cibles[index] && currentUser && cibles.length ?
       <SwipeBox userInfos={cibles[index]} usrId={cibles[index].id} currentUser={currentUser} index={index} />
-      //{/* <img src="https://cdn.pixabay.com/photo/2016/10/06/05/19/engagement-1718244_960_720.jpg" width="100%" /> */}
+      :
+      <Typography variant="h4" align="center">Nobody's around !</Typography>
+      :
+      <img src="https://cdn.pixabay.com/photo/2016/10/06/05/19/engagement-1718244_960_720.jpg" alt="background_picture" width="100%" />
     }
     </>
   );

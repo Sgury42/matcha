@@ -15,13 +15,11 @@ export const sendReq = (route, form) => {
     .then(function (response) {
       switch(route) {
         case '/accounts/login/':
-          // dispatch(setObject('auth', true));
           Cookies.set('token', response.data.token);
           dispatch(fetchCurrentUser());
           window.location.href = 'http://localhost:3000/create-profile';
           break ;
         case '/accounts/register/':
-          console.log(response);
           dispatch(setObject('alert', 'Check your mail box !'));
           dispatch(setObject('status', 'registrationOK'));
           break ;
@@ -134,9 +132,17 @@ export const fetchDatas = (path, usrLocation, perimeter) => {
     })
     .then(async function (response) {
       if (path === '/matchs') {
-        dispatch(setObject('matches', response.data));
+        if (response.data.length) {
+          const matches = [];
+          await response.data.forEach( async (el) => {
+            const date = new Date(el.lastConnection);
+            const newEl = el;
+            newEl['lastConnection'] = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(date);
+            await matches.push(newEl);
+          });
+          await dispatch(setObject('matches', matches));
+        }
       } else if (path === '/cibles') {
-        console.log(response);
         if (response.data.length) {
           const cibles = [];
           await response.data.forEach(async (el) => {
@@ -171,8 +177,6 @@ export const confirmEmail = (token) => {
     })
     .then(function (response) {
       dispatch(setObject('alert', 'email verified !'));
-      console.log(response);
-        
     })
     .catch(function (error) {
       console.log(error);
@@ -218,7 +222,6 @@ export const deleteAccount = () => {
     .then(function (response) {
       Cookies.remove('token');
       dispatch(resetApp());
-      console.log(response);
     })
     .catch(function (error) {
       console.log(error);

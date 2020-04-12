@@ -68,7 +68,7 @@ const SignUpForm = () => {
   }, [status]);
 
   useEffect(() => {
-    setForm({ ...form, ['latitude']: location.latitude ? location.latitude : 0, ['longitude']: location.longitude ? location.longitude : 0});
+    setForm({ ...form, 'latitude': location.latitude ? location.latitude : 0, 'longitude': location.longitude ? location.longitude : 0});
   }, [location]);
 
   const formIsValid = () => {

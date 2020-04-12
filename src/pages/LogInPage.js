@@ -17,7 +17,7 @@ const LogInPage = (props) => {
     if (Cookies.get('token')) {
       history.push('/profile');
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (alert) {

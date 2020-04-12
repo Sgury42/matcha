@@ -124,7 +124,7 @@ class App extends Component {
     }
 
     getStyle = (from) => {
-        if (from === this.state.from_id) {  //changed == for === because of warning 
+        if (from === this.state.from_id) {
             return {
                 margin: '10px',
                 display: 'inline-block',
@@ -212,7 +212,7 @@ class App extends Component {
             ))}</div>
             <form onSubmit={this.handleSubmit} noValidate autoComplete="off" >
                 <TextField id="multiline" variant="filled" onChange={this.handleChangeInput} value={this.state.newMessage} style={this.styles.input} />
-                <Button variant="contained" onClick="submit" style={this.styles.btn}>Envoyer</Button>
+                <Button variant="contained" type="submit" style={this.styles.btn}>Envoyer</Button>
             </form>
         </div>
     }
