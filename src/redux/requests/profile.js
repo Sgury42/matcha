@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { setObject, updateObject, addItem, removeItem } from '../objects/actions';
+import { fetchDatas } from './user';
 import Cookies from 'js-cookie';
 
 export const hashtags = (usrHashtags) => {
@@ -61,6 +62,12 @@ export const updateProfile = (route, form) => {
           break ;
         case '/accounts/research/perimeter/':
           dispatch(updateObject('currentUser', {research_perimeter: form.research_perimeter}));
+          break ;
+        case '/accounts/research/gender/':
+          dispatch(updateObject('currentUser', form));
+          break ;
+        case '/accounts/description/':
+          dispatch(updateObject('currentUser', form));
           break ;
         case '/notifications/read':
           break ;
@@ -167,8 +174,8 @@ export const usrInteraction = (route, form, index) => {
             dispatch(usrInteraction('/notifications/like', form));
           } else if (response.status === 250) {
             dispatch(setObject('alert', 'NEW MATCH !'));
-            dispatch(usrInteraction('/notifications/match', form))
-            console.log('MATCH !')
+            dispatch(usrInteraction('/notifications/match', form));
+            dispatch(fetchDatas('/matchs'));
           }
           break ;
         case '/accounts/report':

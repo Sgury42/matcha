@@ -124,7 +124,7 @@ class App extends Component {
     }
 
     getStyle = (from) => {
-        if (from === this.state.from_id) {
+        if (from == this.state.from_id) {
             return {
                 margin: '10px',
                 display: 'inline-block',

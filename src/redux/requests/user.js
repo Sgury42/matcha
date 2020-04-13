@@ -107,13 +107,14 @@ export function fetchCurrentUser() {
 
 export const fetchLocation = () => {
   return (dispatch) => {
-    axios('http://ip-api.com/json')
-    .then(function (response) {
-      dispatch(setObject('location', { 'latitude': response.data.lat, 'longitude': response.data.lon }));
+    const key = process.env.REACT_APP_GOOGLE_API_KEY;
+    axios('https://www.googleapis.com/geolocation/v1/geolocate?key=' + key, {
+      method : 'POST'
     })
-    .catch(function (error) {
-      console.log(error.response);
+    .then(response => {
+        dispatch(setObject('location', { 'latitude': response.data.location.lat, 'longitude': response.data.location.lng }));
     })
+    .catch(err => console.log(err));
   }
 }
 
